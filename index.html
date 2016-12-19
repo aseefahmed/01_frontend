@@ -1,0 +1,434 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from gebo-admin-3.tzdthemes.com/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 30 Oct 2016 15:38:15 GMT -->
+<head>
+    <meta charset="utf-8" />
+    <base href="http://localhost/01_frontend/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="U0NuozOIHu380Ahs06L9klNUVazyqN95hjaIXB1y">
+    <title>Buyers</title>
+    <!-- Bootstrap framework -->
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
+    <!-- JQuery UI framework -->
+    <!-- main styles -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- theme color-->
+    <link rel="stylesheet" href="css/blue.css" id="link_theme" />
+    <!-- Google Font-->
+    <!--link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'-->
+    <!-- breadcrumbs -->
+    <link rel="stylesheet" href="lib/jBreadcrumbs/css/BreadCrumb.css" />
+    <!-- breadcrumbs -->
+    <link rel="stylesheet" href="lib/select2/select2.css" />
+
+    <!-- Bootstrap Notification -->
+    <link rel="stylesheet" href="lib/bootstrap-notify/css/bootstrap-notify.css" />
+    <!-- File Input -->
+    <!-- jQuery UI theme -->
+    <!-- tooltips-->
+    <!-- datatables -->
+    <!--<link rel="stylesheet" href="http://localhost:8000/lib/datatables/extras/TableTools/media/css/TableTools.css" />-->
+
+    <!-- font-awesome -->
+</head>
+<body class="full_width" ng-app="myApp">
+<div class='notifications top-right'></div>
+
+<div id="maincontainer" class="clearfix">
+
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="brand pull-left" href="/">Dashboard</a>
+                    <ul class="nav navbar-nav" id="mobile-nav">
+                        <li class="dropdown">
+                            <a href="/production"><span class="glyphicon glyphicon-list-alt"></span> HRM</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="/production"><span class="glyphicon glyphicon-th"></span> CRM</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="/production"><span class="glyphicon glyphicon-wrench"></span> Production</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="/production"><span class="glyphicon glyphicon-home"></span> Accounts</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav user_menu pull-right">
+                        <li class="hidden-phone hidden-tablet">
+                            <div class="nb_boxes clearfix">
+                                <a data-toggle="modal" data-backdrop="static" href="#myMail" data-placement="bottom" data-container="body" class="label bs_ttip" title="New messages" ng-cloak>## no_of_requisition_items ## <i class="splashy-mail_light"></i></a>
+                                <a data-toggle="modal" data-backdrop="static" href="#myMail" data-placement="bottom" data-container="body" class="label bs_ttip" title="New messages">25 <i class="splashy-mail_light"></i></a>
+                                <a data-toggle="modal" data-backdrop="static" href="#myTasks" data-placement="bottom" data-container="body" class="label bs_ttip" title="New tasks">10 <i class="splashy-calendar_week"></i></a>
+                            </div>
+                        </li>
+                        <li class="divider-vertical hidden-sm hidden-xs"></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle nav_condensed" data-toggle="dropdown"><i class="flag-gb"></i> <b class="caret"></b></a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="javascript:void(0)"><i class="flag-de"></i> Deutsch</a></li>
+                                <li><a href="javascript:void(0)"><i class="flag-fr"></i> Français</a></li>
+                                <li><a href="javascript:void(0)"><i class="flag-es"></i> Español</a></li>
+                                <li><a href="javascript:void(0)"><i class="flag-ru"></i> Pусский</a></li>
+                            </ul>
+                        </li>
+                        <li class="divider-vertical hidden-sm hidden-xs"></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="" alt="" class="user_avatar">Lauriane  <b class="caret"></b></a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="user_profile.html">My Profile</a></li>
+                                <li><a href="javascrip:void(0)">Another action</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout">Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="modal fade" id="myMail">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title">New Messages</h3>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-condensed table-striped" data-provides="rowlink">
+                            <thead>
+                            <tr>
+                                <th>Sender</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Size</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Declan Pamphlett</td>
+                                <td><a href="javascript:void(0)">Lorem ipsum dolor sit amet</a></td>
+                                <td>23/05/2015</td>
+                                <td>25KB</td>
+                            </tr>
+                            <tr>
+                                <td>Erin Church</td>
+                                <td><a href="javascript:void(0)">Lorem ipsum dolor sit amet</a></td>
+                                <td>24/05/2015</td>
+                                <td>15KB</td>
+                            </tr>
+                            <tr>
+                                <td>Koby Auld</td>
+                                <td><a href="javascript:void(0)">Lorem ipsum dolor sit amet</a></td>
+                                <td>25/05/2015</td>
+                                <td>28KB</td>
+                            </tr>
+                            <tr>
+                                <td>Anthony Pound</td>
+                                <td><a href="javascript:void(0)">Lorem ipsum dolor sit amet</a></td>
+                                <td>25/05/2015</td>
+                                <td>33KB</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default">Go to mailbox</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myTasks">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title">New Tasks</h3>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-condensed table-striped" data-provides="rowlink">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Summary</th>
+                                <th>Updated</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>P-23</td>
+                                <td><a href="javascript:void(0)">Admin should not break if URL…</a></td>
+                                <td>23/05/2015</td>
+                                <td><span class="label label-danger">High</span></td>
+                                <td>Open</td>
+                            </tr>
+                            <tr>
+                                <td>P-18</td>
+                                <td><a href="javascript:void(0)">Displaying submenus in custom…</a></td>
+                                <td>22/05/2015</td>
+                                <td><span class="label label-warning">Medium</span></td>
+                                <td>Reopen</td>
+                            </tr>
+                            <tr>
+                                <td>P-25</td>
+                                <td><a href="javascript:void(0)">Featured image on post types…</a></td>
+                                <td>22/05/2015</td>
+                                <td><span class="label label-success">Low</span></td>
+                                <td>Updated</td>
+                            </tr>
+                            <tr>
+                                <td>P-10</td>
+                                <td><a href="javascript:void(0)">Multiple feed fixes and…</a></td>
+                                <td>17/05/2015</td>
+                                <td><span class="label label-warning">Medium</span></td>
+                                <td>Open</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default">Go to task manager</button>
+                    </div>
+                </div>
+            </div>
+        </div>    </header>
+    <div id="contentwrapper">
+        <div class="main_content" ng-view></div>
+    </div>
+
+</div>
+
+<div class="sidebar">
+    <div class="sidebar_inner_scroll">
+        <div class="sidebar_inner">
+            <form action="http://gebo-admin-3.tzdthemes.com/search_page.html" class="input-group input-group-sm" method="post">
+                <input autocomplete="off" name="query" class="search_query form-control input-sm" size="16" placeholder="Search..." type="text">
+                <span class="input-group-btn"><button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button></span>
+            </form>
+            <div id="side_accordion" class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseOrder" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-folder-close"></i> Orders
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseOrder">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/orders">View Orders</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseSupplier" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-th"></i> Suppliers
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseSupplier">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/suppliers">View Suppliers</a></li>
+                                <li class=""><a href="#/production/supplier-types">Supplier Types</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseBuyer" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-user"></i> Buyers
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse in" id="collapseBuyer">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class="bg bg-success"><a href="#/production/buyers">View Buyers</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseFour" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-cog"></i> Brands
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse" id="collapseFour">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#/production/brands">View Brands</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseStyle" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-leaf"></i> Styles
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseStyle">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/styles">View Styles</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseReport" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-book"></i> Reports
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseReport">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/reports/orders">Orders</a></li>
+                                <li class=""><a href="#/production/reports">Saved Reports</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseRequisitions" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-check"></i> Requisitions
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseRequisitions">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/requisitions/generate">Generate Requisition</a></li>
+                                <li class=""><a href="#/production/requisitions/sent">Sent Requisition</a></li>
+                                <li class=""><a href="#/production/requisitions/recieved">Recieved Requisition</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="push"></div>
+        </div>
+
+        <div class="sidebar_info">
+            <ul class="list-unstyled">
+                <li>
+                    <span class="act act-warning">65</span>
+                    <strong>New comments</strong>
+                </li>
+                <li>
+                    <span class="act act-success">10</span>
+                    <strong>New articles</strong>
+                </li>
+                <li>
+                    <span class="act act-danger">85</span>
+                    <strong>New registrations</strong>
+                </li>
+            </ul>
+        </div>
+    </div></div>
+<!-- main bootstrap js -->
+<script src="lib/jquery/jquery.min.js"></script>
+<!-- File Input -->
+<!-- main bootstrap js -->
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<!-- custom scrollbar -->
+<script src="lib/slimScroll/jquery.slimscroll.js"></script>
+<!-- Select2 -->
+<script src="lib/select2/select2.js"></script>
+<!-- Bootstrap Notification -->
+<script src="lib/bootstrap-notify/js/bootstrap-notify.js"></script>
+<!-- Site Configuration -->
+<script src="js/config.js"></script>
+<!-- Angular JS -->
+<script src="js/angular/angular.min.js"></script>
+<!-- Angular Route JS -->
+<script src="js/angular/angular-route.js"></script>
+<!-- angular js main app js -->
+<script src="js/angular/production/main.js"></script>
+<!-- angular js controllers -->
+<script src="js/angular/production/controller.js"></script>
+<!-- angular js services -->
+<script src="js/angular/production/service.js"></script>
+<!-- angular js filters -->
+<script src="js/angular/production/filter.js"></script>
+<!-- Pagination Library -->
+<script src="js/angular/production/dirPagination.js"></script>
+<!-- datatables bootstrap integration -->
+<script src="lib/fileinput/fileinput.min.js"></script>
+<!-- common functions -->
+<script src="js/pages/gebo_common.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('select').select2();
+
+        $('.file-upload').fileinput({
+            showUpload: false,
+            previewFileType: "image",
+            showUploadedThumbs : true,
+            previewSettings: {
+                image: { width: "100px", height: "75px" },
+            },
+        });
+
+    });
+    $.fn.select2.amd.require([
+        'select2/selection/multiple',
+        'select2/selection/search',
+        'select2/dropdown',
+        'select2/dropdown/attachBody',
+        'select2/dropdown/closeOnSelect',
+        'select2/compat/containerCss',
+        'select2/utils'
+    ], function (MultipleSelection, Search, Dropdown, AttachBody, CloseOnSelect, ContainerCss, Utils) {
+        var SelectionAdapter = Utils.Decorate(
+            MultipleSelection,
+            Search
+        );
+
+        var DropdownAdapter = Utils.Decorate(
+            Utils.Decorate(
+                Dropdown,
+                CloseOnSelect
+            ),
+            AttachBody
+        );
+
+        $('.inline-search').select2({
+            dropdownAdapter: DropdownAdapter,
+            selectionAdapter: SelectionAdapter
+        });
+
+        $('.dropdown-search').select2({
+            selectionAdapter: MultipleSelection
+        });
+
+        $('.autocomplete').select2({
+            dropdownAdapter: DropdownAdapter,
+            selectionAdapter: Utils.Decorate(SelectionAdapter, ContainerCss),
+            containerCssClass: 'select2-autocomplete'
+        });
+    });
+</script>
+</body>
+</html>
