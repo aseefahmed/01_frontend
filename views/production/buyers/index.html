@@ -8,13 +8,13 @@
                 <div class="w-box-header">
                     <div class="pull-left">
                         <div class="btn-group">
-                            <a class="btn dropdown-toggle btn-primary btn-xs" data-toggle="dropdown" href="#">
+                            <a class="btn dropdown-toggle btn-primary btn-xs" data-toggle="dropdown" href="#" target="_self">
                                 <i class="glyphicon glyphicon-cog"></i> Action <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><button data-toggle="modal" data-backdrop="static" href="#add-buyer-modal"><span class="glyphicon glyphicon-plus-sign"></span> Add</button></li>
-                                <li><a href="#" ng-click="remove_buyer(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
-                                <li><a href="#" ng-click="remove_buyer(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
+                                <li><a data-toggle="modal" href="#add-buyer-modal" target="_self"><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
+                                <li><a style="cursor:pointer;"  target="_self" ng-click="remove_buyer(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
+                                <li><a style="cursor:pointer;" target="_self" ng-click="remove_buyer(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
                             </ul>
                         </div>
                     </div>
@@ -80,10 +80,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
-            @include('production::partials.orders_stats')
-        </div>
-
+        <div class="col-sm-4" ng-include="'views/production/partials/orders_stats.html'"></div>
         <div class="modal fade" id="add-buyer-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
