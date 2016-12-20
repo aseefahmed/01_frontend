@@ -1,0 +1,1 @@
+loginApp = angular.module('loginApp',[]);

@@ -1,7 +1,7 @@
 /* ---- Gebo Admin blue theme ---- */
 
     .navbar-inner {
-        background: #3993ba;
+        background: #00557F;
     }
     .navbar .nav .active > a, .navbar .nav .active > a:hover {
         background: #206484 !important;
@@ -15,7 +15,7 @@
         background: #48a6d2 !important;
     }
 	
-	.table thead th {background-color:#125452 !important; color: #fff}
+	.table thead th {background-color:#80141C !important; color: #fff}
 	.dataTables_wrapper th.sorting_asc,.dataTables_wrapper th.sorting_desc {background-color:#d4e3eb !important}
 .elegant-aero {
     margin-left:auto;

@@ -54,7 +54,7 @@
                                     <tr ng-if="styles.length == 0 || filtered.length == 0">
                                         <td colspan="6">No data found.</td>
                                     </tr>
-                                    <tr dir-paginate="style in filtered = (styles| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
+                                    <tr ng-class-odd="'bg-color1'" dir-paginate="style in filtered = (styles| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
                                         <td><input class="select_row" type="checkbox"  value="{{ style.id }}"/></td>
                                         <td ng-cloak><img src="{{ asset('img/uploads/production/styles') }}/{{ style.image }}" width="80px"/></td>
                                         <td ng-cloak>{{ style.style_name }}</td>

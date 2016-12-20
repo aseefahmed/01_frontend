@@ -3429,7 +3429,7 @@ fieldset[disabled] .btn-default.active {
 
 .btn-primary {
     color: #fff;
-    background-color: #2980b9;
+    background-color: #00557F;
     border-color: #20638f;
     -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, .3), 0 1px 3px 0 rgba(0, 0, 0, .1);
     box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, .3), 0 1px 3px 0 rgba(0, 0, 0, .1);
@@ -3519,7 +3519,7 @@ fieldset[disabled] .btn-warning.active {
 
 .btn-danger {
     color: #fff;
-    background-color: #a3554f;
+    background-color: #80141C;
     border-color: #924c47;
     -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, .3), 0 1px 3px 0 rgba(0, 0, 0, .1);
     box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, .3), 0 1px 3px 0 rgba(0, 0, 0, .1);
@@ -3564,7 +3564,7 @@ fieldset[disabled] .btn-danger.active {
 
 .btn-success {
     color: #fff;
-    background-color: #7ea568;
+    background-color: #275420;
     border-color: #71995b;
     -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, .3), 0 1px 3px 0 rgba(0, 0, 0, .1);
     box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, .3), 0 1px 3px 0 rgba(0, 0, 0, .1);
@@ -3578,7 +3578,7 @@ fieldset[disabled] .btn-danger.active {
 .btn-success.active,
 .open .dropdown-toggle.btn-success {
     color: #fff;
-    background-color: #6a8f55;
+    background-color: #4D1A75;
     border-color: #557244
 }
 

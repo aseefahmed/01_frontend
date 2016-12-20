@@ -352,3 +352,9 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
     };
 })
 
+angular.module('loginApp').controller('LoginController', function($scope, $http){
+    $scope.doSignIn = function(){
+        console.log('test')
+    };
+})
+

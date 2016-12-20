@@ -54,7 +54,7 @@
                                     <tr ng-if="buyers.length == 0 || filtered.length == 0">
                                         <td colspan="6">No data found.</td>
                                     </tr>
-                                    <tr  ng-class-odd="'bg bg-info'" ng-class-even="'bg bg-warning'" dir-paginate="buyer in filtered = (buyers| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
+                                    <tr ng-class-odd="'bg-color1'" dir-paginate="buyer in filtered = (buyers| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
                                         <td><input class="select_row" type="checkbox"  value="{{ buyer.id }}"/></td>
                                         <td ng-cloak><img src="{{ asset('img/uploads/production/buyers') }}/{{ buyer.image }}" width="80px"/></td>
                                         <td ng-cloak>{{ buyer.buyer_name }}</td>
