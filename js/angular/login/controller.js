@@ -1,4 +1,4 @@
-angular.module('loginApp').controller('LoginController', function($scope, $http){
+angular.module('loginApp').controller('LoginController', function($scope, $http, $window){
     $scope.loginFailed = false;
     $scope.doSignIn = function () {
 
@@ -12,16 +12,16 @@ angular.module('loginApp').controller('LoginController', function($scope, $http)
             }
         };
         $http.post(app.host + 'process-login', data, config).success(function (result, status) {
+            console.log(result)
             if(result == -1)
             {
                 $scope.login_failed_alert = "Invalid username/password. Please try again."
             }
             else
             {
-                window.location.href = '../#/production/buyers'
+                sessionStorage.setItem('loginUser', JSON.stringify(result));
+                $window.location.href = '../#/dashboard';
             }
-        }).error(function (result, status) {
-
         });
     }
 })

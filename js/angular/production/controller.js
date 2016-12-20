@@ -1,5 +1,11 @@
-angular.module('myApp').controller('BuyerController', function($scope, $http, $route) {
+angular.module('myApp').controller('DashboardController', function($scope, $http){
+    console.log('----')
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
 
+});
+
+angular.module('myApp').controller('BuyerController', function($scope, $http, $route) {
+    console.log(sessionStorage.getItem('loginUser'))
     $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
     $scope.reloadData = function(){
         $route.reload();
@@ -177,6 +183,8 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
 })
 
 angular.module('myApp').controller('StyleController', function($scope, $http) {
+    console.log('----');
+    console.log(sessionStorage.getItem('loginUser'));
     $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
     $http.get(app.host + '/production/style/fetchStylesList').then(function (response) {
         $scope.num_of_items = 10;
@@ -352,9 +360,10 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
     };
 })
 
-angular.module('loginApp').controller('LoginController', function($scope, $http){
-    $scope.doSignIn = function(){
-        console.log('test')
-    };
+angular.module('myApp').controller('LogoutController', function($scope, $http, $window){
+    $scope.doLogout = function() {
+        sessionStorage.removeItem('loginUser');
+        $window.location.href = 'login';
+    }
 })
 
