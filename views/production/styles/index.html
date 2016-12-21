@@ -7,14 +7,18 @@
             <div class="w-box" id="w_sort01">
                 <div class="w-box-header">
                     <div class="pull-left">
+                        Total Buyers: {{filtered.length}}
+                    </div>
+                    <div class="pull-right">
                         <div class="btn-group">
-                            <a class="btn dropdown-toggle btn-primary btn-xs" data-toggle="dropdown" href="#" target="_self" >
+                            <a class="btn dropdown-toggle btn-success btn-xs" data-toggle="dropdown" href="#" target="_self">
                                 <i class="glyphicon glyphicon-cog"></i> Action <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a data-toggle="modal" href="#add-style-modal" target="_self" ><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
-                                <li><a  style="cursor:pointer;" target="_self" ng-click="remove_style(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
-                                <li><a style="cursor:pointer;" target="_self" ng-click="remove_style(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
+                                <li ng-if="loginUser.emp_role==1"><a data-toggle="modal" href="#add-buyer-modal" target="_self"><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
+                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;"  target="_self" ng-click="remove_buyer(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
+                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;" target="_self" ng-click="remove_buyer(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
+                                <li ng-if="loginUser.emp_role==1"><a href="#" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
                             </ul>
                         </div>
                     </div>
@@ -39,30 +43,30 @@
                                             boundary-links="true" >
                                     </dir-pagination-controls>
                                 </div>
-                                <table class="table table-responsive table-bordered table-striped">
+                                <table class="table table-responsive table-bordered">
                                     <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Image</th>
-                                        <th class="th-pointer" ng-click="sort('style_name')">Buyer Name <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='style_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                        <th>Image </th>
+                                        <th class="th-pointer" ng-click="sort('buyer_name')">Buyer Name <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('created_at')">Contact Person <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='created_at'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('updated_at')">Email Address <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='updated_at'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-if="styles.length == 0 || filtered.length == 0">
+                                    <tr ng-if="buyers.length == 0 || filtered.length == 0">
                                         <td colspan="6">No data found.</td>
                                     </tr>
-                                    <tr ng-class-odd="'bg-color1'" dir-paginate="style in filtered = (styles| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
-                                        <td><input class="select_row" type="checkbox"  value="{{ style.id }}"/></td>
-                                        <td ng-cloak><img src="{{ asset('img/uploads/production/styles') }}/{{ style.image }}" width="80px"/></td>
-                                        <td ng-cloak>{{ style.style_name }}</td>
-                                        <td ng-cloak>{{ style.contact_person }}</td>
-                                        <td ng-cloak>{{ style.email_address }}</td>
+                                    <tr ng-class-odd="'bg-color1'" dir-paginate="buyer in filtered = (buyers| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
+                                        <td><input class="select_row" type="checkbox"  value="{{ buyer.id }}"/></td>
+                                        <td ng-cloak><img src="{{ asset('img/uploads/production/buyers') }}/{{ buyer.image }}" width="80px"/></td>
+                                        <td ng-cloak>{{ buyer.buyer_name }}</td>
+                                        <td ng-cloak>{{ buyer.contact_person }}</td>
+                                        <td ng-cloak>{{ buyer.email_address }}</td>
                                         <td  ng-cloak align="center">
-                                            <a class="btn btn-primary" href="{{ url('production/styles/') }}/{{ style.id }}"><i class="glyphicon glyphicon-eye-open" class="view_style_btn"></i></a>&nbsp;
-                                            <a ng-if="true" class="btn btn-danger" ng-click="remove_style(style.id, style.style_name, 'single_delete')" style_name="{{ style.name }}" style_id="{{ style.id }}"><i class="glyphicon glyphicon-trash"></i></a>
+                                            <a class="btn btn-primary" href="#/production/buyer/{{ buyer.id }}"><i class="glyphicon glyphicon-eye-open" class="view_buyer_btn"></i></a>&nbsp;
+                                            <a ng-if="loginUser.emp_role==1" class="btn btn-danger" ng-click="remove_buyer(buyer.id, buyer.buyer_name, 'single_delete')" buyer_name="{{ buyer.name }}" buyer_id="{{ buyer.id }}"><i class="glyphicon glyphicon-trash"></i></a>
                                         </td>
                                     </tr>
 
@@ -81,7 +85,7 @@
             </div>
         </div>
         <div class="col-sm-4" ng-include="'views/production/partials/orders_stats.html'"></div>
-        <div class="modal fade" id="add-style-modal">
+        <div class="modal fade" id="add-buyer-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -97,8 +101,8 @@
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
-                                        <input class="form-control" placeholder="Buyer" name="style_name" type="text" ng-model="style_name" ng-required="true" ng-maxlength="50">
-                                        <span class="help-block " ng-show="myForm.style_name.$dirty && myForm.style_name.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
+                                        <input class="form-control" placeholder="Buyer" name="buyer_name" type="text" ng-model="buyer_name" ng-required="true" ng-maxlength="50">
+                                        <span class="help-block " ng-show="myForm.buyer_name.$dirty && myForm.buyer_name.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +170,7 @@
                             </div>
                             <div class="modal-footer">
                                 <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                                <button type="submit" ng-disabled="myForm.$invalid" name="commit" class="btn btn-success" ng-click="add_style()"><span class="glyphicon glyphicon-ok-sign"></span> Add Buyer </button>
+                                <button type="submit" ng-disabled="myForm.$invalid" name="commit" class="btn btn-success" ng-click="add_buyer()"><span class="glyphicon glyphicon-ok-sign"></span> Add Buyer </button>
                             </div>
                         </form>
                     </div>
@@ -174,7 +178,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="remove-style-modal">
+        <div class="modal fade" id="remove-buyer-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -185,7 +189,7 @@
                         {{ modal_msg }}
                         <div class="modal-footer">
                             <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                            <button type="submit" name="commit" class="btn btn-success" ng-click="remove_style_confirmed(style_id, 'index_page', status)" style_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
+                            <button type="submit" name="commit" class="btn btn-success" ng-click="remove_buyer_confirmed(buyer_id, 'index_page', status)" buyer_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
                         </div>
                     </div>
                 </div>
@@ -200,7 +204,7 @@
                         <h3 class="modal-title">Remove Buyer</h3>
                     </div>
                     <div class="modal-body">
-                        Please Select at least one style.
+                        Please Select at least one buyer.
                         <div class="modal-footer">
                             <a class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok-sign"></span> OK</a>
                         </div>
@@ -210,3 +214,61 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('select').select2();
+
+        $('.file-upload').fileinput({
+            showUpload: false,
+            previewFileType: "image",
+            showUploadedThumbs : true,
+            previewSettings: {
+                image: { width: "100px", height: "75px" },
+            },
+        });
+        $.fn.select2.amd.require([
+            'select2/selection/multiple',
+            'select2/selection/search',
+            'select2/dropdown',
+            'select2/dropdown/attachBody',
+            'select2/dropdown/closeOnSelect',
+            'select2/compat/containerCss',
+            'select2/utils'
+        ], function (MultipleSelection, Search, Dropdown, AttachBody, CloseOnSelect, ContainerCss, Utils) {
+            var SelectionAdapter = Utils.Decorate(
+                MultipleSelection,
+                Search
+            );
+
+            var DropdownAdapter = Utils.Decorate(
+                Utils.Decorate(
+                    Dropdown,
+                    CloseOnSelect
+                ),
+                AttachBody
+            );
+
+            $('.inline-search').select2({
+                dropdownAdapter: DropdownAdapter,
+                selectionAdapter: SelectionAdapter
+            });
+
+            $('.dropdown-search').select2({
+                selectionAdapter: MultipleSelection
+            });
+
+            $('.autocomplete').select2({
+                dropdownAdapter: DropdownAdapter,
+                selectionAdapter: Utils.Decorate(SelectionAdapter, ContainerCss),
+                containerCssClass: 'select2-autocomplete'
+            });
+        });
+    });
+
+</script>
