@@ -22,7 +22,9 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
                 sessionStorage.setItem('loginUser', JSON.stringify(result));
                 $window.location.href = '../#/dashboard';
             }
-        });
+        }).error(function (result, status) {
+            $scope.login_failed_alert = "Internal server error occurred. Please contact the administrator."
+        });;
     }
 })
 

@@ -1,6 +1,9 @@
-angular.module('myApp').controller('DashboardController', function($scope, $http){
+angular.module('myApp').controller('DashboardController', function($scope, $http, $window){
     console.log('----')
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    $scope.goToDashboard = function () {
+        $window.location.href = '#/dashboard';
+    }
 
 });
 
