@@ -1,5 +1,4 @@
 angular.module('myApp').controller('DashboardController', function($scope, $http, $window){
-    console.log('----')
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     $scope.goToDashboard = function () {
         $window.location.href = '#/dashboard';
@@ -7,8 +6,16 @@ angular.module('myApp').controller('DashboardController', function($scope, $http
 
 });
 
-angular.module('myApp').controller('BuyerController', function($scope, $http, $route) {
-    console.log(sessionStorage.getItem('loginUser'))
+angular.module('myApp').controller('MenuController', function($scope, $http, $location){
+    $scope.location = $location;
+});
+
+angular.module('myApp').controller('BuyerController', function($scope, $http, $route, $routeParams) {
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    if($routeParams.buyer_id){
+        $scope.buyer_id = $routeParams.buyer_id;
+    }
+    $scope.page_title = 'Buyers List';
     $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
     $scope.reloadData = function(){
         $route.reload();
@@ -16,6 +23,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     $http.get(app.host + '/production/buyer/fetchBuyersList').then(function (response) {
         $scope.num_of_items = 10;
         $scope.buyers = response.data;
+        $scope.data_found = $scope.buyers.length;
         $scope.reverse = false;
     });
     $scope.sortKey = 'buyer_name';
@@ -68,28 +76,37 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     };
     $scope.remove_buyer_confirmed = function(id, page, action){
         $scope.buyer_name = null;
-        $http.delete('/production/buyer/'+id+"/"+action).then(function(response){
-            console.log(response)
+        var data = $.param({
+            id: id,
+            action: action
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/buyer/delete', data, config).success(function (result, status) {
+            console.log(result);
             $('#remove-buyer-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
-                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully deleted the information.</strong>' },
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             if(page == 'show_page')
             {
-                window.location.href = '/production/buyers';
+                window.location.href = '#/production/buyers';
             }
             else
             {
-                $http.get('/production/buyer/fetchBuyersList').then(function (response) {
+                $http.get(app.host + 'production/buyer/fetchBuyersList').then(function (response) {
                     $scope.num_of_items = 10;
                     $scope.buyers = response.data;
                     $scope.reverse = false;
                 })
             }
-        }, function(error_response){
+        }).error(function (result, status) {
             $('#remove-buyer-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'danger',
@@ -97,10 +114,13 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-        })
+        });
+
     };
     $scope.init = function(id){
-        $http.get('/production/buyers/fetchBuyerDetails/'+id).then(function(response){
+        $scope.page_title = 'Buyer Details';
+        $http.get(app.host + 'production/buyers/fetchBuyerDetails/'+id).then(function(response){
+            console.log(response)
             $scope.buyer = response.data;
         })
     };
@@ -123,7 +143,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         {
             $scope.type = '--';
         }
-        $http.get('/production/buyer/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+        $http.get(app.host + 'production/buyer/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully updated the information.</strong>' },
@@ -131,7 +151,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.buyer = response.data;
-            $http.get('/production/buyers/fetchBuyerDetails/'+id).then(function(response){
+            $http.get(app.host + 'production/buyers/fetchBuyerDetails/'+id).then(function(response){
                 $scope.buyer = response.data;
             })
         }, function(response){
@@ -145,6 +165,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     }
     $scope.add_buyer = function(){
         var data = $.param({
+            user_id: $scope.loginUser.id,
             buyer_name: $scope.buyer_name,
             postal_address: $scope.postal_address,
             contact_person: $scope.contact_person,
@@ -158,7 +179,8 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         };
-        $http.post('/production/buyers', data, config).success(function (result, status) {
+        $http.post(app.host + 'production/buyers', data, config).success(function (result, status) {
+            console.log()
             $('#add-buyer-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -167,7 +189,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.buyer_name = null;
-            $http.get('/production/buyer/fetchBuyersList').then(function (response) {
+            $http.get(app.host + 'production/buyer/fetchBuyersList').then(function (response) {
                 $scope.num_of_items = 10;
                 $scope.buyers = response.data;
                 $scope.reverse = false;
@@ -185,15 +207,21 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     };
 })
 
-angular.module('myApp').controller('StyleController', function($scope, $http) {
-    console.log('----');
-    console.log(sessionStorage.getItem('loginUser'));
+angular.module('myApp').controller('StyleController', function($scope, $http, $route, $routeParams) {
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    if($routeParams.style_id){
+        $scope.style_id = $routeParams.style_id;
+    }
+    $scope.page_title = 'Styles List';
     $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
+    $scope.reloadData = function(){
+        $route.reload();
+    };
     $http.get(app.host + '/production/style/fetchStylesList').then(function (response) {
         $scope.num_of_items = 10;
         $scope.styles = response.data;
+        $scope.data_found = $scope.styles.length;
         $scope.reverse = false;
-        console.log(response.data)
     });
     $scope.sortKey = 'style_name';
     $scope.sort = function (header) {
@@ -230,7 +258,6 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
             $('.select_row:checked').each(function() {
                 console.log(this.value)
                 arr.push(this.value);
-
             });
             $scope.modal_msg = "Do you really want to delete selected styles";
             if(arr.length == 0)
@@ -246,28 +273,37 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
     };
     $scope.remove_style_confirmed = function(id, page, action){
         $scope.style_name = null;
-        $http.delete('/production/style/'+id+"/"+action).then(function(response){
-            console.log(response)
+        var data = $.param({
+            id: id,
+            action: action
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/style/delete', data, config).success(function (result, status) {
+            console.log(result);
             $('#remove-style-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
-                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully deleted the information.</strong>' },
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             if(page == 'show_page')
             {
-                window.location.href = '/production/styles';
+                window.location.href = '#/production/styles';
             }
             else
             {
-                $http.get('/production/style/fetchStylesList').then(function (response) {
+                $http.get(app.host + 'production/style/fetchStylesList').then(function (response) {
                     $scope.num_of_items = 10;
                     $scope.styles = response.data;
                     $scope.reverse = false;
                 })
             }
-        }, function(error_response){
+        }).error(function (result, status) {
             $('#remove-style-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'danger',
@@ -275,10 +311,13 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-        })
+        });
+
     };
     $scope.init = function(id){
-        $http.get('/production/styles/fetchStyleDetails/'+id).then(function(response){
+        $scope.page_title = 'Style Details';
+        $http.get(app.host + 'production/styles/fetchStyleDetails/'+id).then(function(response){
+            console.log(response)
             $scope.style = response.data;
         })
     };
@@ -301,7 +340,7 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
         {
             $scope.type = '--';
         }
-        $http.get('/production/style/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+        $http.get(app.host + 'production/style/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully updated the information.</strong>' },
@@ -309,7 +348,7 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.style = response.data;
-            $http.get('/production/styles/fetchStyleDetails/'+id).then(function(response){
+            $http.get(app.host + 'production/styles/fetchStyleDetails/'+id).then(function(response){
                 $scope.style = response.data;
             })
         }, function(response){
@@ -323,29 +362,26 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
     }
     $scope.add_style = function(){
         var data = $.param({
+            user_id: $scope.loginUser.id,
             style_name: $scope.style_name,
-            postal_address: $scope.postal_address,
-            contact_person: $scope.contact_person,
-            email_address: $scope.email_address,
-            contact_number: $scope.contact_number,
-            website: $scope.website,
-            style_image: $scope.style_image
+            image: $scope.new_file
         });
         var config = {
             headers : {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         };
-        $http.post('/production/styles', data, config).success(function (result, status) {
+        $http.post(app.host + 'production/styles', data, config).success(function (result, status) {
+            console.log(result)
             $('#add-style-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
-                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add a style.</strong>' },
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Your operation has been successful..</strong>' },
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.style_name = null;
-            $http.get('/production/style/fetchStylesList').then(function (response) {
+            $http.get(app.host + 'production/style/fetchStylesList').then(function (response) {
                 $scope.num_of_items = 10;
                 $scope.styles = response.data;
                 $scope.reverse = false;
@@ -362,6 +398,353 @@ angular.module('myApp').controller('StyleController', function($scope, $http) {
         });
     };
 })
+
+angular.module('myApp').controller('OrderController', function($scope, $http, $routeParams) {
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    if($routeParams.order_id){
+        $scope.order_id = $routeParams.order_id;
+    }
+    $scope.page_title = 'Order List';
+    $scope.order = {};
+    $scope.no_of_requisition_items = 10;
+    $scope.order.total_yarn_weight = 0;
+    $scope.order.total_yarn_cost = 0;
+    compositions = new Array()
+    n=0;
+    $scope.add_to_requisitions = function(){
+        var data = $.param({
+            order_id: $scope.order_id,
+            yarn_type: $scope.yarn_type,
+            yarn_amount: $scope.yarn_amount,
+            accessories_amount: $scope.accessories_amount,
+            button_amount: $scope.button_amount,
+            zipper_amount: $scope.zipper_amount,
+            print_amount: $scope.print_amount,
+            zipper_amount: $scope.zipper_amount,
+            security_tag_amount: $scope.security_tag_amount,
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/order/addToRequisition', data, config).success(function (result, status) {
+            console.log(result)
+            $('#add-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation successfull.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        }).error(function (result, status) {
+            $('#add-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.order_name = null;
+        });
+    };
+    $scope.update_order_info = function(){
+        $scope.order.qty_per_dzn = Math.round($scope.order.order_qty/12*100, 2)/100;
+        $scope.order.total_fob = $scope.order.order_qty * $scope.order.order_fob;
+        $scope.order.total_accessories_cost = Math.round(($scope.order.qty_per_dzn * $scope.order.accessories_rate)*100)/100;
+        $scope.order.total_button_cost = Math.round(($scope.order.qty_per_dzn * $scope.order.button_rate)*100)/100;
+        $scope.order.total_zipper_cost = Math.round(($scope.order.qty_per_dzn * $scope.order.zipper_rate)*100)/100;
+        $scope.order.total_print_cost = Math.round(($scope.order.qty_per_dzn * $scope.order.print_rate)*100)/100;
+        $scope.order.total_security_tag_cost = Math.round(($scope.order.qty_per_dzn * $scope.order.security_tag)*100)/100;
+        $scope.order.total_cost =  Math.round(($scope.order.total_yarn_cost + $scope.order.total_accessories_cost + $scope.order.total_button_cost + $scope.order.total_zipper_cost + $scope.order.total_print_cost + $scope.order.total_security_tag_cost)*100)/100;
+        $scope.order.order_balance_amount = Math.round(($scope.order.total_fob - $scope.order.total_cost)*100)/100;
+        $scope.order.cost_of_making = Math.round(($scope.order.order_balance_amount/$scope.order.qty_per_dzn)*100)/100;
+    };
+    $scope.composition_refresh = function(){
+        $scope.order.total_yarn_weight = 0;
+        $scope.order.total_yarn_cost = 0;
+        $scope.order.total_yarn_weight = 0;
+        $scope.order.total_yarn_cost = 0;
+        document.getElementById('composition-div-group').innerHTML = "";
+    };
+    $scope.add_composition = function(){
+        compositions[n] = [$scope.composition_name, $scope.composition_percentage, $scope.composition_yarn_rate, $scope.composition_wastage];
+        composition_str = JSON.stringify(compositions);
+        $scope.compositions = compositions;
+        console.log($scope.compositions)
+        n++;
+
+        $scope.order.total_yarn_weight =  Number($scope.order.total_yarn_weight) + Number($scope.order.qty_per_dzn*$scope.order.weight_per_dzn*$scope.composition_percentage/100*(1+Number($scope.composition_wastage/100)));
+        $scope.order.total_yarn_cost = Number($scope.order.total_yarn_cost) + Number(Number($scope.order.qty_per_dzn*$scope.order.weight_per_dzn*$scope.composition_percentage/100*(1+Number($scope.composition_wastage/100)))*$scope.composition_yarn_rate);
+        $scope.order.total_yarn_weight = Math.round($scope.order.total_yarn_weight *100)/100;
+        $scope.order.total_yarn_cost = Math.round($scope.order.total_yarn_cost *100)/100;
+        table = document.getElementById('composition-div-group');
+        row = table.insertRow(0);
+        row.insertCell(0).innerHTML = $scope.composition_name;
+        row.insertCell(1).innerHTML = $scope.composition_percentage;
+        row.insertCell(2).innerHTML = $scope.composition_yarn_rate;
+        row.insertCell(3).innerHTML = $scope.composition_wastage;
+        //console.log($scope.total_yarn_weight+ " = "+ $scope.total_yarn_cost+" = "+$scope.composition_yarn_rate +" = "+$scope.composition_wastage)
+    };
+    $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
+    $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
+        console.log(response.data)
+        $scope.num_of_items = 10;
+        $scope.orders = response.data;
+        $scope.reverse = false;
+    });
+    $http.get(app.host + 'production/buyer/fetchBuyersList').then(function (response) {
+        $scope.num_of_items = 10;
+        $scope.buyers = response.data;
+        $scope.reverse = false;
+    });
+    $http.get(app.host + 'production/style/fetchStylesList').then(function (response) {
+        $scope.num_of_items = 10;
+        $scope.styles = response.data;
+        $scope.reverse = false;
+    });
+    $scope.sortKey = 'order_name';
+    $scope.sort = function (header) {
+        $scope.sortKey = header;
+        $scope.reverse = !$scope.reverse;
+    };
+    $scope.remove_order = function(id, name, action){
+        if(action == 'single_delete')
+        {
+            $scope.order_name = name;
+            $scope.order_id = id;
+            $scope.status = 'single_delete';
+            $scope.modal_msg = "Do you really want to delete the order id:  "+$scope.id+".";
+            $('#remove-order-modal').modal('toggle');
+        }
+        else if(action == 'all')
+        {
+            if($scope.orders.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.order_id = 0;
+                $scope.status = 'all';
+                $scope.modal_msg = "Do you really want to delete all orders";
+                $('#remove-order-modal').modal('toggle');
+            }
+        }
+        else if(action == 'selected')
+        {
+            var arr = [];
+            $scope.status = 'selected';
+            $('.select_row:checked').each(function() {
+                console.log(this.value)
+                arr.push(this.value);
+
+            });
+            $scope.modal_msg = "Do you really want to delete selected orders";
+            if(arr.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.order_id = arr;
+                $('#remove-order-modal').modal('toggle');
+            }
+        }
+    };
+    $scope.advanced_search_order = function()
+    {
+        var data = $.param({
+            field: $scope.report.field,
+            operator: $scope.report.operator,
+            search_value: $scope.report.search_value
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/reports/orders/search', data, config).success(function (result, status) {
+
+            $scope.orders = result;
+            console.log(result)
+        });
+    }
+    $scope.remove_order_confirmed = function(id, page, action){
+        $scope.order_name = null;
+        var data = $.param({
+            id: id,
+            action: action,
+            user_id: $scope.loginUser.id,
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/order/delete', data, config).success(function (result, status) {
+            console.log(result);
+            $('#remove-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            if(page == 'show_page')
+            {
+                window.location.href = '#/production/orders';
+            }
+            else
+            {
+                $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
+                    $scope.num_of_items = 10;
+                    $scope.orders = response.data;
+                    $scope.reverse = false;
+                })
+            }
+        }).error(function (result, status) {
+            $('#remove-buyer-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was unsuccessful. </strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
+
+    };
+
+    $scope.init = function(id){
+        $scope.page_title = 'Order Details';
+        $scope.yarn_type = '';
+        $http.get(app.host + 'production/orders/fetchOrderDetails/'+id).then(function(response){
+            $scope.delivery_date = new Date(response.data[0].delivery_date);
+            $scope.today = new Date();
+            $scope.days_left_to_delivery = ($scope.delivery_date - $scope.today)/1000/60/60/24;
+            $scope.order_id = id;
+            $scope.order = response.data;
+            $scope.approved_amount_of_requisition = Number(response.data[0].approved_yarn_amount) +Number(response.data[0].approved_acc_amount) +Number(response.data[0].approved_btn_amount) +Number(response.data[0].approved_zipper_amount) +Number(response.data[0].approved_print_amount) +Number(response.data[0].approved_security_tag_cost)
+            console.log('dd')
+            console.log(response.data[0].approved_acc_amount)
+
+        })
+    };
+    $scope.edit_order = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
+        $scope.editable_item = edit_item;
+        $scope.order_id = id;
+        $scope.field = field;
+        $scope.field_type = field_type;
+        $scope.is_required = is_required;
+        $scope.min_length = min_length;
+        $scope.max_length = max_length;
+        $scope.pattern = pattern;
+        $scope.error_text = error_text;
+        $scope.type = null;
+        $('#edit-order-modal').modal('toggle');
+    }
+    $scope.edit_order_confirmed = function (id) {
+        $('#edit-order-modal').modal('toggle');
+        if($scope.type == null)
+        {
+            $scope.type = '--';
+        }
+        var data = $.param({
+            user_id: $scope.loginUser.id,
+            id: id,
+            field: $scope.field,
+            value: $scope.type
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/order/update', data, config).success(function (result, status) {
+            console.log(result)
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Your operation has been successful..</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $http.get(app.host + 'production/orders/fetchOrderDetails/'+id).then(function(response){
+                $scope.order = response.data;
+            })
+        }).error(function (result, status) {
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
+    };
+    $scope.add_order = function(form){
+        var data = $.param({
+            user_id: $scope.loginUser.id,
+            buyer_id: $scope.order.buyer_id,
+            style_id: $scope.order.style_id,
+            order_date: $scope.order.order_date,
+            delivery_date: $scope.order.delivery_date,
+            order_gg: $scope.order.order_gg,
+            order_qty: $scope.order.order_qty,
+            order_fob: $scope.order.order_fob,
+            weight_per_dzn: $scope.order.weight_per_dzn,
+            qty_per_dzn: $scope.order.qty_per_dzn,
+            total_yarn_weight: $scope.order.total_yarn_weight,
+            total_yarn_cost: $scope.order.total_yarn_cost,
+            accessories_rate: $scope.order.accessories_rate,
+            total_accessories_cost: $scope.order.total_accessories_cost,
+            button_rate: $scope.order.button_rate,
+            total_button_cost: $scope.order.total_button_cost,
+            zipper_rate: $scope.order.zipper_rate,
+            total_zipper_cost: $scope.order.total_zipper_cost,
+            print_rate: $scope.order.print_rate,
+            total_print_cost: $scope.order.total_print_cost,
+            security_tag_cost: $scope.order.security_tag,
+            total_security_tag_cost: $scope.order.total_security_tag_cost,
+            total_fob: $scope.order.total_fob,
+            total_cost: $scope.order.total_cost,
+            order_balance_amount: $scope.order.order_balance_amount,
+            cost_of_making: $scope.order.cost_of_making,
+            compositions: $scope.compositions
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/orders', data, config).success(function (result, status) {
+            console.log(result)
+            $('#add-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add a order.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+          //  $scope.order = {};
+            $scope.compositions = null;
+            document.getElementById('composition-div-group').innerHTML = '';
+            $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
+                $scope.num_of_items = 10;
+                $scope.orders = response.data;
+                $scope.reverse = false;
+            });
+        }).error(function (result, status) {
+            $('#add-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.order_name = null;
+        });
+    };
+})
+
 
 angular.module('myApp').controller('LogoutController', function($scope, $http, $window){
     $scope.doLogout = function() {

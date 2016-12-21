@@ -20,6 +20,7 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
             else
             {
                 sessionStorage.setItem('loginUser', JSON.stringify(result));
+                console.log(result)
                 $window.location.href = '../#/dashboard';
             }
         }).error(function (result, status) {

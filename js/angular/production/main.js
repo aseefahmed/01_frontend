@@ -5,13 +5,29 @@ myApp.config(function($routeProvider, $locationProvider){
         templateUrl: 'views/production/buyers/index.html',
         controller: 'BuyerController'
     })
-        .when('/dashboard', {
-            templateUrl: 'views/dashboard/index.html',
-            controller: 'DashboardController'
+        .when('/production/orders', {
+            templateUrl: 'views/production/orders/index.html',
+            controller: 'OrderController'
         })
         .when('/production/styles', {
             templateUrl: 'views/production/styles/index.html',
             controller: 'StyleController'
+        })
+        .when('/production/buyer/:buyer_id', {
+            templateUrl: 'views/production/buyers/show.html',
+            controller: 'BuyerController'
+        })
+        .when('/production/order/:order_id', {
+            templateUrl: 'views/production/orders/show.html',
+            controller: 'OrderController'
+        })
+        .when('/production/style/:style_id', {
+            templateUrl: 'views/production/styles/show.html',
+            controller: 'StyleController'
+        })
+        .when('/dashboard', {
+            templateUrl: 'views/dashboard/index.html',
+            controller: 'DashboardController'
         });
 
 

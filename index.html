@@ -8,7 +8,7 @@
     <base href="http://localhost/01_frontend/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="U0NuozOIHu380Ahs06L9klNUVazyqN95hjaIXB1y">
-    <title>Buyers</title>
+    <title>01</title>
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
     <!-- JQuery UI framework -->
@@ -77,7 +77,7 @@
                         </li>
                         <li class="divider-vertical hidden-sm hidden-xs"></li>
                         <li class="dropdown" ng-controller="DashboardController">
-                            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown"><img src="" alt="" class="user_avatar">{{ loginUser.first_name | uppercase }} {{ loginUser.first_name | uppercase }}  <b class="caret"></b></a>
+                            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ loginUser.first_name | uppercase }} {{ loginUser.first_name | uppercase }}  <b class="caret"></b></a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a href="user_profile.html">My Profile</a></li>
                                 <li><a href="javascrip:void(0)">Another action</a></li>
@@ -215,14 +215,14 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#" class="accordion-toggle bg bg-warning " ng-controller="DashboardController"  ng-click="goToDashboard()">
-                            <i class="glyphicon glyphicon-folder-close"></i> Dashboard
+                            <i class="glyphicon glyphicon-dashboard"></i> Dashboard
                         </a>
                     </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseOrder" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-folder-close"></i> Orders
+                            <i class="glyphicon glyphicon-bell"></i> Orders
                         </a>
                     </div>
                     <div class="accordion-body collapse " id="collapseOrder">
@@ -236,7 +236,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseSupplier" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-th"></i> Suppliers
+                            <i class="glyphicon glyphicon-globe"></i> Suppliers
                         </a>
                     </div>
                     <div class="accordion-body collapse " id="collapseSupplier">
@@ -251,13 +251,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseBuyer" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-user"></i> Buyers
+                            <i class="glyphicon glyphicon-move"></i> Buyers
                         </a>
                     </div>
-                    <div class="accordion-body collapse in" id="collapseBuyer">
+                    <div class="accordion-body collapse" id="collapseBuyer">
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
-                                <li class="bg bg-success"><a href="#/production/buyers">View Buyers</a></li>
+                                <li><a href="#/production/buyers">View Buyers</a></li>
                             </ul>
 
                         </div>
@@ -281,13 +281,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseStyle" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-leaf"></i> Styles
+                            <i class="glyphicon glyphicon-star"></i> Styles
                         </a>
                     </div>
                     <div class="accordion-body collapse " id="collapseStyle">
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
-                                <li class=""><a href="#/production/styles">View Styles</a></li>
+                                <li><a href="#/production/styles">View Styles</a></li>
                             </ul>
 
                         </div>
@@ -296,7 +296,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseReport" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-book"></i> Reports
+                            <i class="glyphicon glyphicon-signal"></i> Reports
                         </a>
                     </div>
                     <div class="accordion-body collapse " id="collapseReport">
@@ -311,7 +311,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseRequisitions" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-check"></i> Requisitions
+                            <i class="glyphicon glyphicon-book"></i> Requisitions
                         </a>
                     </div>
                     <div class="accordion-body collapse " id="collapseRequisitions">
@@ -381,15 +381,9 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         $('select').select2();
 
-        $('.file-upload').fileinput({
+        $('.file-uplosad').fileinput({
             showUpload: false,
             previewFileType: "image",
             showUploadedThumbs : true,
@@ -398,44 +392,9 @@
             },
         });
 
+
     });
-    $.fn.select2.amd.require([
-        'select2/selection/multiple',
-        'select2/selection/search',
-        'select2/dropdown',
-        'select2/dropdown/attachBody',
-        'select2/dropdown/closeOnSelect',
-        'select2/compat/containerCss',
-        'select2/utils'
-    ], function (MultipleSelection, Search, Dropdown, AttachBody, CloseOnSelect, ContainerCss, Utils) {
-        var SelectionAdapter = Utils.Decorate(
-            MultipleSelection,
-            Search
-        );
 
-        var DropdownAdapter = Utils.Decorate(
-            Utils.Decorate(
-                Dropdown,
-                CloseOnSelect
-            ),
-            AttachBody
-        );
-
-        $('.inline-search').select2({
-            dropdownAdapter: DropdownAdapter,
-            selectionAdapter: SelectionAdapter
-        });
-
-        $('.dropdown-search').select2({
-            selectionAdapter: MultipleSelection
-        });
-
-        $('.autocomplete').select2({
-            dropdownAdapter: DropdownAdapter,
-            selectionAdapter: Utils.Decorate(SelectionAdapter, ContainerCss),
-            containerCssClass: 'select2-autocomplete'
-        });
-    });
 </script>
 </body>
 </html>
