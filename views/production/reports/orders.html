@@ -1,9 +1,10 @@
 <div class="row col-sm-12">
-    <h3 class="heading" ng-cloak>{{ page_title }}</h3>
+    <h3 class="heading">{{ page_title}}</h3>
 </div>
 <div class="row" ng-cloak>
+    <div class="col-sm-4" ng-include="'views/production/partials/advanced_order_search_form.html'"></div>
     <div class="col-sm-12 col-md-12">
-        <div class="col-sm-8">
+        <div class="col-sm-12">
             <div class="w-box" id="w_sort01">
                 <div class="w-box-header">
                     <div class="pull-left">
@@ -36,14 +37,14 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12"  style="overflow-x: auto;">
+                            <div class="col-sm-12" style="overflow-x: auto;">
                                 <div class="col-sm-12 text-center">
                                     <dir-pagination-controls
                                             direction-links="true" auto-hide="false"
                                             boundary-links="true" >
                                     </dir-pagination-controls>
                                 </div>
-                                <table class="table table-responsive table-bordered">
+                                <table class="table table-responsive table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th></th>
@@ -51,30 +52,34 @@
                                         <th class="th-pointer" ng-click="sort('buyer_id')">Buyer<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('buyer_id')">Style<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('order_ddate')">Order Date <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='order_ddate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                        <th class="th-pointer" ng-click="sort('gg')">GG <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='gg'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('qty')">Qty<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='qty'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('total_fob')">Total FOB<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_fob'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('total_cost')">Total Cost<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th>Actions</th>
+                                        <th class="th-pointer" ng-click="sort('balance_amount')">Balance Amount<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='balance_amount'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                        <th class="th-pointer" ng-click="sort('cost_of_making')">COM<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='cost_of_making'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                        <th class="th-pointer" ng-click="sort('delivery_date')">Delivery Date<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='delivery_date'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-if="styles.length == 0 || filtered.length == 0">
-                                            <td colspan="9">No data found.</td>
-                                        </tr>
-                                        <tr ng-class-odd="'bg-color1'" dir-paginate="order in filtered = (orders| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
-                                            <td><input class="select_row" type="checkbox"  value="{{ order.id }}"/></td>
-                                            <td ng-cloak><img src="" width="80px"/></td>
-                                            <td ng-cloak>{{ order.buyer_name }}</td>
-                                            <td ng-cloak>{{ order.style_name }}</td>
-                                            <td ng-cloak>{{ order.order_date }}</td>
-                                            <td ng-cloak>{{ order.qty }}</td>
-                                            <td ng-cloak>{{ order.total_fob }}</td>
-                                            <td ng-cloak>{{ order.total_cost }}</td>
-                                            <td  ng-cloak align="center">
-                                                <a class="btn btn-primary" href="#/production/order/{{ order.id }}"><i class="glyphicon glyphicon-eye-open" class="view_style_btn"></i></a>&nbsp;
-                                                <a ng-if="loginUser.emp_role==1" class="btn btn-danger" ng-click="remove_order(order.id, order.id, 'single_delete')" style_name="{{ order.name }}" style_id="{{ order.id }}"><i class="glyphicon glyphicon-trash"></i></a>
-                                            </td>
-                                        </tr>
+                                    <tr ng-if="orders.length == 0 || filtered.length == 0">
+                                        <td colspan="12">No data found.</td>
+                                    </tr>
+                                    <tr dir-paginate="order in filtered = (orders| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
+                                        <td>{{ $index+1 }}</td>
+                                        <td ng-cloak><img src="{{ asset('img/uploads/production/styles') }}/{{ order.style_image }}" width="80px"/></td>
+                                        <td ng-cloak>{{ order.buyer_name }}</td>
+                                        <td ng-cloak>{{ order.style_name }}</td>
+                                        <td ng-cloak>{{ order.order_date }}</td>
+                                        <td ng-cloak>{{ order.gg }}</td>
+                                        <td ng-cloak>{{ order.qty | currency }}</td>
+                                        <td ng-cloak>{{ order.total_fob | currency }}</td>
+                                        <td ng-cloak>{{ order.total_cost | currency }}</td>
+                                        <td ng-cloak>{{ order.balance_amount | currency }}</td>
+                                        <td ng-cloak>{{ order.cost_of_making | currency }}</td>
+                                        <td ng-cloak>{{ order.delivery_date }}</td>
+                                    </tr>
+
                                     </tbody>
                                 </table>
                                 <div class="col-sm-12 text-center">
@@ -89,7 +94,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4" ng-include="'views/production/partials/orders_stats.html'"></div>
+
         <div class="modal fade" id="add-order-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -106,7 +111,7 @@
                                         <label>Buyer </label>
                                         <select class="inline-search" style="width: 85%;" ng-model="order.buyer_id" ng-pattern="/^\d+$/" ng-required="true">
                                             <option value="">Select a buyer</option>
-                                            <option ng-repeat="buyer in buyers" value="{{buyer.id}}">
+                                            <option ng-repeat="buyer in buyers" value="{{ buyer.id }}">
                                                 {{ buyer.buyer_name }}
                                             </option>
                                         </select>
@@ -115,7 +120,7 @@
                                         <label>Style </label>
                                         <select class="inline-search" style="width: 85%;" ng-model="order.style_id" ng-pattern="/^\d+$/" ng-required="true">
                                             <option value="">Select a style</option>
-                                            <option ng-repeat="style in styles" value="{{style.id}}">
+                                            <option ng-repeat="style in styles" value="{{ style.id }}">
                                                 {{ style.style_name }}
                                             </option>
                                         </select>
@@ -290,13 +295,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Remove Style</h3>
+                        <h3 class="modal-title">Remove Order</h3>
                     </div>
                     <div class="modal-body">
                         {{ modal_msg }}
                         <div class="modal-footer">
                             <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                            <button type="submit" name="commit" class="btn btn-success" ng-click="remove_order_confirmed(order_id, 'index_page', status)" style_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
+                            <button type="submit" name="commit" class="btn btn-success" ng-click="remove_order_confirmed(order_id, 'index_page', status)" order_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
                         </div>
                     </div>
                 </div>
@@ -308,10 +313,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Remove Style</h3>
+                        <h3 class="modal-title">Remove Order</h3>
                     </div>
                     <div class="modal-body">
-                        Please Select at least one style.
+                        Please Select at least one order.
                         <div class="modal-footer">
                             <a class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok-sign"></span> OK</a>
                         </div>
@@ -321,4 +326,5 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="js/custom-select2.js"></script>

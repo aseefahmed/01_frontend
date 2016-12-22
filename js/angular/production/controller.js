@@ -77,6 +77,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     $scope.remove_buyer_confirmed = function(id, page, action){
         $scope.buyer_name = null;
         var data = $.param({
+            user_id: $scope.loginUser.id,
             id: id,
             action: action
         });
@@ -125,6 +126,8 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         })
     };
     $scope.edit_buyer = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
+
+        user_id: $scope.loginUser.id,
         $scope.editable_item = edit_item;
         $scope.buyer_id = id;
         $scope.field = field;
@@ -143,7 +146,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         {
             $scope.type = '--';
         }
-        $http.get(app.host + 'production/buyer/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+        $http.get(app.host + 'production/buyer/update/'+$scope.loginUser.id+'/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully updated the information.</strong>' },
@@ -163,16 +166,16 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             }).show();
         })
     }
-    $scope.add_buyer = function(){
+    $scope.add_buyer = function(form){
         var data = $.param({
             user_id: $scope.loginUser.id,
-            buyer_name: $scope.buyer_name,
-            postal_address: $scope.postal_address,
-            contact_person: $scope.contact_person,
-            email_address: $scope.email_address,
-            contact_number: $scope.contact_number,
-            website: $scope.website,
-            buyer_image: $scope.buyer_image
+            buyer_name: $scope.buyer.buyer_name,
+            postal_address: $scope.buyer.postal_address,
+            contact_person: $scope.buyer.contact_person,
+            email_address: $scope.buyer.email_address,
+            contact_number: $scope.buyer.contact_number,
+            website: $scope.buyer.website,
+            buyer_image: $scope.buyer.file
         });
         var config = {
             headers : {
@@ -188,7 +191,8 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-            $scope.buyer_name = null;
+            $scope.buyer = {};
+            form.$setPristine();
             $http.get(app.host + 'production/buyer/fetchBuyersList').then(function (response) {
                 $scope.num_of_items = 10;
                 $scope.buyers = response.data;
@@ -413,6 +417,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
     n=0;
     $scope.add_to_requisitions = function(){
         var data = $.param({
+            user_id: $scope.loginUser.id,
             order_id: $scope.order_id,
             yarn_type: $scope.yarn_type,
             yarn_amount: $scope.yarn_amount,
@@ -429,6 +434,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             }
         };
         $http.post(app.host + 'production/order/addToRequisition', data, config).success(function (result, status) {
+            console.log('rr')
             console.log(result)
             $('#add-order-modal').modal('toggle');
             $('.top-right').notify({
@@ -446,6 +452,13 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.order_name = null;
+        });
+    };
+    $scope.findOrdersSummery = function(){
+        $http.get(app.host + 'production/order/fetchOrdersSummery').then(function (response) {
+            $scope.new_orders = response.data.new_orders;
+            $scope.inactive_orders = response.data.inactive_orders;
+            console.log($scope.inactive_orders)
         });
     };
     $scope.update_order_info = function(){
@@ -623,7 +636,15 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             $scope.today = new Date();
             $scope.days_left_to_delivery = ($scope.delivery_date - $scope.today)/1000/60/60/24;
             $scope.order_id = id;
-            $scope.order = response.data;
+            console.log(response.data)
+            $scope.order_details = response.data;
+            $scope.due_yarn_amount = $scope.order_details[0].total_yarn_cost - $scope.order_details[0].approved_yarn_amount;
+            $scope.due_acc_amount = $scope.order_details[0].total_acc_cost - $scope.order_details[0].approved_acc_amount;
+            $scope.due_btn_amount = $scope.order_details[0].total_btn_cost - $scope.order_details[0].approved_btn_amount;
+            $scope.due_zipper_amount = $scope.order_details[0].total_zipper_cost - $scope.order_details[0].approved_zipper_amount;
+            $scope.due_print_amount = $scope.order_details[0].total_print_cost - $scope.order_details[0].approved_print_amount;
+            $scope.due_security_tag_amount = $scope.order_details[0].total_security_tag_cost - $scope.order_details[0].approved_yarn_amount;
+            console.log($scope.yarn_amount)
             $scope.approved_amount_of_requisition = Number(response.data[0].approved_yarn_amount) +Number(response.data[0].approved_acc_amount) +Number(response.data[0].approved_btn_amount) +Number(response.data[0].approved_zipper_amount) +Number(response.data[0].approved_print_amount) +Number(response.data[0].approved_security_tag_cost)
             console.log('dd')
             console.log(response.data[0].approved_acc_amount)
@@ -669,7 +690,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $http.get(app.host + 'production/orders/fetchOrderDetails/'+id).then(function(response){
-                $scope.order = response.data;
+                $scope.order_details = response.data;
             })
         }).error(function (result, status) {
             $('.top-right').notify({
@@ -724,7 +745,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-          //  $scope.order = {};
+            $scope.order = {};
             $scope.compositions = null;
             document.getElementById('composition-div-group').innerHTML = '';
             $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
@@ -745,6 +766,393 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
     };
 })
 
+
+angular.module('myApp').controller('RequisitionController', function($scope, $http){
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    $scope.user_id = $scope.loginUser.id;
+    $scope.page_title = 'Requisitions';
+    $scope.total_requisition_amount = 0;
+    items = new Array();
+    $http.get(app.host + 'user/getUsersList').then(function (response) {
+        console.log('done'+response.data)
+        $scope.users = response.data.users;
+        console.log('ffff');
+        console.log(response.data.users)
+    });
+    $scope.select_requisition = function(val, requisition_id){
+        if(this.chkbox)
+        {
+            items.push(requisition_id);
+            $scope.requisition_items = items;
+            $scope.total_requisition_amount = Number($scope.total_requisition_amount) + Number(val);
+        }
+        else
+        {
+            index = items.indexOf(requisition_id);
+            items.splice(index, 1);
+            $scope.requisition_items = items;
+            $scope.total_requisition_amount = Number($scope.total_requisition_amount) - Number(val);
+        }
+    };
+    $scope.remove_item = function(id, name, action){
+        if(action == 'single_delete')
+        {
+            $scope.item_name = name;
+            $scope.item_id = id;
+            $scope.status = 'single_delete';
+            $scope.modal_msg = "Do you really want to delete this item?" ;
+            $('#remove-item-modal').modal('toggle');
+        }
+        else if(action == 'all')
+        {
+            if($scope.lists.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.style_id = 0;
+                $scope.status = 'all';
+                $scope.modal_msg = "Do you really want to delete all items";
+                $('#remove-item-modal').modal('toggle');
+            }
+        }
+        else if(action == 'selected')
+        {
+            var arr = [];
+            $scope.status = 'selected';
+            $('.select_row:checked').each(function() {
+                console.log(this.value)
+                arr.push(this.value);
+            });
+            $scope.modal_msg = "Do you really want to delete selected items";
+            if(arr.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.item_id = arr;
+                $('#remove-item-modal').modal('toggle');
+            }
+        }
+    };
+    $scope.remove_item_confirmed = function(id, page, action){
+        $scope.item_name = null;
+        $http.delete(app.host + 'production/requisitions/'+id+"/"+action).then(function(response){
+            console.log('+++');console.log(id)
+            $('#remove-item-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully deleted the information.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show()
+            $http.get(app.host + 'production/requisitions/getRequisitionItems').then(function (response) {
+                console.log('done'+response.data)
+                $scope.lists = response.data.items;
+                console.log(response.data)
+            });
+        }, function(error_response){
+            $('#remove-style-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was unsuccessful. </strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        })
+    };
+    $scope.generate_requisition = function(){
+        var data = $.param({
+            user_id: $scope.loginUser.id,
+            total_amount: $scope.total_requisition_amount,
+            requisition_items: $scope.requisition_items,
+            forwarded_to: $scope.fowarded_to,
+            requisition_title: $scope.requisition_title
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/requisitions/generateRequisition', data, config).success(function (result, status) {
+            console.log(result)
+            $('#add-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation successfull.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $http.get(app.host + 'production/requisitions/getRequisitionItems/'+$scope.user_id).then(function (response) {
+                console.log('done'+response.data)
+                $scope.lists = response.data.items;
+                $scope.total_requisition_amount = 0;
+            });
+        }).error(function (result, status) {
+            $('#add-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.order_name = null;
+        });
+    };
+    $http.get(app.host + 'production/requisitions/getRequisitionItems/'+$scope.user_id).then(function (response) {
+        console.log('done'+response.data)
+        $scope.lists = response.data.items;
+        console.log(response.data)
+    });
+})
+
+
+angular.module('myApp').controller('AllRequisitionController', function($scope, $http, $routeParams) {
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    if($routeParams.requisition_id){
+        $scope.requisition_id = $routeParams.requisition_id;
+    }
+    $scope.total_approved_amount = 0;
+    $scope.approved_amount = 0;
+    $scope.get_total_approved_amount = function(){
+        count = $scope.requisitions.length;
+        total = 0;
+        for(i=0;i<count;i++){
+            total += Number($scope.requisitions[i]['item_approved_amount']);
+        }
+        return total;
+    };
+    $scope.act_on_requisition = function(id, amount, flag) {
+        amount_arr = JSON.stringify($scope.items_arr);
+        console.log('---')
+        console.log(amount_arr);
+        data = $.param({
+            requisition_id: id,
+            amount: amount,
+            arr_item: $scope.items_arr,
+            flag: flag
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/requisition/approve', data, config).success(function (result, status) {
+            console.log(result)
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successfull.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.hide_button = 1;
+        }).error(function (result, status) {
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
+    }
+    i = 0;
+    items = new Array();
+    $scope.add_amount = function(requisition_item_id, amount, item_type, order_id, index){
+
+        items[index] = requisition_item_id+"#"+amount+"#"+item_type+"#"+order_id;
+        $scope.items_arr = items;
+        console.log($scope.items_arr)
+        $scope.total_approved_amount = Number($scope.total_approved_amount) + Number(amount);
+    };
+    $scope.initialize = function (page) {
+        $scope.page_title = "Requisition " + page;
+        $http.get(app.host + 'production/requisitions/'+page+'/get/'+$scope.loginUser.id).then(function (response) {
+            $scope.num_of_items = 10;
+            $scope.requisitions = response.data.requisition;
+            $scope.requisition_items = response.data.requisition_items;
+            console.log('ttt')
+            console.log(response.data)
+            $scope.reverse = false;
+        });
+    }
+    $scope.getRequisitionDetails = function(id){
+        $scope.page_title = 'Requisition Details';
+        $scope.user_id = $scope.loginUser.id;
+        $http.get(app.host + 'production/requisitions/getDetails/'+id).then(function (response) {
+            $scope.requisitions = response.data.requisition;
+        });
+    };
+    $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
+
+
+    $scope.sortKey = 'requisition_name';
+    $scope.sort = function (header) {
+        $scope.sortKey = header;
+        $scope.reverse = !$scope.reverse;
+    };
+    $scope.remove_requisition = function(id, name, action){
+        if(action == 'single_delete')
+        {
+            $scope.requisition_name = name;
+            $scope.requisition_id = id;
+            $scope.status = 'single_delete';
+            $scope.modal_msg = "Do you really want to delete the requisition "+$scope.requisition_name+".";
+            $('#remove-requisition-modal').modal('toggle');
+        }
+        else if(action == 'all')
+        {
+            if($scope.requisitions.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.requisition_id = 0;
+                $scope.status = 'all';
+                $scope.modal_msg = "Do you really want to delete all requisitions";
+                $('#remove-requisition-modal').modal('toggle');
+            }
+        }
+        else if(action == 'selected')
+        {
+            var arr = [];
+            $scope.status = 'selected';
+            $('.select_row:checked').each(function() {
+                console.log(this.value)
+                arr.push(this.value);
+            });
+            $scope.modal_msg = "Do you really want to delete selected requisitions";
+            if(arr.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.requisition_id = arr;
+                $('#remove-requisition-modal').modal('toggle');
+            }
+        }
+    };
+    $scope.remove_requisition_confirmed = function(id, page, action){
+        $scope.requisition_name = null;
+        $http.delete(app.host + 'production/requisition_main/'+id+"/"+action).then(function(response){
+            console.log(response)
+            $('#remove-requisition-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully deleted the information.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            if(page == 'show_page')
+            {
+                window.location.href = '#/production/requisitions';
+            }
+            else
+            {
+                $http.get(app.host + 'production/requisitions/sent/get').then(function (response) {
+                    $scope.num_of_items = 10;
+                    $scope.requisitions = response.data;
+                    $scope.reverse = false;
+                })
+            }
+        }, function(error_response){
+            $('#remove-requisition-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was unsuccessful. </strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        })
+    };
+    $scope.init = function(id){
+        $http.get(app.host + 'production/requisitions/fetchAllRequisitionDetails/'+id).then(function(response){
+            $scope.requisition = response.data;
+        })
+    };
+    $scope.edit_requisition = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
+        $scope.editable_item = edit_item;
+        $scope.requisition_id = id;
+        $scope.field = field;
+        $scope.field_type = field_type;
+        $scope.is_required = is_required;
+        $scope.min_length = min_length;
+        $scope.max_length = max_length;
+        $scope.pattern = pattern;
+        $scope.error_text = error_text;
+        $scope.type = null;
+        $('#edit-requisition-modal').modal('toggle');
+    }
+    $scope.edit_requisition_confirmed = function (id) {
+        $('#edit-requisition-modal').modal('toggle');
+        if($scope.type == null)
+        {
+            $scope.type = '--';
+        }
+        $http.get(app.host + 'production/requisition/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully updated the information.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.requisition = response.data;
+            $http.get(app.host + 'production/requisitions/fetchAllRequisitionDetails/'+id).then(function(response){
+                $scope.requisition = response.data;
+            })
+        }, function(response){
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        })
+    }
+    $scope.add_requisition = function(){
+        var data = $.param({
+            requisition_name: $scope.requisition_name,
+            postal_address: $scope.postal_address,
+            contact_person: $scope.contact_person,
+            email_address: $scope.email_address,
+            contact_number: $scope.contact_number,
+            website: $scope.website,
+            requisition_image: $scope.requisition_image
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/requisitions', data, config).success(function (result, status) {
+            $('#add-requisition-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add a requisition.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.requisition_name = null;
+            $http.get(app.host + 'production/requisition/fetchAllRequisitionsList').then(function (response) {
+                $scope.num_of_items = 10;
+                $scope.requisitions = response.data;
+                $scope.reverse = false;
+            })
+        }).error(function (result, status) {
+            $('#add-requisition-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.requisition_name = null;
+        });
+    };
+})
 
 angular.module('myApp').controller('LogoutController', function($scope, $http, $window){
     $scope.doLogout = function() {

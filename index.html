@@ -76,8 +76,8 @@
                             </ul>
                         </li>
                         <li class="divider-vertical hidden-sm hidden-xs"></li>
-                        <li class="dropdown" ng-controller="DashboardController">
-                            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ loginUser.first_name | uppercase }} {{ loginUser.first_name | uppercase }}  <b class="caret"></b></a>
+                        <li class="dropdown" ng-controller="DashboardController" ng-cloak>
+                            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ loginUser.first_name | uppercase }} {{ loginUser.last_name | uppercase }}  <b class="caret"></b></a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a href="user_profile.html">My Profile</a></li>
                                 <li><a href="javascrip:void(0)">Another action</a></li>
