@@ -28,6 +28,14 @@ myApp.config(function($routeProvider, $locationProvider){
         .when('/dashboard', {
             templateUrl: 'views/dashboard/index.html',
             controller: 'DashboardController'
+        })
+        .when('/production/requisitions/generate', {
+            templateUrl: 'views/production/requisitions/generate.html',
+            controller: 'RequisitionController'
+        })
+        .when('production/requisitions/recieved', {
+            templateUrl: 'views/production/requisitions/recieved.html',
+            controller: 'AllRequisitionController'
         });
 
 

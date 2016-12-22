@@ -5,7 +5,7 @@
     <div class="row col-sm-12" >
         <h3 class="heading">@yield('page_title')</h3>
     </div>
-    <div class="row" ng-controller="AllRequisitionController" ng-init="initialize('recieved')" ng-cloak>
+    <div class="row" ng-init="initialize('recieved')" ng-cloak>
         <div class="col-sm-12 col-md-12">
             <div class="col-sm-8">
                 <div class="w-box" id="w_sort01">
@@ -59,16 +59,16 @@
                                             <td colspan="7">No data found.</td>
                                         </tr>
                                             <tr dir-paginate="requisition in filtered = (requisitions| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
-                                                <td><input class="select_row" type="checkbox"  value="## requisition.id ##"/></td>
-                                                <td ng-cloak>## requisition.name ##</td>
-                                                <td ng-cloak>## requisition.requested_amount | currency ##</td>
-                                                <td ng-cloak>## requisition.first_name ## ## requisition.last_name ##</td>
-                                                <td ng-cloak>## requisition.created_at | filterDate ##</td>
+                                                <td><input class="select_row" type="checkbox"  value="{{ requisition.id }}"/></td>
+                                                <td ng-cloak>{{ requisition.name }}</td>
+                                                <td ng-cloak>{{ requisition.requested_amount | currency }}</td>
+                                                <td ng-cloak>{{ requisition.first_name }} {{ requisition.last_name }}</td>
+                                                <td ng-cloak>{{ requisition.created_at | filterDate }}</td>
                                                 <td ng-if="requisition.flag == 1" ng-cloak>Pending</td>
                                                 <td ng-if="requisition.flag == 2" ng-cloak>Approved</td>
                                                 <td  ng-cloak align="center">
-                                                    <a class="btn btn-primary" href="{{ url('production/requisitions/id') }}/## requisition.id ##"><i class="glyphicon glyphicon-eye-open" class="view_requisition_btn"></i></a>&nbsp;
-                                                    <a ng-if="requisition.forwarded_to == {{ Auth::user()->id }}" class="btn btn-danger" ng-click="remove_requisition(requisition.id, requisition.requisition_name, 'single_delete')" requisition_name="## requisition.name ##" requisition_id="## requisition.id ##"><i class="glyphicon glyphicon-trash"></i></a>
+                                                    <a class="btn btn-primary" href="{{ url('production/requisitions/id') }}/{{ requisition.id }}"><i class="glyphicon glyphicon-eye-open" class="view_requisition_btn"></i></a>&nbsp;
+                                                    <a ng-if="requisition.forwarded_to == user_id" class="btn btn-danger" ng-click="remove_requisition(requisition.id, requisition.requisition_name, 'single_delete')" requisition_name="{{ requisition.name }}" requisition_id="{{ requisition.id }}"><i class="glyphicon glyphicon-trash"></i></a>
                                                 </td>
                                             </tr>
 
@@ -192,7 +192,7 @@
                             <h3 class="modal-title">Remove requisition</h3>
                         </div>
                         <div class="modal-body">
-                            ## modal_msg ##
+                            {{ modal_msg }}
                             <div class="modal-footer">
                                 <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
                                 <button type="submit" name="commit" class="btn btn-success" ng-click="remove_requisition_confirmed(requisition_id, 'index_page', status)" requisition_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
