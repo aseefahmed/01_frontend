@@ -25,6 +25,9 @@
                                         <th class="text-center">Buyer</th>
                                         </thead>
                                         <tbody>
+                                        <tr ng-if="new_orders.length == 0">
+                                            <td colspan="6">No data found.</td>
+                                        </tr>
                                         <tr ng-repeat="new_order in new_orders">
                                             <th class="bg bg-primary" width="40%" style="cursor: pointer;"><a class="act act-warning" href="#/production/order/{{ new_order.id }}">{{ new_order.id }}</a></th>
                                             <th class="text-center" width="60%"> {{ new_order.buyer_name }} </th>
