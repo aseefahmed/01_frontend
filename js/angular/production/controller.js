@@ -625,7 +625,8 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             $scope.today = new Date();
             $scope.days_left_to_delivery = ($scope.delivery_date - $scope.today)/1000/60/60/24;
             $scope.order_id = id;
-            $scope.order = response.data;
+            console.log(response.data)
+            $scope.order_details = response.data;
             $scope.approved_amount_of_requisition = Number(response.data[0].approved_yarn_amount) +Number(response.data[0].approved_acc_amount) +Number(response.data[0].approved_btn_amount) +Number(response.data[0].approved_zipper_amount) +Number(response.data[0].approved_print_amount) +Number(response.data[0].approved_security_tag_cost)
             console.log('dd')
             console.log(response.data[0].approved_acc_amount)
@@ -671,7 +672,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $http.get(app.host + 'production/orders/fetchOrderDetails/'+id).then(function(response){
-                $scope.order = response.data;
+                $scope.order_details = response.data;
             })
         }).error(function (result, status) {
             $('.top-right').notify({
@@ -866,7 +867,7 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-            $http.get(app.host + 'production/requisitions/getRequisitionItems').then(function (response) {
+            $http.get(app.host + 'production/requisitions/getRequisitionItems/'+$scope.user_id).then(function (response) {
                 console.log('done'+response.data)
                 $scope.lists = response.data.items;
                 $scope.total_requisition_amount = 0;
@@ -890,7 +891,11 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
 })
 
 
-angular.module('myApp').controller('AllRequisitionController', function($scope, $http) {
+angular.module('myApp').controller('AllRequisitionController', function($scope, $http, $routeParams) {
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    if($routeParams.requisition_id){
+        $scope.requisition_id = $routeParams.requisition_id;
+    }
     $scope.total_approved_amount = 0;
     $scope.approved_amount = 0;
     $scope.get_total_approved_amount = function(){
@@ -916,7 +921,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         };
-        $http.post('/production/requisition/approve', data, config).success(function (result, status) {
+        $http.post(app.host + 'production/requisition/approve', data, config).success(function (result, status) {
             console.log(result)
             $('.top-right').notify({
                 type: 'success',
@@ -944,7 +949,8 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
         $scope.total_approved_amount = Number($scope.total_approved_amount) + Number(amount);
     };
     $scope.initialize = function (page) {
-        $http.get('/production/requisitions/'+page+'/get').then(function (response) {
+        $scope.page_title = "Requisition " + page;
+        $http.get(app.host + 'production/requisitions/'+page+'/get/'+$scope.loginUser.id).then(function (response) {
             $scope.num_of_items = 10;
             $scope.requisitions = response.data.requisition;
             $scope.requisition_items = response.data.requisition_items;
@@ -954,7 +960,9 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
         });
     }
     $scope.getRequisitionDetails = function(id){
-        $http.get('/production/requisitions/getDetails/'+id).then(function (response) {
+        $scope.page_title = 'Requisition Details';
+        $scope.user_id = $scope.loginUser.id;
+        $http.get(app.host + 'production/requisitions/getDetails/'+id).then(function (response) {
             $scope.requisitions = response.data.requisition;
         });
     };
@@ -1011,7 +1019,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
     };
     $scope.remove_requisition_confirmed = function(id, page, action){
         $scope.requisition_name = null;
-        $http.delete('/production/requisition_main/'+id+"/"+action).then(function(response){
+        $http.delete(app.host + 'production/requisition_main/'+id+"/"+action).then(function(response){
             console.log(response)
             $('#remove-requisition-modal').modal('toggle');
             $('.top-right').notify({
@@ -1022,11 +1030,11 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
             }).show();
             if(page == 'show_page')
             {
-                window.location.href = '/production/requisitions';
+                window.location.href = '#/production/requisitions';
             }
             else
             {
-                $http.get('/production/requisitions/sent/get').then(function (response) {
+                $http.get(app.host + 'production/requisitions/sent/get').then(function (response) {
                     $scope.num_of_items = 10;
                     $scope.requisitions = response.data;
                     $scope.reverse = false;
@@ -1043,7 +1051,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
         })
     };
     $scope.init = function(id){
-        $http.get('/production/requisitions/fetchAllRequisitionDetails/'+id).then(function(response){
+        $http.get(app.host + 'production/requisitions/fetchAllRequisitionDetails/'+id).then(function(response){
             $scope.requisition = response.data;
         })
     };
@@ -1066,7 +1074,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
         {
             $scope.type = '--';
         }
-        $http.get('/production/requisition/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+        $http.get(app.host + 'production/requisition/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully updated the information.</strong>' },
@@ -1074,7 +1082,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.requisition = response.data;
-            $http.get('/production/requisitions/fetchAllRequisitionDetails/'+id).then(function(response){
+            $http.get(app.host + 'production/requisitions/fetchAllRequisitionDetails/'+id).then(function(response){
                 $scope.requisition = response.data;
             })
         }, function(response){
@@ -1101,7 +1109,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         };
-        $http.post('/production/requisitions', data, config).success(function (result, status) {
+        $http.post(app.host + 'production/requisitions', data, config).success(function (result, status) {
             $('#add-requisition-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -1110,7 +1118,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.requisition_name = null;
-            $http.get('/production/requisition/fetchAllRequisitionsList').then(function (response) {
+            $http.get(app.host + 'production/requisition/fetchAllRequisitionsList').then(function (response) {
                 $scope.num_of_items = 10;
                 $scope.requisitions = response.data;
                 $scope.reverse = false;

@@ -77,15 +77,15 @@
                                                 <strong>Days left to delivery </strong>
                                             </li>
                                             <li>
-                                                <span class="act act-warning">{{ order.total_requisition_pending }}</span>
+                                                <span class="act act-warning">{{ order_details.total_requisition_pending }}</span>
                                                 <strong>Number of requisition pending</strong>
                                             </li>
                                             <li>
-                                                <span class="act act-warning">{{ order.total_requisition_approved }}</span>
+                                                <span class="act act-warning">{{ order_details.total_requisition_approved }}</span>
                                                 <strong>Number of requisition approved</strong>
                                             </li>
                                             <li>
-                                                <span class="act act-warning">{{ order.total_requisition_rejected }}</span>
+                                                <span class="act act-warning">{{ order_details.total_requisition_rejected }}</span>
                                                 <strong>Number of requisition rejected</strong>
                                             </li>
                                             <li>
@@ -103,27 +103,27 @@
                                                     <tbody>
                                                         <tr>
                                                             <th class="bg bg-primary">Yarn</th>
-                                                            <th class="text-right">{{ order[0].approved_yarn_amount | currency }} ({{ (order[0].approved_yarn_amount / order[0].total_yarn_cost)*100 | number:2  }}%)</th>
+                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_yarn_amount / order_details[0].total_yarn_cost)*100 | number:2  }}%)</th>
                                                         </tr>
                                                         <tr>
                                                             <th class="bg bg-primary">Accessories</th>
-                                                            <th class="text-right">{{ order[0].approved_yarn_amount | currency }} ({{ (order[0].approved_acc_amount / order[0].total_acc_cost)*100 | number:2  }}%)</th>
+                                                            <th class="text-right">{{ order_details[0].approved_acc_amount | currency }} ({{ (order_details[0].approved_acc_amount / order_details[0].total_acc_cost)*100 | number:2  }}%)</th>
                                                         </tr>
                                                         <tr>
                                                             <th class="bg bg-primary">Button</th>
-                                                            <th class="text-right">{{ order[0].approved_yarn_amount | currency }} ({{ (order[0].approved_btn_amount / order[0].total_btn_cost)*100 | number:2  }}%)</th>
+                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_btn_amount / order_details[0].total_btn_cost)*100 | number:2  }}%)</th>
                                                         </tr>
                                                         <tr>
                                                             <th class="bg bg-primary">Print</th>
-                                                            <th class="text-right">{{ order[0].approved_yarn_amount | currency }} ({{ (order[0].approved_print_amount / order[0].total_print_cost)*100 | number:2  }}%)</th>
+                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_print_amount / order_details[0].total_print_cost)*100 | number:2  }}%)</th>
                                                         </tr>
                                                         <tr>
                                                             <th class="bg bg-primary">Zipper</th>
-                                                            <th class="text-right">{{ order[0].approved_yarn_amount | currency }} ({{ (order[0].approved_zipper_amount / order[0].total_zipper_cost)*100 | number:2  }}%)</th>
+                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_zipper_amount / order_details[0].total_zipper_cost)*100 | number:2  }}%)</th>
                                                         </tr>
                                                         <tr>
                                                             <th class="bg bg-primary">Security Tag</th>
-                                                            <th class="text-right">{{ order[0].approved_yarn_amount | currency }} ({{ (order[0].approved_security_tag_cost / order[0].total_security_tag_cost)*100 | number:2  }}%)</th>
+                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_security_tag_cost / order_details[0].total_security_tag_cost)*100 | number:2  }}%)</th>
                                                         </tr>
                                                     </tbody>
                                                 </table>

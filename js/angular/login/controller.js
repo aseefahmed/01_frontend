@@ -1,5 +1,7 @@
 angular.module('loginApp').controller('LoginController', function($scope, $http, $window){
     $scope.loginFailed = false;
+    $scope.email = 'aseefahmed@gmail.com';
+    $scope.password = 'aseefahmed';
     $scope.doSignIn = function () {
 
         var data = $.param({
@@ -21,7 +23,7 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
             {
                 sessionStorage.setItem('loginUser', JSON.stringify(result));
                 console.log(result)
-                $window.location.href = '../#/dashboard';
+                $window.location.href = '../#/production/buyers';
             }
         }).error(function (result, status) {
             $scope.login_failed_alert = "Internal server error occurred. Please contact the administrator."
