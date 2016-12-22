@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e94c1340-3e3e-49fe-8381-03e3913a1b07" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/views/production/reports/index.blade.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/views/production/reports/orders.blade.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/views/production/reports/show.blade.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/angular/login/controller.js" afterPath="$PROJECT_DIR$/js/angular/login/controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/angular/production/controller.js" afterPath="$PROJECT_DIR$/js/angular/production/controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/angular/production/main.js" afterPath="$PROJECT_DIR$/js/angular/production/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/production/buyers/index.html" afterPath="$PROJECT_DIR$/views/production/buyers/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/production/orders/show.html" afterPath="$PROJECT_DIR$/views/production/orders/show.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/production/partials/orders_summery.html" afterPath="$PROJECT_DIR$/views/production/partials/orders_summery.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/production/requisitions/details.html" afterPath="$PROJECT_DIR$/views/production/requisitions/details.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/production/requisitions/generate.html" afterPath="$PROJECT_DIR$/views/production/requisitions/generate.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/production/requisitions/recieved.html" afterPath="$PROJECT_DIR$/views/production/requisitions/recieved.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/production/requisitions/sent.html" afterPath="$PROJECT_DIR$/views/production/requisitions/sent.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
     </list>
     <ignored path="01_frontend.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/angular/production/main.js">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="41" column="40" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="40" />
+            <state relative-caret-position="141">
+              <caret line="78" column="89" selection-start-line="78" selection-start-column="89" selection-end-line="78" selection-end-column="89" />
               <folding />
             </state>
           </provider>
@@ -101,7 +88,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="advanced_order_search_form.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="advanced_order_search_form.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/production/partials/advanced_order_search_form.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
@@ -242,7 +229,6 @@
         <option value="$PROJECT_DIR$/views/production/styles/show.html" />
         <option value="$PROJECT_DIR$/views/production/buyers/show.html" />
         <option value="$PROJECT_DIR$/views/production/styles/index.html" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/views/production/orders/index.html" />
         <option value="$PROJECT_DIR$/views/production/requisitions/recieved.html" />
         <option value="$PROJECT_DIR$/views/production/requisitions/details.html" />
@@ -255,6 +241,7 @@
         <option value="$PROJECT_DIR$/views/production/requisitions/generate.html" />
         <option value="$PROJECT_DIR$/js/angular/production/controller.js" />
         <option value="$PROJECT_DIR$/js/angular/login/controller.js" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -614,12 +601,12 @@
       <workItem from="1482294976058" duration="25982000" />
       <workItem from="1482339379851" duration="362000" />
       <workItem from="1482339769705" duration="5384000" />
-      <workItem from="1482369043215" duration="5352000" />
+      <workItem from="1482369043215" duration="6140000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59137000" />
+    <option name="totallyTimeSpent" value="59925000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="28" width="1368" height="708" extended-state="6" />
@@ -916,14 +903,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4785">
-          <caret line="319" column="55" selection-start-line="319" selection-start-column="55" selection-end-line="319" selection-end-column="88" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/production/partials/orders_stats.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1153,6 +1132,14 @@
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="78" column="89" selection-start-line="78" selection-start-column="89" selection-end-line="78" selection-end-column="89" />
+          <folding />
         </state>
       </provider>
     </entry>
