@@ -166,7 +166,10 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             }).show();
         })
     }
-    $scope.add_buyer = function(form){
+    $scope.add_buyer = function(form, file){
+        var fd = new FormData();
+        fd.append('file', 'test');
+        console.log(fd)
         var data = $.param({
             user_id: $scope.loginUser.id,
             buyer_name: $scope.buyer.buyer_name,
@@ -177,6 +180,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             website: $scope.buyer.website,
             buyer_image: $scope.buyer.file
         });
+        console.log(data)
         var config = {
             headers : {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -641,7 +645,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             $scope.due_yarn_amount = $scope.order_details[0].total_yarn_cost - $scope.order_details[0].approved_yarn_amount;
             $scope.due_acc_amount = $scope.order_details[0].total_acc_cost - $scope.order_details[0].approved_acc_amount;
             $scope.due_btn_amount = $scope.order_details[0].total_btn_cost - $scope.order_details[0].approved_btn_amount;
-            $scope.due_zipper_amount = $scope.order_details[0].total_zipper_cost - $scope.order_details[0].approved_zipper_amount;
+            $scope.due_zipper_amount = $scope.order_details[0].total_ziper_cost - $scope.order_details[0].approved_zipper_amount;
             $scope.due_print_amount = $scope.order_details[0].total_print_cost - $scope.order_details[0].approved_print_amount;
             $scope.due_security_tag_amount = $scope.order_details[0].total_security_tag_cost - $scope.order_details[0].approved_yarn_amount;
             console.log($scope.yarn_amount)
@@ -972,7 +976,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
             $scope.num_of_items = 10;
             $scope.requisitions = response.data.requisition;
             $scope.requisition_items = response.data.requisition_items;
-            console.log('ttt')
+            console.log('ttt11')
             console.log(response.data)
             $scope.reverse = false;
         });
