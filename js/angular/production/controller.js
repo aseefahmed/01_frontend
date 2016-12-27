@@ -77,6 +77,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     $scope.remove_buyer_confirmed = function(id, page, action){
         $scope.buyer_name = null;
         var data = $.param({
+            user_id: $scope.loginUser.id,
             id: id,
             action: action
         });
@@ -125,6 +126,8 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         })
     };
     $scope.edit_buyer = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
+
+        user_id: $scope.loginUser.id,
         $scope.editable_item = edit_item;
         $scope.buyer_id = id;
         $scope.field = field;
@@ -143,7 +146,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         {
             $scope.type = '--';
         }
-        $http.get(app.host + 'production/buyer/update/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+        $http.get(app.host + 'production/buyer/update/'+$scope.loginUser.id+'/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully updated the information.</strong>' },
@@ -163,17 +166,21 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             }).show();
         })
     }
-    $scope.add_buyer = function(){
+    $scope.add_buyer = function(form, file){
+        var fd = new FormData();
+        fd.append('file', 'test');
+        console.log(fd)
         var data = $.param({
             user_id: $scope.loginUser.id,
-            buyer_name: $scope.buyer_name,
-            postal_address: $scope.postal_address,
-            contact_person: $scope.contact_person,
-            email_address: $scope.email_address,
-            contact_number: $scope.contact_number,
-            website: $scope.website,
-            buyer_image: $scope.buyer_image
+            buyer_name: $scope.buyer.buyer_name,
+            postal_address: $scope.buyer.postal_address,
+            contact_person: $scope.buyer.contact_person,
+            email_address: $scope.buyer.email_address,
+            contact_number: $scope.buyer.contact_number,
+            website: $scope.buyer.website,
+            buyer_image: $scope.buyer.file
         });
+        console.log(data)
         var config = {
             headers : {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -188,7 +195,8 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-            $scope.buyer_name = null;
+            $scope.buyer = {};
+            form.$setPristine();
             $http.get(app.host + 'production/buyer/fetchBuyersList').then(function (response) {
                 $scope.num_of_items = 10;
                 $scope.buyers = response.data;
@@ -450,6 +458,13 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             $scope.order_name = null;
         });
     };
+    $scope.findOrdersSummery = function(){
+        $http.get(app.host + 'production/order/fetchOrdersSummery').then(function (response) {
+            $scope.new_orders = response.data.new_orders;
+            $scope.inactive_orders = response.data.inactive_orders;
+            console.log($scope.inactive_orders)
+        });
+    };
     $scope.update_order_info = function(){
         $scope.order.qty_per_dzn = Math.round($scope.order.order_qty/12*100, 2)/100;
         $scope.order.total_fob = $scope.order.order_qty * $scope.order.order_fob;
@@ -627,6 +642,13 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             $scope.order_id = id;
             console.log(response.data)
             $scope.order_details = response.data;
+            $scope.due_yarn_amount = $scope.order_details[0].total_yarn_cost - $scope.order_details[0].approved_yarn_amount;
+            $scope.due_acc_amount = $scope.order_details[0].total_acc_cost - $scope.order_details[0].approved_acc_amount;
+            $scope.due_btn_amount = $scope.order_details[0].total_btn_cost - $scope.order_details[0].approved_btn_amount;
+            $scope.due_zipper_amount = $scope.order_details[0].total_ziper_cost - $scope.order_details[0].approved_zipper_amount;
+            $scope.due_print_amount = $scope.order_details[0].total_print_cost - $scope.order_details[0].approved_print_amount;
+            $scope.due_security_tag_amount = $scope.order_details[0].total_security_tag_cost - $scope.order_details[0].approved_yarn_amount;
+            console.log($scope.yarn_amount)
             $scope.approved_amount_of_requisition = Number(response.data[0].approved_yarn_amount) +Number(response.data[0].approved_acc_amount) +Number(response.data[0].approved_btn_amount) +Number(response.data[0].approved_zipper_amount) +Number(response.data[0].approved_print_amount) +Number(response.data[0].approved_security_tag_cost)
             console.log('dd')
             console.log(response.data[0].approved_acc_amount)
@@ -727,7 +749,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-          //  $scope.order = {};
+            $scope.order = {};
             $scope.compositions = null;
             document.getElementById('composition-div-group').innerHTML = '';
             $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
@@ -954,7 +976,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
             $scope.num_of_items = 10;
             $scope.requisitions = response.data.requisition;
             $scope.requisition_items = response.data.requisition_items;
-            console.log('ttt')
+            console.log('ttt11')
             console.log(response.data)
             $scope.reverse = false;
         });

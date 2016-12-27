@@ -21,39 +21,44 @@
                                 <form method="post" enctype="multipart/form-data" name="myForm" novalidate>
                                     <div class="panel-body">
                                         <code>Yarn Type</code>
-                                        <select class="form-control" ng-model="yarn_type">
+                                        <select class="inline-search" style="width:100%" ng-model="yarn_type">
                                             <option value="">select an option</option>
-                                            <option ng-repeat="item in order['composition']" ng-value="item[0]">
+                                            <option ng-repeat="item in order_details['composition']" ng-value="item[0]">
                                                 {{ item[0] }}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="panel-body">
-                                        <code>Yarn Amount</code>
-                                        <input class="form-control col-sm-2" ng-disabled="yarn_type==''" placeholder="Yarn Amount" type="text" ng-model="yarn_amount">
+                                        <code>Yarn Amount</code><span class="act act-primary">[Due: {{ due_yarn_amount | currency}}]</span>
+                                        <input class="form-control col-sm-2" ng-disabled="yarn_type==''" placeholder="Yarn Amount" type="number" max="{{ due_yarn_amount }}" ng-model="yarn_amount" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
                                     </div>
                                     <div class="panel-body">
-                                        <code>Accessories</code>
-                                        <input class="form-control col-sm-2" placeholder="Accessories Amount" type="text" ng-model="accessories_amount">
+                                        <code>Accessories </code> <span class="act act-primary">[Due: {{ due_acc_amount | currency}}]</span>
+                                        <input class="form-control col-sm-2" placeholder="Accessories Amount" type="number" max="{{ due_acc_amount }}" ng-model="accessories_amount" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
                                     </div>
                                     <div class="panel-body">
-                                        <code>Button: </code>
-                                        <input class="form-control col-sm-2" placeholder="Button Amount" type="text" ng-model="button_amount">
+                                        <code>Button: </code> <span class="act act-primary">[Due: {{ due_btn_amount | currency}}]</span>
+                                        <input class="form-control col-sm-2" placeholder="Button Amount" type="number" max="{{ due_btn_amount }}" ng-model="button_amount" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
                                     </div>
                                     <div class="panel-body">
-                                        <code>Zipper:</code>
-                                        <input class="form-control col-sm-2" placeholder="Zipper Amount" type="text" ng-model="zipper_amount">
+                                        <code>Zipper:</code> <span class="act act-primary">[Due: {{ due_zipper_amount | currency}}]</span>
+                                        <input class="form-control col-sm-2" placeholder="Zipper Amount" type="number" max="{{ due_zipper_amount }}" ng-model="zipper_amount" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
                                     </div>
                                     <div class="panel-body">
-                                        <code>Print</code>
-                                        <input class="form-control col-sm-2" placeholder="Print Amount" type="text" ng-model="print_amount">
+                                        <code>Print</code> <span class="act act-primary">[Due: {{ due_print_amount | currency}}]</span>
+                                        <input class="form-control col-sm-2" placeholder="Print Amount" type="number" max="{{ due_print_amount }}" ng-model="print_amount" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
                                     </div>
                                     <div class="panel-body">
-                                        <code>Security Tag Cost</code>
-                                        <input class="form-control col-sm-2" placeholder="Security Tag Amount" type="text" ng-model="security_tag_amount">
+                                        <code>Security Tag Cost</code> <span class="act act-primary">[Due: {{ due_security_tag_amount | currency}}]</span>
+                                        <input class="form-control col-sm-2" placeholder="Security Tag Amount" type="number" max="{{ due_security_tag_amount }}" ng-model="security_tag_amount" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/">
                                     </div>
                                     <div class="panel-body text-center">
-                                        <button ng-click="add_to_requisitions()" type="submit" class="btn btn-warning">Add to Requisitions</button>
+                                        <div ng-show="myForm.$invalid">
+                                            <span class="act act-danger">Requested amount must be valid and can not be greater than due amount.</span>
+                                        </div>
+                                        <div class="row">
+                                            <button ng-click="add_to_requisitions()" ng-disabled="myForm.$invalid" type="submit" class="btn btn-warning">Add to Requisitions</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -69,7 +74,7 @@
                                     <div class="sidebar_info" style="width:100%">
                                         <ul class="list-unstyled">
                                             <li>
-                                                <span class="act act-danger" ng-cloak>{{ order[0].updated_at | filterDate }}</span>
+                                                <span class="act act-danger" ng-cloak>{{ order_details[0].updated_at | filterDate }}</span>
                                                 <strong>Last activity</strong>
                                             </li>
                                             <li>

@@ -11,6 +11,8 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
         var config = {
             headers : {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;',
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With"
             }
         };
         $http.post(app.host + 'process-login', data, config).success(function (result, status) {
