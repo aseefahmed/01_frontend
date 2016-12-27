@@ -1,11 +1,76 @@
 <div class="row col-sm-12">
     <h3 class="heading">{{ page_title}}</h3>
 </div>
+
+
 <div class="row" ng-cloak>
     <div class="col-sm-12 col-md-12">
 
         <div class="col-sm-12" ng-include="'views/production/partials/advanced_order_search_form.html'"></div>
         <div class="col-sm-12">
+
+            <div id="accordion2" class="panel-group accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a target="_self" href="#collapseOne2" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
+                            Advanced Search
+                        </a>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseOne2">
+                        <div class="panel-body">
+                            <div>
+                                <div class="col-sm-5">
+                                    <select style="width:100%" class="inline-search" ng-model="report.field" ng-change="advanced_search_order()">
+                                        <option value="">Select Option</option>
+                                        <option value="buyer_id">Buyer</option>
+                                        <option value="style_id">Style</option>
+                                        <option value="order_date">Order Date</option>
+                                        <option value="delivery_date">Delivery Date</option>
+                                        <option value="gg">GG</option>
+                                        <option value="qty">Qty</option>
+                                        <option value="fob">FOB</option>
+                                        <option value="composition">Composition</option>
+                                        <option value="weight_per_dzn ">Weight Per Dzn</option>
+                                        <option value="qty_per_dzn ">Qty Per Dzn</option>
+                                        <option value="total_yarn_weight">Total Yarn Weight</option>
+                                        <option value="total_yarn_cost ">Total Yarn Cost</option>
+                                        <option value="acc_rate">Accessories Rate</option>
+                                        <option value="total_acc_cost">Total Accessories Cost</option>
+                                        <option value="btn_cost">Button Rate</option>
+                                        <option value="total_btn_cost">Total Button Cost</option>
+                                        <option value="zipper_cost">Zipper Rate</option>
+                                        <option value="total_zipper_cost">Total Zipper Cost</option>
+                                        <option value="print_cost">Print Rate</option>
+                                        <option value="total_print_cost">Total Print Cost</option>
+                                        <option value="security_tag_cost">Security Tag Cost</option>
+                                        <option value="total_security_tag_cost">Total Security Tag Cost</option>
+                                        <option value="total_fob">Total FOB</option>
+                                        <option value="total_cost">Total Cost</option>
+                                        <option value="balance_amount">Balance Amount</option>
+                                        <option value="cost_of_making">Cost of Making</option>
+                                        <option value="user_id">Created By</option>
+                                        <option value="created_at">Created At</option>
+                                        <option value="updated_at">Created At</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select style="width:100%"  class="inline-search" ng-model="report.operator" ng-change="advanced_search_order()">
+                                        <option value="">Operator</option><option value="=">=</option><option value="&gt;">&gt;</option><option value="&gt;=">&gt;=</option><option value="&lt;">&lt;</option><option value="&lt;=">&lt;=</option><option value="!=">!=</option><option value="LIKE">LIKE</option><option value="NOT LIKE">NOT LIKE</option></select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="Search" ng-model="report.search_value" ng-change="advanced_search_order()">
+                                </div>
+
+                                <div class="sepH_c col-sm-12" style="top:12px; position: relative;">
+                                    <div class="text-center">
+                                        <button class="btn btn-primary" ng-click="save_report(report, orders)"><i class="glyphicon glyphicon-floppy-disk"></i> Save Report</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="w-box" id="w_sort01">
                 <div class="w-box-header">
                     <div class="pull-left">
@@ -17,10 +82,7 @@
                                 <i class="glyphicon glyphicon-cog"></i> Action <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li ng-if="loginUser.emp_role==1"><a data-toggle="modal" href="#add-order-modal" target="_self"><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
-                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;"  target="_self" ng-click="remove_order(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
-                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;" target="_self" ng-click="remove_order(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
-                                <li><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
+                               <li><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
                             </ul>
                         </div>
                     </div>
@@ -90,236 +152,6 @@
                                     </dir-pagination-controls>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="add-order-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Add Order</h3>
-                    </div>
-                    <div class="modal-body">
-                        <form method="post" enctype="multipart/form-data" name="myForm" novalidate>
-                            <input type="hidden" ng-model="order.compositions" />
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Buyer </label>
-                                        <select class="inline-search" style="width: 85%;" ng-model="order.buyer_id" ng-pattern="/^\d+$/" ng-required="true">
-                                            <option value="">Select a buyer</option>
-                                            <option ng-repeat="buyer in buyers" value="{{ buyer.id }}">
-                                                {{ buyer.buyer_name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>Style </label>
-                                        <select class="inline-search" style="width: 85%;" ng-model="order.style_id" ng-pattern="/^\d+$/" ng-required="true">
-                                            <option value="">Select a style</option>
-                                            <option ng-repeat="style in styles" value="{{ style.id }}">
-                                                {{ style.style_name }}
-                                            </option>
-                                        </select>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Order Date </label>
-                                        <input class="form-control" type="text" placeholder="YYYY-MM-DD" ng-model="order.order_date" ng-required="true" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>Delivery Date </label>
-                                        <input class="form-control" placeholder="YYYY-MM-DD" type="text" ng-model="order.delivery_date" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <label>GG</label>
-                                        <input class="form-control" placeholder="GG" type="text" ng-model="order.order_gg" ng-pattern="/^\d+$/" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Qty</label>
-                                        <input class="form-control" placeholder="Qty" type="text" ng-model="order.order_qty" ng-required="true" ng-pattern="/^\d+$/" ng-change="update_order_info()" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>FOB</label>
-                                        <input class="form-control" placeholder="FOB" type="text" ng-model="order.order_fob" ng-required="true"  ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="update_order_info()"  />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Weight Per Dzn</label>
-                                        <input class="form-control" placeholder="Weight Per Dzn" type="text" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="order.weight_per_dzn" ng-change="update_order_info()"  />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="formSep bg-warning">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <h3 class="heading">Composition</h3>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label class="text-center">Name</label>
-                                        <input class="form-control" ng-model="composition_name" type="text" placeholder="Name">
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Percentage</label>
-                                        <input class="form-control" ng-model="composition_percentage" type="text" placeholder="Percentage" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" >
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <label>Yarn Rate</label>
-                                        <input class="form-control" ng-model="composition_yarn_rate" type="text" placeholder="Cost" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" >
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <label>Wastage(%)</label>
-                                        <input class="form-control" ng-model="composition_wastage" type="text" placeholder="Wastage" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" >
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <a class="btn btn-success" ng-click="add_composition()"><i class="glyphicon glyphicon-plus-sign"></i></a>
-                                        <a class="btn btn-primary" ng-click="composition_refresh()"><i class="glyphicon glyphicon-refresh"></i></a>
-                                    </div>
-                                    <div class="col-sm-10">
-                                        <table id="composition-div-group" class="table table-responsive">
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <label>Qty Per Dzn</label>
-                                        <input class="form-control" placeholder="Qty Per Dzn" type="text" ng-model="order.qty_per_dzn" readonly="readonly"/>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label>Total Yarn Weight</label>
-                                        <input class="form-control" placeholder="Total Yarn Weight" type="text" ng-model="order.total_yarn_weight" readonly="readonly" />
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label>Total Yarn Cost</label>
-                                        <input class="form-control" placeholder="Total Yarn Cost" type="text" ng-model="order.total_yarn_cost" readonly="readonly"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <label>Accessories Rate</label>
-                                        <input class="form-control" placeholder="Accessories Rate" type="text" ng-model="order.accessories_rate" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="update_order_info()" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Total Acc. Cost</label>
-                                        <input class="form-control" readonly="readonly" placeholder="Total Acc. Cost" type="text" ng-model="order.total_accessories_cost" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Button Rate</label>
-                                        <input class="form-control" placeholder="Button Rate" type="text" ng-model="order.button_rate" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="update_order_info()" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Total Button Cost</label>
-                                        <input class="form-control" readonly="readonly" placeholder="Total Btn Cost" type="text" ng-model="order.total_button_cost" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <label>Zipper Rate</label>
-                                        <input class="form-control" placeholder="Zipper Rate" type="text" ng-model="order.zipper_rate" ng-required="true"  ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="update_order_info()" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Total Zipper Cost</label>
-                                        <input class="form-control" readonly="readonly" placeholder="Total Zipp. Cost" type="text" ng-model="order.total_zipper_cost" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Print Rate</label>
-                                        <input class="form-control" placeholder="Print Rate" type="text" ng-model="order.print_rate" ng-required="true"  ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="update_order_info()" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Total Print Cost</label>
-                                        <input class="form-control" readonly="readonly" placeholder="Total Prt. Cost" type="text" ng-model="order.total_print_cost" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-6 ">
-                                        <label>Security Tag Cost</label>
-                                        <input class="form-control" placeholder="Security Tag Cost" type="text" ng-model="order.security_tag" ng-required="true"  ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="update_order_info()" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>Total Security Tag Cost</label>
-                                        <input class="form-control" readonly="readonly" placeholder="Total Security Tag Cost" type="text" ng-model="order.total_security_tag_cost" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <label>Total FOB</label>
-                                        <input class="form-control" readonly="readonly" placeholder="Total FOB" type="text" ng-model="order.total_fob" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Total Cost</label>
-                                        <input class="form-control" readonly="readonly" placeholder="Total Cost" type="text" ng-model="order.total_cost" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Balance Amount</label>
-                                        <input class="form-control" readonly="readonly" placeholder="Balance Amount" type="text" ng-model="order.order_balance_amount" />
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label>Cost of Making</label>
-                                        <input class="form-control" readonly="readonly" disabled="disabled" placeholder="Cost of Making" type="text" ng-model="order.cost_of_making" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                                <button type="submit" ng-disabled="myForm.$invalid" name="commit" class="btn btn-success" ng-click="add_order(myForm)"><span class="glyphicon glyphicon-ok-sign"></span> Add Order </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="remove-order-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Remove Order</h3>
-                    </div>
-                    <div class="modal-body">
-                        {{ modal_msg }}
-                        <div class="modal-footer">
-                            <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                            <button type="submit" name="commit" class="btn btn-success" ng-click="remove_order_confirmed(order_id, 'index_page', status)" order_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>,
-
-        <div class="modal fade" id="removal-warning-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Remove Order</h3>
-                    </div>
-                    <div class="modal-body">
-                        Please Select at least one order.
-                        <div class="modal-footer">
-                            <a class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok-sign"></span> OK</a>
                         </div>
                     </div>
                 </div>

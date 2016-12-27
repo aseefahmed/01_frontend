@@ -168,8 +168,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     }
     $scope.add_buyer = function(form, file){
         var fd = new FormData();
-        fd.append('file', 'test');
-        console.log(fd)
+        var fd = new FormData();
         var data = $.param({
             user_id: $scope.loginUser.id,
             buyer_name: $scope.buyer.buyer_name,
@@ -419,6 +418,12 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
     $scope.order.total_yarn_cost = 0;
     compositions = new Array()
     n=0;
+    $scope.saved_reports = function () {
+        $scope.page_title = 'Saved Reports';
+        $http.get(app.host + 'production/reports/orders/saved').then(function (response) {
+            $scope.report_results = response.data;
+        });
+    }
     $scope.add_to_requisitions = function(){
         var data = $.param({
             user_id: $scope.loginUser.id,
@@ -569,6 +574,35 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             }
         }
     };
+    $scope.save_report = function(report_criteria, order) {
+        console.log(JSON.stringify(report_criteria))
+        var data = $.param({
+            report_criteria: JSON.stringify(report_criteria),
+            report_result: JSON.stringify(order),
+            report_type: 'order'
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/reports/orders/save', data, config).success(function (result, status) {
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        }).error(function (result, status) {
+            $('#remove-buyer-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was unsuccessful. </strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });;
+    }
     $scope.advanced_search_order = function()
     {alert($scope.report.field)
         var data = $.param({
@@ -645,9 +679,9 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             $scope.due_yarn_amount = $scope.order_details[0].total_yarn_cost - $scope.order_details[0].approved_yarn_amount;
             $scope.due_acc_amount = $scope.order_details[0].total_acc_cost - $scope.order_details[0].approved_acc_amount;
             $scope.due_btn_amount = $scope.order_details[0].total_btn_cost - $scope.order_details[0].approved_btn_amount;
-            $scope.due_zipper_amount = $scope.order_details[0].total_ziper_cost - $scope.order_details[0].approved_zipper_amount;
+            $scope.due_zipper_amount = $scope.order_details[0].total_zipper_cost - $scope.order_details[0].approved_zipper_amount;
             $scope.due_print_amount = $scope.order_details[0].total_print_cost - $scope.order_details[0].approved_print_amount;
-            $scope.due_security_tag_amount = $scope.order_details[0].total_security_tag_cost - $scope.order_details[0].approved_yarn_amount;
+            $scope.due_security_tag_amount = $scope.order_details[0].total_security_tag_cost - $scope.order_details[0].approved_security_tag_cost;
             console.log($scope.yarn_amount)
             $scope.approved_amount_of_requisition = Number(response.data[0].approved_yarn_amount) +Number(response.data[0].approved_acc_amount) +Number(response.data[0].approved_btn_amount) +Number(response.data[0].approved_zipper_amount) +Number(response.data[0].approved_print_amount) +Number(response.data[0].approved_security_tag_cost)
             console.log('dd')
