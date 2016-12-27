@@ -1,4 +1,4 @@
-myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination']);
+myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload']);
 
 myApp.config(function($routeProvider, $locationProvider){
     $routeProvider.when('/production/buyers', {
@@ -39,6 +39,10 @@ myApp.config(function($routeProvider, $locationProvider){
         })
         .when('/production/reports/orders', {
             templateUrl: 'views/production/reports/orders.html',
+            controller: 'OrderController'
+        })
+        .when('/production/reports/saved', {
+            templateUrl: 'views/production/reports/saved.html',
             controller: 'OrderController'
         })
         .when('/production/requisitions/recieved', {

@@ -7,7 +7,15 @@
     <link href="../lib/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
     <link href="../css/preview.min.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Angular JS -->
+    <script src="../js/angular/angular.min.js"></script>
     <meta name="csrf-token" content="bnsJPqTGHZOD4ssFHO8LLpJknJGN2uye0iD3qCHv">
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide {
+            display: none !important;
+        }
+    </style>
 </head>
 <body style="padding: 7%" ng-app="loginApp">
 <div ng-view></div>
@@ -31,7 +39,7 @@
                                     <input type="text" ng-model="email" class="form-control input-block-level" />
                                     <label>Password<a href="#" class="pull-right"><i class="icon-question-sign"></i>&nbsp;Forgot Password</a> </label>
                                     <input type="password" ng-model="password" class="form-control input-block-level" />
-                                    <span class="text-danger" ng-cloak>{{ login_failed_alert }}</span>
+                                    <span class="text-danger" class="ng-cloak">{{ login_failed_alert }}</span>
                                     <br />
                                     <a class="btn btn-success" ng-click="doSignIn()">Sign In <i class="glyphicon glyphicon-log-in"></i></a>
                                 </form>
@@ -228,10 +236,6 @@
 <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
 <!-- Site Configuration -->
 <script src="../js/config.js"></script>
-<!-- Angular JS -->
-<script src="../js/angular/angular.min.js"></script>
-<!-- Angular JS -->
-<script src="https://code.angularjs.org/1.6.0/angular-cookies.js"></script>
 <!-- angular js main app js -->
 <script src="../js/angular/login/main.js"></script>
 <!-- angular js controllers -->
