@@ -570,7 +570,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         }
     };
     $scope.advanced_search_order = function()
-    {
+    {alert($scope.report.field)
         var data = $.param({
             field: $scope.report.field,
             operator: $scope.report.operator,
