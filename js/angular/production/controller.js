@@ -50,6 +50,12 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             {
                 $scope.buyer_id = 0;
                 $scope.status = 'all';
+                var arr = [];
+                $('.select_row').each(function() {
+                    console.log(this.value)
+                    arr.push(this.value);
+                });
+                $scope.buyer_id = arr;
                 $scope.modal_msg = "Do you really want to delete all buyers";
                 $('#remove-buyer-modal').modal('toggle');
             }
@@ -167,8 +173,6 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         })
     }
     $scope.add_buyer = function(form, file){
-        var fd = new FormData();
-        var fd = new FormData();
         var data = $.param({
             user_id: $scope.loginUser.id,
             buyer_name: $scope.buyer.buyer_name,
@@ -177,8 +181,9 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             email_address: $scope.buyer.email_address,
             contact_number: $scope.buyer.contact_number,
             website: $scope.buyer.website,
-            buyer_image: $scope.buyer.file
         });
+
+        console.log($scope.file)
         console.log(data)
         var config = {
             headers : {
@@ -186,7 +191,8 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             }
         };
         $http.post(app.host + 'production/buyers', data, config).success(function (result, status) {
-            console.log()
+            console.log('===')
+            console.log(result)
             $('#add-buyer-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -407,6 +413,15 @@ angular.module('myApp').controller('StyleController', function($scope, $http, $r
 })
 
 angular.module('myApp').controller('OrderController', function($scope, $http, $routeParams) {
+    $( ".calender" ).datepicker(
+            {
+                dateFormat: 'yy-mm-dd',
+                showOn: "button",
+                buttonImage: "img/calendar.gif",
+                buttonImageOnly: true,
+                buttonText: "Select date"
+            }
+    );
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     if($routeParams.order_id){
         $scope.order_id = $routeParams.order_id;
@@ -562,6 +577,8 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
                 arr.push(this.value);
 
             });
+            console.log('======+')
+            console.log(arr)
             $scope.modal_msg = "Do you really want to delete selected orders";
             if(arr.length == 0)
             {

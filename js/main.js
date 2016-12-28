@@ -1,6 +1,12 @@
-myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload']);
+myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload', 'ngIdle']);
+console.log('----')
 
-myApp.config(function($routeProvider, $locationProvider){
+
+myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, IdleProvider){
+    IdleProvider.idle(5);
+    IdleProvider.timeout(5);
+    KeepaliveProvider.interval(10);
+
     $routeProvider.when('/production/buyers', {
         templateUrl: 'views/production/buyers/index.html',
         controller: 'BuyerController'
