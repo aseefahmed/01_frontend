@@ -77,12 +77,14 @@
                                                         <th>Percentage</th>
                                                         <th>Yarn Rate</th>
                                                         <th>Wastage(%)</th>
+                                                        <th>Cost</th>
                                                     </tr>
                                                     <tr ng-repeat="item in order_details['composition']">
                                                         <td>{{ item[0] }}</td>
                                                         <td>{{ item[1] }}</td>
                                                         <td>{{ item[2] }}</td>
                                                         <td>{{ item[3] }}</td>
+                                                        <td>{{ order_details[0].qty_per_dzn * order_details[0].weight_per_dzn * item[1]/100 * item[2] * (1+item[3]/100) | currency }}</td>
                                                     </tr>
                                                 </table>
                                             </span><a ng-click="order_details(order_id, 'Total Yarn Cost', 'total_yarn_cost', 'text', false, '', 70, '', 'This field not be more than 55 characters long.')" class="th-pointer col-sm-2 glyphicon glyphicon-pencil text-right"></a></td>

@@ -73,7 +73,7 @@
                                 <div class="panel-body">
                                     <div class="sidebar_info" style="width:100%">
                                         <ul class="list-unstyled">
-                                            <li>
+                                            <li>{{order[0]}}
                                                 <span class="act act-danger" ng-cloak>{{ order_details[0].updated_at | filterDate }}</span>
                                                 <strong>Last activity</strong>
                                             </li>
@@ -100,36 +100,36 @@
                                             <li>
                                                 <table class="table table-responsive">
                                                     <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th class="text-right">Requisition Approved</th>
-                                                        </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="text-right">Requisition Approved</th>
+                                                    </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <th class="bg bg-primary">Yarn</th>
-                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_yarn_amount / order_details[0].total_yarn_cost)*100 | number:2  }}%)</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="bg bg-primary">Accessories</th>
-                                                            <th class="text-right">{{ order_details[0].approved_acc_amount | currency }} ({{ (order_details[0].approved_acc_amount / order_details[0].total_acc_cost)*100 | number:2  }}%)</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="bg bg-primary">Button</th>
-                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_btn_amount / order_details[0].total_btn_cost)*100 | number:2  }}%)</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="bg bg-primary">Print</th>
-                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_print_amount / order_details[0].total_print_cost)*100 | number:2  }}%)</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="bg bg-primary">Zipper</th>
-                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_zipper_amount / order_details[0].total_zipper_cost)*100 | number:2  }}%)</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="bg bg-primary">Security Tag</th>
-                                                            <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_security_tag_cost / order_details[0].total_security_tag_cost)*100 | number:2  }}%)</th>
-                                                        </tr>
+                                                    <tr>
+                                                        <th class="bg bg-primary">Yarn</th>
+                                                        <th class="text-right">{{ order_details[0].approved_yarn_amount | currency }} ({{ (order_details[0].approved_yarn_amount / order_details[0].total_yarn_cost)*100 | number:2  }}%)</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="bg bg-primary">Accessories</th>
+                                                        <th class="text-right">{{ order_details[0].approved_acc_amount | currency }} ({{ (order_details[0].approved_acc_amount / order_details[0].total_acc_cost)*100 | number:2  }}%)</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="bg bg-primary">Button</th>
+                                                        <th class="text-right">{{ order_details[0].approved_btn_amount | currency }} ({{ (order_details[0].approved_btn_amount / order_details[0].total_btn_cost)*100 | number:2  }}%)</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="bg bg-primary">Print</th>
+                                                        <th class="text-right">{{ order_details[0].approved_print_amount | currency }} ({{ (order_details[0].approved_print_amount / order_details[0].total_print_cost)*100 | number:2  }}%)</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="bg bg-primary">Zipper</th>
+                                                        <th class="text-right">{{ order_details[0].approved_zipper_amount | currency }} ({{ (order_details[0].approved_zipper_amount / order_details[0].total_zipper_cost)*100 | number:2  }}%)</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="bg bg-primary">Security Tag</th>
+                                                        <th class="text-right">{{ order_details[0].approved_security_tag_cost | currency }} ({{ (order_details[0].approved_security_tag_cost / order_details[0].total_security_tag_cost)*100 | number:2  }}%)</th>
+                                                    </tr>
                                                     </tbody>
                                                 </table>
                                             </li>
