@@ -431,6 +431,8 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
     $scope.no_of_requisition_items = 10;
     $scope.order.total_yarn_weight = 0;
     $scope.order.total_yarn_cost = 0;
+    $scope.order.total_yarn_percentage = 0;
+    $scope.order.total_yarn_percentage_left = 100;
     compositions = new Array()
     n=0;
     $scope.saved_reports = function () {
@@ -502,6 +504,8 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         $scope.order.total_yarn_cost = 0;
         $scope.order.total_yarn_weight = 0;
         $scope.order.total_yarn_cost = 0;
+        $scope.order.total_yarn_percentage = 0;
+        $scope.order.total_yarn_percentage_left = 100;
         document.getElementById('composition-div-group').innerHTML = "";
     };
     $scope.add_composition = function(){
@@ -511,10 +515,12 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         console.log($scope.compositions)
         n++;
 
+        $scope.order.total_yarn_percentage =  Number($scope.order.total_yarn_percentage) + Number($scope.composition_percentage);
         $scope.order.total_yarn_weight =  Number($scope.order.total_yarn_weight) + Number($scope.order.qty_per_dzn*$scope.order.weight_per_dzn*$scope.composition_percentage/100*(1+Number($scope.composition_wastage/100)));
         $scope.order.total_yarn_cost = Number($scope.order.total_yarn_cost) + Number(Number($scope.order.qty_per_dzn*$scope.order.weight_per_dzn*$scope.composition_percentage/100*(1+Number($scope.composition_wastage/100)))*$scope.composition_yarn_rate);
         $scope.order.total_yarn_weight = Math.round($scope.order.total_yarn_weight *100)/100;
         $scope.order.total_yarn_cost = Math.round($scope.order.total_yarn_cost *100)/100;
+        $scope.order.total_yarn_percentage_left = $scope.order.total_yarn_percentage_left - $scope.composition_percentage;
         table = document.getElementById('composition-div-group');
         row = table.insertRow(0);
         row.insertCell(0).innerHTML = $scope.composition_name;
@@ -564,6 +570,12 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             {
                 $scope.order_id = 0;
                 $scope.status = 'all';
+                var arr = [];
+                $('.select_row').each(function() {
+                    console.log(this.value)
+                    arr.push(this.value);
+                });
+                $scope.order_id = arr;
                 $scope.modal_msg = "Do you really want to delete all orders";
                 $('#remove-order-modal').modal('toggle');
             }
@@ -801,6 +813,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.order = {};
+            form.$setPristine();
             $scope.compositions = null;
             document.getElementById('composition-div-group').innerHTML = '';
             $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
