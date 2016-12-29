@@ -57,6 +57,12 @@
 		h4 small,h5{font-size:12px}
 
 		.bg-color1 {background-color: #E1EEf4;}
+		.bg-color-red {background-color: darkred;}
+		.bg-color-green {background-color: darkgreen;}
+		.bg-color-yellow {background-color: #f89406;}
+		.bg-color-blue {background-color: darkblue;}
+		.bg-color-purple {background-color: purple;}
+		.bg-color-black {background-color:#000000;}
 		.navbar-fixed-top {margin:0;padding:0;min-height:40px}
 
 		.full_width .container {max-width:1680px}

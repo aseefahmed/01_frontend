@@ -484,6 +484,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         $http.get(app.host + 'production/order/fetchOrdersSummery').then(function (response) {
             $scope.new_orders = response.data.new_orders;
             $scope.inactive_orders = response.data.inactive_orders;
+            $scope.delivering_soon = response.data.delivering_soon;
             console.log($scope.inactive_orders)
         });
     };
@@ -533,7 +534,9 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
     $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
         console.log(response.data)
         $scope.num_of_items = 10;
-        $scope.orders = response.data;
+        $scope.orders = response.data.orders;
+        $scope.data_of_14_days_later = response.data.data_of_14_days_later;
+        $scope.data_of_14_days_ago = response.data.data_of_14_days_ago;
         $scope.reverse = false;
     });
     $http.get(app.host + 'production/buyer/fetchBuyersList').then(function (response) {

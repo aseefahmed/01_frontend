@@ -13,11 +13,63 @@
                     <div id="accordion2" class="panel-group accordion">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <a href="#collapseOne2" target="_self" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
+                                <a href="#deliveringsoon" target="_self" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
+                                    Delivering Soon
+                                </a>
+                            </div>
+                            <div class="panel-collapse in collapse" id="deliveringsoon" ng-controller="OrderController" ng-init="findOrdersSummery()">
+                                <div class="panel-body">
+                                    <table class="table table-responsive">
+                                        <thead>
+                                        <th>Order ID </th>
+                                        <th class="text-center">Buyer</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-if="new_orders.length == 0">
+                                            <td colspan="6">No data found.</td>
+                                        </tr>
+                                        <tr ng-repeat="delivering_soon_order in delivering_soon">
+                                            <th class="bg bg-primary" width="40%" style="cursor: pointer;"><a class="act act-warning" href="#/production/order/{{ delivering_soon_order.id }}">{{ delivering_soon_order.id }}</a></th>
+                                            <th class="text-center" width="60%"> {{ delivering_soon_order.buyer_name }} </th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a href="#inactiveorders" target="_self" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
+                                    Inactive Orders
+                                </a>
+                            </div>
+                            <div class="panel-collapse collapse" id="inactiveorders" ng-controller="OrderController" ng-init="findOrdersSummery()">
+                                <div class="panel-body">
+                                    <table class="table table-responsive">
+                                        <thead>
+                                        <th>Order ID </th>
+                                        <th class="text-center">Buyer</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-if="new_orders.length == 0">
+                                            <td colspan="6">No data found.</td>
+                                        </tr>
+                                        <tr ng-repeat="inactive_order in inactive_orders">
+                                            <th class="bg bg-primary" width="40%" style="cursor: pointer;"><a class="act act-warning" href="#/production/order/{{ inactive_order.id }}">{{ inactive_order.id }}</a></th>
+                                            <th class="text-center" width="60%"> {{ inactive_order.buyer_name }} </th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a href="#neworders" target="_self" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
                                     New Orders
                                 </a>
                             </div>
-                            <div class="panel-collapse in collapse" id="collapseOne2" ng-controller="OrderController" ng-init="findOrdersSummery()">
+                            <div class="panel-collapse collapse" id="neworders" ng-controller="OrderController" ng-init="findOrdersSummery()">
                                 <div class="panel-body">
                                     <table class="table table-responsive">
                                         <thead>

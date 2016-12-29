@@ -49,7 +49,7 @@
                                         <th></th>
                                         <th>Image</th>
                                         <th class="th-pointer" ng-click="sort('buyer_id')">Buyer<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('buyer_id')">Style<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                        <th class="th-pointer" ng-click="sort('buyer_id')">Status<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('order_ddate')">Order Date <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='order_ddate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('qty')">Qty<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='qty'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('total_fob')">Total FOB<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_fob'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
@@ -65,7 +65,14 @@
                                             <td><input class="select_row" type="checkbox"  value="{{ order.id }}"/></td>
                                             <td ng-cloak><img src="" width="80px"/></td>
                                             <td ng-cloak>{{ order.buyer_name }}</td>
-                                            <td ng-cloak>{{ order.style_name }}</td>
+                                            <td ng-cloak>
+                                                <div ng-if="order.flag==1" style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; Processing &nbsp;</div>&nbsp;
+                                                <div ng-if="order.flag==9" style="border:1px solid #000;background-color: darkred; color: white">&nbsp; Cancelled &nbsp;</div>&nbsp;
+                                                <div ng-if="order.flag==8" style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; Shipped &nbsp;</div>&nbsp;
+                                                <div ng-if="order.flag==7" style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; Hold &nbsp;</div>&nbsp;
+                                                <div ng-if="order.delivery_date <= data_of_14_days_later" style="border:1px solid #000;background-color: purple; color: white">&nbsp; Delivering Soon &nbsp;</div>&nbsp;
+                                                <div ng-if="order.updated_at <= data_of_14_days_ago" style="border:1px solid #000;background-color: black; color: white">&nbsp; Inactive &nbsp;</div>&nbsp;
+                                            </td>
                                             <td ng-cloak>{{ order.order_date }}</td>
                                             <td ng-cloak>{{ order.qty }}</td>
                                             <td ng-cloak>{{ order.total_fob }}</td>
