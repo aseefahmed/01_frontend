@@ -1,1 +1,61 @@
-dashboard
+<div class="row">
+    <div class="col-sm-12">
+        <ul class="dshb_icoNav clearfix">
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/multi-agents.png)"><span class="label label-info">+10</span> Active Orders</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/world.png)">Inactive Orders</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/configuration.png)">Delivering Soon</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/lab.png)">Shipped Orders</a>
+            </li><li><a href="javascript:void(0)" style="background-image: url(img/gCons/van.png)"><span class="label label-success">$2851</span> Delivery</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/pie-chart.png)">Charts</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/edit.png)">Add New Article</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/add-item.png)"> Add New Page</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/chat-.png)"><span class="label label-danger">26</span> Comments</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-8 col-lg-8">
+        <h3 class="heading">Calendar</h3>
+        <div id="calendar"></div>
+    </div>
+    <div class="col-sm-4 col-lg-4" id="user-list">
+        <h3 class="heading">Active Users <small>{{active_users}}</small></h3>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group input-group-sm sepH_b">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-user"></i>
+						</span>
+                    <input class="user-list-search search form-control input-sm" placeholder="Search user" type="text">
+                </div>
+                <ul class="nav nav-pills line_sep">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sort by <b class="caret"></b></a>
+                        <ul class="dropdown-menu sort-by">
+                            <li><a href="javascript:void(0)" class="sort" data-sort="sl_name">by name</a></li>
+                            <li><a href="javascript:void(0)" class="sort" data-sort="sl_status">by status</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Show <b class="caret"></b></a>
+                        <ul class="dropdown-menu filter">
+                            <li class="active"><a href="javascript:void(0)" id="filter-none">All</a></li>
+                            <li><a href="javascript:void(0)" id="filter-online">Online</a></li>
+                            <li><a href="javascript:void(0)" id="filter-offline">Offline</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <ul class="list user_list">
+            <li ng-repeat="user in users">
+                <span ng-if="user.logged_in==1" class="label label-success pull-right sl_status">Online</span>
+                <span ng-if="user.logged_in==0" class="label label-danger pull-right sl_status">Offline</span>
+                <a href="#" class="sl_name">{{user.first_name}} {{user.last_name}}</a><br>
+                <small><a style="color:gray" href="">{{user.email}}</a></small>
+            </li>
+        </ul>
+        <ul class="pagination paging bottomPaging"></ul>
+    </div>
+</div>

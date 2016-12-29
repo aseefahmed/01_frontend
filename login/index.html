@@ -18,14 +18,13 @@
     </style>
 </head>
 <body style="padding: 7%" ng-app="loginApp">
-<div ng-view></div>
-<div class="container">
+<div class="container"  ng-controller="LoginController">
     <div class="row-fluid" id="demo-1">
         <div class="span10 offset1">
             <div class="tabbable custom-tabs tabs-animated  flat flat-all hide-label-980 shadow track-url auto-scroll">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#panel1" data-toggle="tab" class="active "><i class="icon-lock"></i>&nbsp;<span>Login Panel</span></a></li>
-                    <li><a href="#panel2" data-toggle="tab"><i class="icon-user"></i>&nbsp;<span>Register Panel</span></a></li>
+                    <li class="active" id="loginPanel"><a href="#panel1" data-toggle="tab"><i class="icon-lock"></i>&nbsp;<span>Login Panel</span></a></li>
+                    <li id="registerPanel"><a href="#panel2" data-toggle="tab"><i class="icon-user"></i>&nbsp;<span>Register Panel</span></a></li>
                     <li><a href="#panel3" data-toggle="tab"><i class="icon-key"></i>&nbsp;<span>Forgot Password</span></a></li>
                     <li><a href="#panel4" data-toggle="tab"><i class="icon-envelope-alt"></i>&nbsp;<span>Contact Us</span></a></li>
                 </ul>
@@ -34,7 +33,7 @@
                         <div class="row-fluid">
                             <div class="span5">
                                 <h4><i class="icon-user"></i>&nbsp;&nbsp; Login Here</h4>
-                                <form  ng-controller="LoginController">
+                                <form>
                                     <label>Username / Email</label>
                                     <input type="text" ng-model="email" class="form-control input-block-level" />
                                     <label>Password<a href="#" class="pull-right"><i class="icon-question-sign"></i>&nbsp;Forgot Password</a> </label>
@@ -60,15 +59,15 @@
                                 <h4><i class="icon-question"></i>&nbsp;&nbsp;Registration</h4>
                                 <div class="box">
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel.
+                                        To start using the system, you have to register yourself first into the system..
                                     </p>
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in.
+                                        You must have a valid email address to process your registration.
                                     </p>
                                 </div>
                                 <div class="box">
                                     Don't Have An Account.<br />
-                                    Click Here For <a href="#" data-toggle="tab">Free Register</a>
+                                    Click Here For <a href="#panel2" data-toggle="tab" ng-click="switchToRegisterPanel()">Free Register</a>
                                 </div>
                             </div>
                         </div>
@@ -76,23 +75,43 @@
                     <div class="tab-pane" id="panel2">
                         <div class="row-fluid">
                             <div class="span5">
-                                <h4><i class="icon-user"></i>&nbsp;&nbsp; Register Here</h4>
-
-
-                                <label>Username</label>
-                                <input type="text" class="input-block-level" />
-                                <label>Password </label>
-                                <input type="password" class="input-block-level" />
-                                <label>Repeat Password</label>
-                                <input type="password" class="input-block-level" />
-                                <label>
-                                    <button type="button" data-toggle="button" class="btn btn-mini custom-checkbox active"><i class="icon-ok"></i></button>
-                                    &nbsp;&nbsp;&nbsp;I Aggree With <a href="#">Terms &amp; Conditions</a>
-                                </label>
-                                <br />
-
-                                <a href="#" class=" btn  ">Register Now&nbsp;&nbsp;&nbsp;<i class="icon-chevron-sign-right"></i></a>
-
+                                <form name="registraion_form" >
+                                    <h4><i class="icon-user"></i>&nbsp;&nbsp; Register Here</h4>
+                                    <div class="col-sm-6">
+                                        <label>First Name <span style="color: red">*</span> </label>
+                                        <input type="text" class="input-block-level form-control" ng-model="first_name" ng-required="true"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Last Name <span style="color: red">*</span></label>
+                                        <input type="text" class="input-block-level form-control" ng-model="last_name" ng-required="true" />
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label>Email Address <span style="color: red">*</span></label>
+                                        <input type="text" class="input-block-level form-control" ng-model="email_address" ng-required="true" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Password <span style="color: red">*</span> </label>
+                                        <input type="password" class="input-block-level form-control" ng-model="pass" ng-required="true"  />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Repeat Password <span style="color: red">*</span></label>
+                                        <input type="password" class="input-block-level form-control" ng-model="repeat_pass" ng-required="true"   />
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label>
+                                            <input type="checkbox" ng-model="check_terms" ng-required="true">
+                                            &nbsp;&nbsp;&nbsp;I Aggree With <a href="#">Terms &amp; Conditions</a>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <img id="ajax_loading" src="http://www.middleclass2016.com/wp-content/themes/cuna/assets/images/loader.gif" style="display: none" width="80px"><br>
+                                        <div ng-if="registration_failed_alert==-1" class="alert alert-danger">Internal server error occurred. Please contact the administrator.</div>
+                                        <div ng-if="registration_failed_alert==1" class="alert alert-danger">Email address already exists.</div>
+                                        <div ng-if="registration_failed_alert==2" class="alert alert-success">Registrion has been successfully completed. Please check your inbox to verify you email address.</div>
+                                        <div ng-if="pass!=repeat_pass" class="alert alert-danger">Password & repeat password must be same.</div>
+                                        <button class="btn btn-success" ng-click="registerUser()" ng-disabled="registraion_form.$invalid || pass!=repeat_pass">Register</button>
+                                    </div>
+                                </form>
                             </div>
                             <div class="span3">
                                 <h4><i class="icon-expand-alt"></i>&nbsp;&nbsp;Social</h4>
@@ -109,15 +128,15 @@
                                 <h4><i class="icon-question"></i>&nbsp;&nbsp;Login</h4>
                                 <div class="box">
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel.
+                                        To get access into the system, login with valid email address and password.
                                     </p>
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in.
+                                        Login process helps the system to identify who you are and what you can do within the system.
                                     </p>
                                 </div>
                                 <div class="box">
                                     Already Have An Account.<br />
-                                    Click Here For <a href="#" data-toggle="tab">Login</a>
+                                    Click Here For <a href="#panel1" data-toggle="tab" ng-click="switchToLoginPanel()">Login</a>
                                 </div>
                             </div>
                         </div>

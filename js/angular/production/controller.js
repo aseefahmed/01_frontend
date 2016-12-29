@@ -1,9 +1,14 @@
 angular.module('myApp').controller('DashboardController', function($scope, $http, $window){
+    $scope.page_title = 'Dashboard';
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    $http.get(app.host + '/getUsers/'+$scope.loginUser['id']).then(function (response) {
+        $scope.users = response.data;
+        $scope.active_users = response.data.length;
+        console.log($scope.users)
+    });
     $scope.goToDashboard = function () {
         $window.location.href = '#/dashboard';
     }
-
 });
 
 angular.module('myApp').controller('MenuController', function($scope, $http, $location){
@@ -1227,8 +1232,13 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
 
 angular.module('myApp').controller('LogoutController', function($scope, $http, $window){
     $scope.doLogout = function() {
-        sessionStorage.removeItem('loginUser');
-        $window.location.href = 'login';
+        $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+        $http.get(app.host + '/logout/'+$scope.loginUser['id']).then(function (response) {
+            console.log(response)
+            sessionStorage.removeItem('loginUser');
+            $window.location.href = 'login';
+        });
+
     }
 })
 
