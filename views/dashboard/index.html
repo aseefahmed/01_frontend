@@ -1,11 +1,11 @@
-<div class="row">
+<div class="row" ng-init="initialize()">
     <div class="col-sm-12">
         <ul class="dshb_icoNav clearfix">
-            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/multi-agents.png)"><span class="label label-info">+10</span> Active Orders</a></li>
-            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/world.png)"><span class="label label-success">+10</span> Inactive Orders</a></li>
-            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/van.png)"><span class="label label-danger">+10</span> Delivering Soon</a></li>
-            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/lab.png)"><span class="label label-warning">+10</span>Shipped Orders</a>
-            </li><li><a href="javascript:void(0)" style="background-image: url(img/gCons/configuration.png)"><span class="label label-success">$2851</span> Delivery</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/multi-agents.png)"><span class="label label-info">{{number_of_new_orders}}</span> New Orders</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/world.png)"><span class="label label-success">{{number_of_orders_inactive}}</span> Inactive Orders</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/van.png)"><span class="label label-danger">{{number_of_orders_delivering_soon}}</span> Delivering Soon</a></li>
+            <li><a href="javascript:void(0)" style="background-image: url(img/gCons/lab.png)"><span class="label label-warning">{{number_of_shipped_orders}}</span>Shipped Orders</a>
+            </li><li><a href="javascript:void(0)" style="background-image: url(img/gCons/configuration.png)"><span class="label label-success">{{number_of_new_requisitions}}</span> Requisition</a></li>
             <li><a href="javascript:void(0)" style="background-image: url(img/gCons/pie-chart.png)"><span class="label label-danger">+10</span>Charts</a></li>
             <li><a href="javascript:void(0)" style="background-image: url(img/gCons/edit.png)"><span class="label label-warning">+10</span>Add New Article</a></li>
             <li><a href="javascript:void(0)" style="background-image: url(img/gCons/add-item.png)"><span class="label label-info">+10</span> Add New Page</a></li>
@@ -16,8 +16,72 @@
 
 <div class="row">
     <div class="col-sm-8 col-lg-8">
-        <h3 class="heading">Calendar</h3>
-        <div id="calendar"></div>
+        <h3 class="heading">Orders Delivering Soon</h3>
+        <table class="table table-striped table-bordered mediaTable" style="margin-left: 2%">
+            <thead>
+            <tr>
+                <th class="optional">#</th>
+                <th class="essential persist">Buyer</th>
+                <th class="optional">Qty</th>
+                <th class="optional">FOB</th>
+                <th class="essential">Order Data</th>
+                <th class="essential">Delivery Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-if="filtered.length == 0">
+                <td colspan="9">No orders delivering soon.</td>
+            </tr>
+            <tr  dir-paginate="delivering_soon_order in filtered = (delivering_soon | itemsPerPage: 5 ) " ng-cloak>
+                <td><a href="#/production/order/{{ delivering_soon_order.id }}">{{$index+1}}</a></td>
+                <td>{{delivering_soon_order.buyer_name}}</td>
+                <td>{{delivering_soon_order.qty}}</td>
+                <td>{{delivering_soon_order.fob | currency}}</td>
+                <td>{{delivering_soon_order.order_date | filterDate}}</td>
+                <td>{{delivering_soon_order.delivery_date | filterDate}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="col-sm-12 text-center" ng-if="filtered.length > 0">
+            <dir-pagination-controls
+                    direction-links="true" auto-hide="false"
+                    boundary-links="true" >
+            </dir-pagination-controls>
+        </div>
+
+        <h3 class="heading">Inactive Orders</h3>
+        <table class="table table-striped table-bordered mediaTable" style="margin-left: 2%">
+            <thead>
+            <tr>
+                <th class="optional">#</th>
+                <th class="essential persist">Buyer</th>
+                <th class="optional">Qty</th>
+                <th class="optional">FOB</th>
+                <th class="essential">Order Data</th>
+                <th class="essential">Delivery Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-if="filtered.length == 0">
+                <td colspan="9">No orders inactive.</td>
+            </tr>
+            <tr  dir-paginate="inactive in filtered = (inactive_orders | itemsPerPage: 5 ) " ng-cloak>
+                <td><a href="#/production/order/{{ inactive.id }}">{{$index+1}}</a></td>
+                <td>{{inactive.buyer_name}}</td>
+                <td>{{inactive.qty}}</td>
+                <td>{{inactive.fob | currency}}</td>
+                <td>{{inactive.order_date | filterDate}}</td>
+                <td>{{inactive.delivery_date | filterDate}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="col-sm-12 text-center" ng-if="filtered.length > 0">
+            <dir-pagination-controls
+                    direction-links="true" auto-hide="false"
+                    boundary-links="true" >
+            </dir-pagination-controls>
+        </div>
+
     </div>
     <div class="col-sm-4 col-lg-4" id="user-list">
         <h3 class="heading">Active Users <small>{{active_users}}</small></h3>
@@ -29,23 +93,6 @@
 						</span>
                     <input class="user-list-search search form-control input-sm" placeholder="Search user" type="text">
                 </div>
-                <ul class="nav nav-pills line_sep">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sort by <b class="caret"></b></a>
-                        <ul class="dropdown-menu sort-by">
-                            <li><a href="javascript:void(0)" class="sort" data-sort="sl_name">by name</a></li>
-                            <li><a href="javascript:void(0)" class="sort" data-sort="sl_status">by status</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Show <b class="caret"></b></a>
-                        <ul class="dropdown-menu filter">
-                            <li class="active"><a href="javascript:void(0)" id="filter-none">All</a></li>
-                            <li><a href="javascript:void(0)" id="filter-online">Online</a></li>
-                            <li><a href="javascript:void(0)" id="filter-offline">Offline</a></li>
-                        </ul>
-                    </li>
-                </ul>
             </div>
         </div>
         <ul class="list user_list">
@@ -56,6 +103,14 @@
                 <small><a style="color:gray" href="">{{user.email}}</a></small>
             </li>
         </ul>
+        <h3 class="heading">Calendar</h3>
+        <div class="inline_date" style="width:100%"></div>
         <ul class="pagination paging bottomPaging"></ul>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.inline_date').datepicker();
+    });
+
+</script>

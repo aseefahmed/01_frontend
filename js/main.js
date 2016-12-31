@@ -11,6 +11,10 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
         templateUrl: 'views/production/buyers/index.html',
         controller: 'BuyerController'
     })
+        .when('/production/suppliers', {
+            templateUrl: 'views/production/suppliers/index.html',
+            controller: 'SupplierController'
+        })
         .when('/production/orders', {
             templateUrl: 'views/production/orders/index.html',
             controller: 'OrderController'
@@ -22,6 +26,10 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
         .when('/production/buyer/:buyer_id', {
             templateUrl: 'views/production/buyers/show.html',
             controller: 'BuyerController'
+        })
+        .when('/production/supplier/:supplier_id', {
+            templateUrl: 'views/production/suppliers/show.html',
+            controller: 'SupplierController'
         })
         .when('/production/order/:order_id', {
             templateUrl: 'views/production/orders/show.html',

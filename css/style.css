@@ -19,7 +19,7 @@
 		.external_link {background: url(../img/external_link.png) no-repeat right center;padding-right:12px}
 
 	/* main headings*/
-		.heading {border-bottom: 1px solid #dcdcdc;margin-bottom: 18px;padding-bottom: 5px;margin-left: 15px;}
+		.heading {border-bottom: 1px solid #f89406;margin-bottom: 18px;padding-bottom: 5px;margin-left: 15px;}
 		.heading h1,.heading h2,.heading h3,h1.heading,h2.heading,h3.heading,.modal-header h3,.modal-header h4 {font-family: 'PT Sans', sans-serif;font-weight:400}
 		.heading .btn {vertical-align:bottom;margin-left:10px}
 
@@ -48,7 +48,7 @@
 		h1 small,h2 small,h3 small,h4 small,h5 small,h6 small{font-weight:400;color:#999}
 		h1{font-size:30px;line-height:36px}
 		h2{font-size:24px;line-height:36px}
-		h3{font-size:18px;line-height:27px}
+		h3{font-size:21px;line-height:27px}
 		h4,h5,h6{line-height:18px}
 		h6{font-size:11px;color:#999;text-transform:uppercase}
 		h1 small,h2 small{font-size:18px}

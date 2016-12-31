@@ -8,7 +8,7 @@
             <div class="w-box" id="w_sort01">
                 <div class="w-box-header">
                     <div class="pull-left">
-                        Requisition ID: {{$requisition_id}}
+                        Requisition ID: {{requisition_id}}
                     </div>
                 </div>
                 <div class="w-box-content cnt_a">
@@ -23,7 +23,7 @@
                                         <th class="th-pointer" ng-click="sort('requisition_type')">Reference<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='requisition_type'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('qty')">Qty<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='qty'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="text-right th-pointer" ng-click="sort('items_val')">Requested Amount<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='items_val'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="text-right th-pointer" ng-if="requisitions[0].forwarded_to == user_id" ng-hide="hide_button == 1 || requisitions[0].flag == 2 || requisitions[0].flag == 9" ng-click="sort('items_val')">Approve<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='items_val'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                        <th class="text-right th-pointer" ng-if="requisitions[0].forwarded_to == user_id" ng-hide="hide_button == 1 || requisitions[0].flag == 2 || requisitions[0].flag == 9" >Approve</th>
                                         <th class="text-right th-pointer" ng-if="requisitions[0].created_by == user_id" ng-click="sort('items_val')">Approved Amount<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='items_val'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                     </tr>
                                     </thead>
@@ -34,10 +34,10 @@
                                         <tr dir-paginate="requisition in filtered = (requisitions| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
                                             <td ng-cloak>{{ $index+1 }} </td>
                                             <td ng-cloak>{{ requisition.item_name }}</td>
-                                            <td ng-cloak>{{ requisition.requisition_type }} {{ requisition.reference }}</td>
+                                            <td ng-cloak><a href="#/production/{{ requisition.requisition_type | lowercase }}/{{ requisition.reference }}">{{ requisition.reference }}</a></td>
                                             <td ng-cloak>{{ requisition.qty }} </td>
                                             <td ng-cloak class="text-right ">{{ requisition.items_val | currency   }}</td>
-                                            <td ng-cloak class="text-right col-sm-2 " ng-if="requisitions[0].forwarded_to == user_id"  ng-hide="hide_button == 1 || requisitions[0].flag == 2 || requisitions[0].flag == 9" ><input type="text" class="form-control" ng-model="approved_amount" ng-blur="add_amount(requisition.requisition_item_id, approved_amount, requisition.item_name, requisition.reference, $index)"></td>
+                                            <td ng-cloak class="text-right col-sm-2 " ng-if="requisitions[0].forwarded_to == user_id"  ng-hide="hide_button == 1 || requisitions[0].flag == 2 || requisitions[0].flag == 9" ><input type="text" class="form-control approved_amount" ng-model="approved_amount" ng-change="add_amount(requisition.requisition_item_id, approved_amount, requisition.item_name, requisition.reference, $index)"></td>
                                             <td ng-cloak class="text-right col-sm-2 " ng-if="requisitions[0].created_by == user_id">
                                                 <span ng-if="requisition.item_flag == 1" class="act act-warning">Pending</span>
                                                 <span ng-if="requisition.item_flag == 9 || (requisition.item_flag == 2 && requisition.item_approved_amount == 0)" class="act act-danger">Rejected</span>
@@ -57,8 +57,10 @@
                                 <div class="row">
                                     &nbsp;
                                 </div>
+                                <div class="formSep">
+                                    Attachment: <a src="{{host}}uploaded_files/production/requisitions/{{attachment}}">Download</a>
+                                </div>
                                 <div class="formSep" ng-if="requisitions[0].forwarded_to == user_id">
-                                    <button class="btn btn-primary"  ng-hide="hide_button == 1 || requisitions[0].flag == 2 || requisitions[0].flag == 9">Clear</button>
                                     <button class="btn btn-danger" ng-click="act_on_requisition(requisitions[0].id,total_approved_amount,9,items)" ng-hide="hide_button == 1 || requisitions[0].flag == 2 || requisitions[0].flag == 9">Reject</button>
                                     <button class="btn btn-success" ng-disabled="total_approved_amount == 0" ng-click="act_on_requisition(requisitions[0].id, total_approved_amount,2,items)" ng-hide="hide_button == 1 || requisitions[0].flag == 2 || requisitions[0].flag == 9">Approved</button>
                                 </div>

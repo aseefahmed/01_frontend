@@ -2,34 +2,34 @@
 
 	$(document).ready(function() {
 		//* small charts
-		gebo_peity.init();
-		//* charts
+		/*gebo_peity.init();
+		//!* charts
 		gebo_charts.fl_1();
 		gebo_charts.fl_2();
-		//* sortable/searchable list
-		gebo_flist.init();
+		//!* sortable/searchable list
+		gebo_flist.init();*/
 		//* calendar
 		gebo_calendar.init();
 		//* responsive table
-		gebo_media_table.init();
-		//* resize elements on window resize
+		/*gebo_media_table.init();
+		//!* resize elements on window resize
 		var lastWindowHeight = $(window).height();
 		var lastWindowWidth = $(window).width();
 		$(window).on("debouncedresize",function() {
 			if($(window).height()!=lastWindowHeight || $(window).width()!=lastWindowWidth){
 				lastWindowHeight = $(window).height();
 				lastWindowWidth = $(window).width();
-				//* rebuild calendar
+				//!* rebuild calendar
 				$('#calendar').fullCalendar('render');
 			}
 		});
-		//* small gallery grid
-        gebo_gal_grid.small();
+		//!* small gallery grid
+        gebo_gal_grid.small();*/
 		
 	});
 	
 	//* small charts
-	gebo_peity = {
+/*	gebo_peity = {
 		init: function() {
 			$.fn.peity.defaults.line = {
 				strokeWidth: 1,
@@ -64,7 +64,7 @@
 		}
 	};
 
-	//* charts
+	//!* charts
     gebo_charts = {
         fl_1: function() {
             // Setup the placeholder reference
@@ -162,10 +162,10 @@
         }
     };
 
-	//* filterable list
+	//!* filterable list
 	gebo_flist = {
 		init: function(){
-			//*typeahead
+			//!*typeahead
 			var list_source = [];
 			$('.user_list li').each(function(){
 				var search_name = $(this).find('.sl_name').text();
@@ -222,12 +222,12 @@
 		}
 	};
 	
-	//* gallery grid
+	//!* gallery grid
     gebo_gal_grid = {
         small: function() {
 			var $small_grid = $('#small_grid').children('ul');
 
-            //* small gallery grid
+            //!* small gallery grid
             $small_grid.imagesLoaded(function() {
                 // Prepare layout options.
                 var options = {
@@ -253,7 +253,7 @@
                 });
             });
         }
-    };
+    };*/
 	
 	//* calendar
 	gebo_calendar = {
@@ -350,8 +350,8 @@
 	};
 	
     //* responsive tables
-    gebo_media_table = {
+    /*gebo_media_table = {
         init: function() {
 			$('.mediaTable').mediaTable();
         }
-    };
+    };*/

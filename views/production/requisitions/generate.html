@@ -53,7 +53,7 @@
                                                 <tr ng-repeat="list in lists" ng-cloak>
                                                     <td><input type="checkbox" ng-model="chkbox" value="{{ list.id }}" ng-click="select_requisition(list.items_val, list.id)" class="select_row"> </td>
                                                     <td>{{ $index+1 }}</td>
-                                                    <td ng-cloak>{{ list.requisition_type }} No {{ list.reference }} </td>
+                                                    <td ng-cloak><a href="#/production/{{ list.requisition_type | lowercase }}/{{ list.reference }}">{{ list.requisition_type }} No {{ list.reference }} </a></td>
                                                     <td ng-cloak>{{ list.item_name }}</td>
                                                     <td ng-cloak>{{ list.items_val | currency }}</td>
                                                     <td  ng-cloak align="center">
@@ -84,7 +84,22 @@
                                                             &nbsp;&nbsp;
                                                         </div>
                                                         <input class="form-control" placeholder="Requisition Title" name="requisition_title" type="text" ng-model="requisition_title" ng-required="70"/>
-                                                        <span class="help-block " ng-show="myForm.requisition_title.$dirty && myForm.requisition_title.$invalid">This field is mandatory.</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="formSep">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <code>Supplier *</code>
+                                                        <div class="row">
+                                                            &nbsp;&nbsp;
+                                                        </div>
+                                                        <select class="inline-search" style="width: 85%;" ng-model="supplier_id" ng-pattern="/^\d+$/" ng-required="true">
+                                                            <option value="">Select a supplier</option>
+                                                            <option ng-repeat="supplier in suppliers" value="{{supplier.id}}">
+                                                                {{ supplier.supplier_name }}
+                                                            </option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,13 +122,17 @@
                                             <div class="formSep">
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <code>Document</code>
-                                                        <input ng-model="file" type="file" class="file file-upload" data-preview-file-type="text" />
+                                                        <code>Documnet</code>
+                                                        <img ngf-thumbnail="myfile"><br><br>
+                                                        <div class="button" ngf-select ng-model="myfile" name="file" ngf-pattern="'image/*'"
+                                                             ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+                                                             ngf-resize="{width: 100, height: 100}"><button class="btn btn-success">Upload Image</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row col-sm-12 text-center">
-                                                <button id="generate_btn" class="btn btn-primary" ng-click='generate_requisition()' ng-disabled="total_requisition_amount == 0 || myForm.$invalid">Generate Requisition</button>
+                                                <button id="generate_btn" class="btn btn-primary" ng-click='generate_requisition(myfile)' ng-disabled="total_requisition_amount == 0 || myForm.$invalid">Generate Requisition</button>
                                             </div>
 
                                         </div>

@@ -1,11 +1,30 @@
 angular.module('myApp').controller('DashboardController', function($scope, $http, $window){
+
     $scope.page_title = 'Dashboard';
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
-    $http.get(app.host + '/getUsers/'+$scope.loginUser['id']).then(function (response) {
-        $scope.users = response.data;
-        $scope.active_users = response.data.length;
-        console.log($scope.users)
-    });
+    $scope.initialize = function () {
+        $http.get(app.host + 'production/order/fetchOrdersSummery').then(function (response) {
+            $scope.new_orders = response.data.new_orders;
+            $scope.inactive_orders = response.data.inactive_orders;
+            $scope.delivering_soon = response.data.delivering_soon;
+            $scope.shipped_orders = response.data.shipped_orders;
+            $scope.number_of_orders_delivering_soon = $scope.delivering_soon.length;
+            $scope.number_of_orders_inactive= $scope.inactive_orders.length;
+            $scope.number_of_new_orders= $scope.new_orders.length;
+            $scope.number_of_shipped_orders = $scope.shipped_orders.length;
+            console.log('***********')
+        });
+        $http.get(app.host + 'production/requisitions/fetchRequisitionSummery/'+$scope.loginUser['id']).then(function (response) {
+            $scope.my_new_requisitions= response.data.new_requisition;
+            $scope.number_of_new_requisitions = $scope.my_new_requisitions.length;
+        });
+        $http.get(app.host + '/getUsers/'+$scope.loginUser['id']).then(function (response) {
+            $scope.users = response.data;
+            $scope.active_users = response.data.length;
+            console.log($scope.users)
+        });
+    }
+
     $scope.goToDashboard = function () {
         $window.location.href = '#/dashboard';
     }
@@ -15,27 +34,31 @@ angular.module('myApp').controller('MenuController', function($scope, $http, $lo
     $scope.location = $location;
 });
 
-angular.module('myApp').controller('BuyerController', function($scope, $http, $route, $routeParams) {
+angular.module('myApp').controller('BuyerController', function($scope, $http, $route, $routeParams, Upload) {
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     if($routeParams.buyer_id){
         $scope.buyer_id = $routeParams.buyer_id;
     }
-    $scope.page_title = 'Buyers List';
-    $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
     $scope.reloadData = function(){
         $route.reload();
     };
-    $http.get(app.host + '/production/buyer/fetchBuyersList').then(function (response) {
-        $scope.num_of_items = 10;
-        $scope.buyers = response.data;
-        $scope.data_found = $scope.buyers.length;
-        $scope.reverse = false;
-    });
-    $scope.sortKey = 'buyer_name';
-    $scope.sort = function (header) {
-        $scope.sortKey = header;
-        $scope.reverse = !$scope.reverse;
-    };
+    $scope.init_buyerlist = function () {
+        $('#ajax_loading').css('display', 'block');
+        $scope.page_title = 'Buyers List';
+        $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
+        $http.get(app.host + '/production/buyer/fetchBuyersList').then(function (response) {
+            $('#ajax_loading').css('display', 'none ');
+            $scope.num_of_items = 10;
+            $scope.buyers = response.data;
+            $scope.data_found = $scope.buyers.length;
+            $scope.reverse = false;
+        });
+        $scope.sortKey = 'buyer_name';
+        $scope.sort = function (header) {
+            $scope.sortKey = header;
+            $scope.reverse = !$scope.reverse;
+        };
+    }
     $scope.remove_buyer = function(id, name, action){
         if(action == 'single_delete')
         {
@@ -57,7 +80,6 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 $scope.status = 'all';
                 var arr = [];
                 $('.select_row').each(function() {
-                    console.log(this.value)
                     arr.push(this.value);
                 });
                 $scope.buyer_id = arr;
@@ -70,7 +92,6 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             var arr = [];
             $scope.status = 'selected';
             $('.select_row:checked').each(function() {
-                console.log(this.value)
                 arr.push(this.value);
             });
             $scope.modal_msg = "Do you really want to delete selected buyers";
@@ -98,7 +119,6 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             }
         };
         $http.post(app.host + 'production/buyer/delete', data, config).success(function (result, status) {
-            console.log(result);
             $('#remove-buyer-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -131,8 +151,10 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     };
     $scope.init = function(id){
         $scope.page_title = 'Buyer Details';
+        $scope.host = app.host;
+        $('#ajax_loading').css('display', 'block');
         $http.get(app.host + 'production/buyers/fetchBuyerDetails/'+id).then(function(response){
-            console.log(response)
+            $('#ajax_loading').css('display', 'none');
             $scope.buyer = response.data;
         })
     };
@@ -160,7 +182,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         $http.get(app.host + 'production/buyer/update/'+$scope.loginUser.id+'/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
             $('.top-right').notify({
                 type: 'success',
-                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully updated the information.</strong>' },
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
@@ -177,27 +199,20 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
             }).show();
         })
     }
-    $scope.add_buyer = function(form, file){
-        var data = $.param({
-            user_id: $scope.loginUser.id,
-            buyer_name: $scope.buyer.buyer_name,
-            postal_address: $scope.buyer.postal_address,
-            contact_person: $scope.buyer.contact_person,
-            email_address: $scope.buyer.email_address,
-            contact_number: $scope.buyer.contact_number,
-            website: $scope.buyer.website,
-        });
-
-        console.log($scope.file)
-        console.log(data)
-        var config = {
-            headers : {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-            }
-        };
-        $http.post(app.host + 'production/buyers', data, config).success(function (result, status) {
-            console.log('===')
-            console.log(result)
+    $scope.add_buyer = function(form, myfile){
+        Upload.upload({
+            url: app.host + 'production/buyers',
+            data: {
+                user_id: $scope.loginUser.id,
+                buyer_name: $scope.buyer.buyer_name,
+                postal_address: $scope.buyer.postal_address,
+                contact_person: $scope.buyer.contact_person,
+                email_address: $scope.buyer.email_address,
+                contact_number: $scope.buyer.contact_number,
+                website: $scope.buyer.website,
+                file: myfile
+            },
+        }).then(function (response) {
             $('#add-buyer-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -212,7 +227,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 $scope.buyers = response.data;
                 $scope.reverse = false;
             })
-        }).error(function (result, status) {
+        }, function (response) {
             $('#add-buyer-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'danger',
@@ -221,6 +236,215 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.buyer_name = null;
+        });
+    };
+})
+
+angular.module('myApp').controller('SupplierController', function($scope, $http, $route, $routeParams, Upload) {
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    if($routeParams.supplier_id){
+        $scope.supplier_id = $routeParams.supplier_id;
+    }
+    $scope.reloadData = function(){
+        $route.reload();
+    };
+    $scope.init_supplierlist = function () {
+        $('#ajax_loading').css('display', 'block');
+        $scope.page_title = 'Suppliers List';
+        $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
+        $http.get(app.host + '/production/supplier/fetchSuppliersList').then(function (response) {
+            $('#ajax_loading').css('display', 'none ');
+            $scope.num_of_items = 10;
+            $scope.suppliers = response.data;
+            $scope.data_found = $scope.suppliers.length;
+            $scope.reverse = false;
+        });
+        $scope.sortKey = 'supplier_name';
+        $scope.sort = function (header) {
+            $scope.sortKey = header;
+            $scope.reverse = !$scope.reverse;
+        };
+    }
+    $scope.remove_supplier = function(id, name, action){
+        if(action == 'single_delete')
+        {
+            $scope.supplier_name = name;
+            $scope.supplier_id = id;
+            $scope.status = 'single_delete';
+            $scope.modal_msg = "Do you really want to delete the supplier "+$scope.supplier_name+".";
+            $('#remove-supplier-modal').modal('toggle');
+        }
+        else if(action == 'all')
+        {
+            if($scope.suppliers.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.supplier_id = 0;
+                $scope.status = 'all';
+                var arr = [];
+                $('.select_row').each(function() {
+                    arr.push(this.value);
+                });
+                $scope.supplier_id = arr;
+                $scope.modal_msg = "Do you really want to delete all suppliers";
+                $('#remove-supplier-modal').modal('toggle');
+            }
+        }
+        else if(action == 'selected')
+        {
+            var arr = [];
+            $scope.status = 'selected';
+            $('.select_row:checked').each(function() {
+                arr.push(this.value);
+            });
+            $scope.modal_msg = "Do you really want to delete selected suppliers";
+            if(arr.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.supplier_id = arr;
+                $('#remove-supplier-modal').modal('toggle');
+            }
+        }
+    };
+    $scope.remove_supplier_confirmed = function(id, page, action){
+        $scope.supplier_name = null;
+        var data = $.param({
+            user_id: $scope.loginUser.id,
+            id: id,
+            action: action
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/supplier/delete', data, config).success(function (result, status) {
+            $('#remove-supplier-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            if(page == 'show_page')
+            {
+                window.location.href = '#/production/suppliers';
+            }
+            else
+            {
+                $http.get(app.host + 'production/supplier/fetchSuppliersList').then(function (response) {
+                    $scope.num_of_items = 10;
+                    $scope.suppliers = response.data;
+                    $scope.reverse = false;
+                })
+            }
+        }).error(function (result, status) {
+            $('#remove-supplier-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was unsuccessful. </strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
+
+    };
+    $scope.init = function(id){
+        $scope.page_title = 'Supplier Details';
+        $scope.host = app.host;
+        $('#ajax_loading').css('display', 'block');
+        $http.get(app.host + 'production/suppliers/fetchSupplierDetails/'+id).then(function(response){
+            $('#ajax_loading').css('display', 'none');
+            $scope.supplier = response.data;
+        })
+    };
+    $scope.edit_supplier = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
+
+        user_id: $scope.loginUser.id,
+            $scope.editable_item = edit_item;
+        $scope.supplier_id = id;
+        $scope.field = field;
+        $scope.field_type = field_type;
+        $scope.is_required = is_required;
+        $scope.min_length = min_length;
+        $scope.max_length = max_length;
+        $scope.pattern = pattern;
+        $scope.error_text = error_text;
+        $scope.type = null;
+        $('#edit-supplier-modal').modal('toggle');
+    }
+    $scope.edit_supplier_confirmed = function (id) {
+        $('#edit-supplier-modal').modal('toggle');
+        if($scope.type == null)
+        {
+            $scope.type = '--';
+        }
+        $http.get(app.host + 'production/supplier/update/'+$scope.loginUser.id+'/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.supplier = response.data;
+            $http.get(app.host + 'production/suppliers/fetchSupplierDetails/'+id).then(function(response){
+                $scope.supplier = response.data;
+            })
+        }, function(response){
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        })
+    }
+    $scope.add_supplier = function(form, myfile){
+        var data = $.param({
+
+        });
+        Upload.upload({
+            url: app.host + 'production/suppliers',
+            data: {
+                user_id: $scope.loginUser.id,
+                supplier_name: $scope.supplier.supplier_name,
+                postal_address: $scope.supplier.postal_address,
+                contact_person: $scope.supplier.contact_person,
+                email_address: $scope.supplier.email_address,
+                contact_number: $scope.supplier.contact_number,
+                website: $scope.supplier.website,
+                file: myfile
+            },
+        }).then(function (response) {
+            $('#add-supplier-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add a supplier.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.supplier = {};
+            form.$setPristine();
+            $http.get(app.host + 'production/supplier/fetchSuppliersList').then(function (response) {
+                $scope.num_of_items = 10;
+                $scope.suppliers = response.data;
+                $scope.reverse = false;
+            })
+        }, function (response) {
+            $('#add-supplier-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.supplier_name = null;
         });
     };
 })
@@ -843,12 +1067,18 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
 })
 
 
-angular.module('myApp').controller('RequisitionController', function($scope, $http){
+angular.module('myApp').controller('RequisitionController', function($scope, $http, $route, Upload){
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     $scope.user_id = $scope.loginUser.id;
     $scope.page_title = 'Requisitions';
     $scope.total_requisition_amount = 0;
     items = new Array();
+    $http.get(app.host + '/production/supplier/fetchSuppliersList').then(function (response) {
+        $scope.suppliers = response.data;
+    });
+    $scope.reloadData = function(){
+        $route.reload();
+    };
     $http.get(app.host + 'user/getUsersList').then(function (response) {
         console.log('done'+response.data)
         $scope.users = response.data.users;
@@ -889,6 +1119,11 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
             {
                 $scope.style_id = 0;
                 $scope.status = 'all';
+                var arr = [];
+                $('.select_row').each(function() {
+                    arr.push(this.value);
+                });
+                $scope.item_id = arr;
                 $scope.modal_msg = "Do you really want to delete all items";
                 $('#remove-item-modal').modal('toggle');
             }
@@ -916,7 +1151,6 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
     $scope.remove_item_confirmed = function(id, page, action){
         $scope.item_name = null;
         $http.delete(app.host + 'production/requisitions/'+id+"/"+action).then(function(response){
-            console.log('+++');console.log(id)
             $('#remove-item-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -924,8 +1158,8 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show()
-            $http.get(app.host + 'production/requisitions/getRequisitionItems').then(function (response) {
-                console.log('done'+response.data)
+            $http.get(app.host + 'production/requisitions/getRequisitionItems/'+$scope.user_id).then(function (response) {
+                console.log('done'+response.data);
                 $scope.lists = response.data.items;
                 console.log(response.data)
             });
@@ -939,21 +1173,19 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
             }).show();
         })
     };
-    $scope.generate_requisition = function(){
-        var data = $.param({
-            user_id: $scope.loginUser.id,
-            total_amount: $scope.total_requisition_amount,
-            requisition_items: $scope.requisition_items,
-            forwarded_to: $scope.fowarded_to,
-            requisition_title: $scope.requisition_title
-        });
-        var config = {
-            headers : {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-            }
-        };
-        $http.post(app.host + 'production/requisitions/generateRequisition', data, config).success(function (result, status) {
-            console.log(result)
+    $scope.generate_requisition = function(myfile){
+        Upload.upload({
+            url: app.host + 'production/requisitions/generateRequisition',
+            data: {
+                user_id: $scope.loginUser.id,
+                total_amount: $scope.total_requisition_amount,
+                requisition_items: $scope.requisition_items,
+                forwarded_to: $scope.fowarded_to,
+                requisition_title: $scope.requisition_title,
+                supplier_id: $scope.supplier_id,
+                file: myfile
+            },
+        }).then(function (response) {console.log(response)
             $('#add-order-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -966,7 +1198,10 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
                 $scope.lists = response.data.items;
                 $scope.total_requisition_amount = 0;
             });
-        }).error(function (result, status) {
+            $scope.$scope.requisition_title = null;
+            $scope.$scope.supplier_id = null;
+            $scope.$scope.fowarded_to = null;
+        }, function (response) {
             $('#add-order-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'danger',
@@ -974,8 +1209,8 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-            $scope.order_name = null;
         });
+
     };
     $http.get(app.host + 'production/requisitions/getRequisitionItems/'+$scope.user_id).then(function (response) {
         console.log('done'+response.data)
@@ -985,11 +1220,12 @@ angular.module('myApp').controller('RequisitionController', function($scope, $ht
 })
 
 
-angular.module('myApp').controller('AllRequisitionController', function($scope, $http, $routeParams) {
+angular.module('myApp').controller('AllRequisitionController', function($scope, $http, $routeParams, $route) {
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     if($routeParams.requisition_id){
         $scope.requisition_id = $routeParams.requisition_id;
     }
+
     $scope.total_approved_amount = 0;
     $scope.approved_amount = 0;
     $scope.get_total_approved_amount = function(){
@@ -1036,11 +1272,16 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
     i = 0;
     items = new Array();
     $scope.add_amount = function(requisition_item_id, amount, item_type, order_id, index){
+        total_amount = 0;
+        $('.approved_amount').each(function() {
+            total_amount = Number(total_amount) + Number(this.value);
 
+        });
+        console.log(total_amount)
         items[index] = requisition_item_id+"#"+amount+"#"+item_type+"#"+order_id;
         $scope.items_arr = items;
         console.log($scope.items_arr)
-        $scope.total_approved_amount = Number($scope.total_approved_amount) + Number(amount);
+        $scope.total_approved_amount = total_amount;
     };
     $scope.initialize = function (page) {
         $scope.page_title = "Requisition " + page;
@@ -1055,6 +1296,7 @@ angular.module('myApp').controller('AllRequisitionController', function($scope, 
     }
     $scope.getRequisitionDetails = function(id){
         $scope.page_title = 'Requisition Details';
+        $scope.host = app.host;
         $scope.user_id = $scope.loginUser.id;
         $http.get(app.host + 'production/requisitions/getDetails/'+id).then(function (response) {
             $scope.requisitions = response.data.requisition;
