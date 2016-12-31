@@ -29,10 +29,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-if="filtered.length == 0">
+            <tr ng-if="delivering_soon.length == 0">
                 <td colspan="9">No orders delivering soon.</td>
             </tr>
-            <tr  dir-paginate="delivering_soon_order in filtered = (delivering_soon | itemsPerPage: 5 ) " ng-cloak>
+            <tr ng-if="delivering_soon.length > 0" dir-paginate="delivering_soon_order in filtered = (delivering_soon | itemsPerPage: 5 ) " ng-cloak>
                 <td><a href="#/production/order/{{ delivering_soon_order.id }}">{{$index+1}}</a></td>
                 <td>{{delivering_soon_order.buyer_name}}</td>
                 <td>{{delivering_soon_order.qty}}</td>
@@ -42,7 +42,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="col-sm-12 text-center" ng-if="filtered.length > 0">
+        <div class="col-sm-12 text-center" ng-if="delivering_soon.length > 0">
             <dir-pagination-controls
                     direction-links="true" auto-hide="false"
                     boundary-links="true" >
@@ -62,10 +62,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-if="filtered.length == 0">
+            <tr ng-if="inactive_orders.length == 0">
                 <td colspan="9">No orders inactive.</td>
             </tr>
-            <tr  dir-paginate="inactive in filtered = (inactive_orders | itemsPerPage: 5 ) " ng-cloak>
+            <tr ng-if="inactive_orders.length > 0" dir-paginate="inactive in filtered = (inactive_orders | itemsPerPage: 5 ) " ng-cloak>
                 <td><a href="#/production/order/{{ inactive.id }}">{{$index+1}}</a></td>
                 <td>{{inactive.buyer_name}}</td>
                 <td>{{inactive.qty}}</td>
@@ -75,7 +75,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="col-sm-12 text-center" ng-if="filtered.length > 0">
+        <div class="col-sm-12 text-center" ng-if="inactive_orders.length > 0">
             <dir-pagination-controls
                     direction-links="true" auto-hide="false"
                     boundary-links="true" >
@@ -84,6 +84,19 @@
 
     </div>
     <div class="col-sm-4 col-lg-4" id="user-list">
+        <h3 class="heading">Notifications</h3>
+        <div class="col-sm-12">
+            <div ng-if="delivering_soon.length > 0" class="alert alert-danger alert-dismissable">
+                <a class="close" data-dismiss="alert">×</a>
+                <strong>Orders!</strong> {{delivering_soon.length}} orders need to be delivered soon.
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div ng-if="inactive_orders.length > 0" class="alert alert-danger alert-dismissable">
+                <a class="close" data-dismiss="alert">×</a>
+                <strong>Orders!</strong> {{inactive_orders.length}} orders need to be delivered soon.
+            </div>
+        </div>
         <h3 class="heading">Active Users <small>{{active_users}}</small></h3>
         <div class="row">
             <div class="col-lg-12">
@@ -104,7 +117,7 @@
             </li>
         </ul>
         <h3 class="heading">Calendar</h3>
-        <div class="inline_date" style="width:100%"></div>
+        <div class="inline_date"></div>
         <ul class="pagination paging bottomPaging"></ul>
     </div>
 </div>

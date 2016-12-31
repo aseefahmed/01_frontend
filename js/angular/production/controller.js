@@ -4,6 +4,7 @@ angular.module('myApp').controller('DashboardController', function($scope, $http
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     $scope.initialize = function () {
         $http.get(app.host + 'production/order/fetchOrdersSummery').then(function (response) {
+            console.log(response)
             $scope.new_orders = response.data.new_orders;
             $scope.inactive_orders = response.data.inactive_orders;
             $scope.delivering_soon = response.data.delivering_soon;
@@ -172,14 +173,20 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         $scope.error_text = error_text;
         $scope.type = null;
         $('#edit-buyer-modal').modal('toggle');
-    }
-    $scope.edit_buyer_confirmed = function (id) {
-        $('#edit-buyer-modal').modal('toggle');
+    };
+    $scope.validateEditForm = function(data, minlength, maxlength, message) {
+        if(data.length  < minlength || data.length > maxlength)
+            return message;
+    };
+    $scope.edit_buyer_confirmed = function (field, id, value) {
+        if(value.length == 0)
+            value=null;
+        console.log($scope.type)
         if($scope.type == null)
         {
             $scope.type = '--';
         }
-        $http.get(app.host + 'production/buyer/update/'+$scope.loginUser.id+'/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+        $http.get(app.host + 'production/buyer/update/'+$scope.loginUser.id+'/'+field+'/'+id+'/'+value).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },
@@ -641,7 +648,7 @@ angular.module('myApp').controller('StyleController', function($scope, $http, $r
     };
 })
 
-angular.module('myApp').controller('OrderController', function($scope, $http, $routeParams) {
+angular.module('myApp').controller('OrderController', function($scope, $http, $routeParams, $route) {
     $( ".calender" ).datepicker(
             {
                 dateFormat: 'yy-mm-dd',
@@ -651,6 +658,10 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
                 buttonText: "Select date"
             }
     );
+    $scope.host = app.host;
+    $scope.reloadData = function(){
+        $route.reload();
+    };
     $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     if($routeParams.order_id){
         $scope.order_id = $routeParams.order_id;
@@ -850,7 +861,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         $http.post(app.host + 'production/reports/orders/save', data, config).success(function (result, status) {
             $('.top-right').notify({
                 type: 'success',
-                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Report saved.</strong>' },
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
@@ -865,7 +876,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         });;
     }
     $scope.advanced_search_order = function()
-    {alert($scope.report.field)
+    {
         var data = $.param({
             field: $scope.report.field,
             operator: $scope.report.operator,
@@ -931,6 +942,8 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         $scope.page_title = 'Order Details';
         $scope.yarn_type = '';
         $http.get(app.host + 'production/orders/fetchOrderDetails/'+id).then(function(response){
+            console.log('777777777777')
+            console.log(response)
             $scope.delivery_date = new Date(response.data[0].delivery_date);
             $scope.today = new Date();
             $scope.days_left_to_delivery = ($scope.delivery_date - $scope.today)/1000/60/60/24;
@@ -945,8 +958,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             $scope.due_security_tag_amount = $scope.order_details[0].total_security_tag_cost - $scope.order_details[0].approved_security_tag_cost;
             console.log($scope.yarn_amount)
             $scope.approved_amount_of_requisition = Number(response.data[0].approved_yarn_amount) +Number(response.data[0].approved_acc_amount) +Number(response.data[0].approved_btn_amount) +Number(response.data[0].approved_zipper_amount) +Number(response.data[0].approved_print_amount) +Number(response.data[0].approved_security_tag_cost)
-            console.log('dd')
-            console.log(response.data[0].approved_acc_amount)
+
 
         })
     };

@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="lib/select2/select2.css" />
     <!-- calendar -->
     <link rel="stylesheet" href="lib/fullcalendar/fullcalendar_gebo.css" />
+    <!-- xEditable CSS -->
+    <link rel="stylesheet" href="lib/xeditable/css/xeditable.css" />
 
 
     <!-- Bootstrap Notification -->
@@ -205,7 +207,6 @@
     <div id="contentwrapper">
 
         <div class="main_content">
-            <div class="col-sm-12"><img class="text-center" id="ajax_loading" src="http://www.nigerianstat.gov.ng/assets/images/loader1.gif" style="display: none;" width="80px"><br></div>
             <ng-view></ng-view>
         </div>
     </div>
@@ -388,6 +389,8 @@
 <script src="lib/fullcalendar/fullcalendar.min.js"></script>
 <!-- datatables bootstrap integration -->
 <script src="lib/fileinput/fileinput.min.js"></script>
+<!-- xEditable JS -->
+<script src="lib/xeditable/js/xeditable.min.js"></script>
 <!-- common functions -->
 <script src="js/pages/gebo_common.js"></script>
 <!-- common functions -->
@@ -409,6 +412,7 @@
         });
 
         $('.inline_date').datepicker();
+
     });
 
 </script>

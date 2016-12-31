@@ -29,28 +29,28 @@
                                     <thead>
                                             <tr>
                                                 <th width='25%'>Buyer Name: </th>
-                                                <td><span class="col-sm-10">{{ buyer[0].buyer_name }}</span><a ng-click="edit_buyer(buyer_id, 'Buyer', 'buyer_name', 'text', true, '', 50, '', 'This is a mendatory field (Maximum: 50 Characters).')" class="th-pointer col-sm-2 glyphicon glyphicon-pencil text-right"></a></td>
+                                                <td><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('buyer_name',buyer[0].id, $data)" editable-text="buyer[0].buyer_name" onbeforesave="validateEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ buyer[0].buyer_name | uppercase }}</a></span></td>
                                                 <td rowspan="2" width="25%"><img src="{{host}}uploaded_files/production/buyers/{{ buyer[0].image }}" width="100%" height="100%"></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Postal Address: </th>
-                                                <td><span class="col-sm-10 wordwrap">{{ buyer[0].postal_address| uppercase }} </span><a ng-click="edit_buyer(buyer_id, 'Postal Address', 'postal_address', 'text', false, '', 70, '', 'This field not be more than 70 characters long.')" class="th-pointer col-sm-2 glyphicon glyphicon-pencil text-right"></a></td>
+                                                <td><span class="col-sm-10 wordwrap"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('postal_address',buyer[0].id, $data)" editable-text="buyer[0].postal_address" onbeforesave="validateEditForm($data, 0, 40, 'This field must not exceed 40 characters.')">{{ buyer[0].postal_address | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Contact Person: </th>
-                                                <td colspan="2"><span class="col-sm-10">{{ buyer[0].contact_person | uppercase }} </span><a ng-click="edit_buyer(buyer_id, 'Contact Person', 'contact_person', 'text', false, '', 70, '', 'This field not be more than 55 characters long.')" class="th-pointer col-sm-2 glyphicon glyphicon-pencil text-right"></a></td>
+                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('contact_person',buyer[0].id, $data)" editable-text="buyer[0].contact_person" onbeforesave="validateEditForm($data, 0, 40, 'This field must not exceed 40 characters.')">{{ buyer[0].contact_person | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Email Address: </th>
-                                                <td colspan="2"><span class="col-sm-10"><a href="mailto:{{ buyer[0].email_address }}">{{ buyer[0].email_address| uppercase }} </a></span><a ng-click="edit_buyer(buyer_id, 'Email Address', 'email_address', 'text', false, '', '', '', 'Email address must be valid.')" class="th-pointer col-sm-2 glyphicon glyphicon-pencil text-right"></a></td>
+                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('email_address',buyer[0].id, $data)" editable-text="buyer[0].email_address" onbeforesave="validateEditForm($data, 0, 55, 'This field must not exceed 55 characters.')">{{ buyer[0].email_address | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Contact Number: </th>
-                                                <td colspan="2"><span class="col-sm-10">{{ buyer[0].contact_number | uppercase }} </span><a ng-click="edit_buyer(buyer_id, 'Contact Number', 'contact_number', 'text', false, '', 20, '', 'This field not be more than 20 characters long.')" class="th-pointer col-sm-2 glyphicon glyphicon-pencil text-right"></a></td>
+                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('contact_number',buyer[0].id, $data)" editable-text="buyer[0].contact_number" onbeforesave="validateEditForm($data, 0, 15, 'This field must not exceed 15 characters.')">{{ buyer[0].contact_number | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Website: </th>
-                                                <td colspan="2"><span class="col-sm-10"><a href="//{{ buyer[0].website }}" target="_blank">{{ buyer[0].website| uppercase }} </a></span><a ng-click="edit_buyer(buyer_id, 'Website', 'website')" class="th-pointer col-sm-2 glyphicon glyphicon-pencil text-right"></a></td>
+                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('website',buyer[0].id, $data)" editable-text="buyer[0].website" onbeforesave="validateEditForm($data, 0, 25, 'This field must not exceed 25 characters.')">{{ buyer[0].website | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Created By: </th>

@@ -1,6 +1,9 @@
-myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload', 'ngIdle']);
+myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload', 'ngIdle', 'xeditable']);
 console.log('----')
 
+myApp.run(function(editableOptions) {
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+});
 
 myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, IdleProvider){
     IdleProvider.idle(5);
