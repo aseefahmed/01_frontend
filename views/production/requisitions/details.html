@@ -57,8 +57,8 @@
                                 <div class="row">
                                     &nbsp;
                                 </div>
-                                <div class="formSep">
-                                    Attachment: <a src="{{host}}uploaded_files/production/requisitions/{{attachment}}">Download</a>
+                                <div class="formSep" ng-if="requisitions[0].attachment != 'no_image.jpg'">
+                                    Attachment: <a target="_blank" href="{{host}}uploaded_files/production/requisitions/{{requisitions[0].attachment}}">Download </a>
                                 </div>
                                 <div class="formSep" ng-if="requisitions[0].forwarded_to == user_id">
                                     <button class="btn btn-danger" ng-click="act_on_requisition(requisitions[0].id,total_approved_amount,9,items)" ng-hide="hide_button == 1 || requisitions[0].flag == 2 || requisitions[0].flag == 9">Reject</button>
