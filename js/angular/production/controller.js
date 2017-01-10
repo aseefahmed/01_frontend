@@ -787,7 +787,8 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         //console.log($scope.total_yarn_weight+ " = "+ $scope.total_yarn_cost+" = "+$scope.composition_yarn_rate +" = "+$scope.composition_wastage)
     };
     $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
-    $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
+    $http.get(app.host + 'production/order/fetchOrdersList/'+$scope.loginUser.id+'/'+$scope.loginUser.emp_role).then(function (response) {
+        console.log('&&&&&')
         console.log(response.data)
         $scope.num_of_items = 10;
         $scope.orders = response.data.orders;
@@ -936,7 +937,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             }
             else
             {
-                $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
+                $http.get(app.host + 'production/order/fetchOrdersList/'+$scope.loginUser.id+'/'+$scope.loginUser.emp_role).then(function (response) {
                     $scope.num_of_items = 10;
                     $scope.orders = response.data.orders;
                     $scope.reverse = false;
@@ -1076,7 +1077,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             $scope.compositions = null;
             $scope.myfile = "";
             document.getElementById('composition-div-group').innerHTML = '';
-            $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
+            $http.get(app.host + 'production/order/fetchOrdersList/'+$scope.loginUser.id+'/'+$scope.loginUser.emp_role).then(function (response) {
                 $scope.reverse = false;
                 $scope.num_of_items = 10;
                 $scope.orders = response.data.orders;
