@@ -17,6 +17,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#/production/buyers" target="_top"><span class="glyphicon glyphicon-arrow-left"></span> Cancel</a></li>
                                 <li ng-if="loginUser.emp_role==1" ><a class="th-pointer" ng-click="remove_buyer(buyer_id, buyer[0].buyer_name, 'single_delete')"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
+                                <li><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
                             </ul>
                         </div>
                     </div>
@@ -29,28 +30,28 @@
                                     <thead>
                                             <tr>
                                                 <th width='25%'>Buyer Name: </th>
-                                                <td><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('buyer_name',buyer[0].id, $data)" editable-text="buyer[0].buyer_name" onbeforesave="validateEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ buyer[0].buyer_name | uppercase }}</a></span></td>
+                                                <td><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('buyer_name',buyer[0].id, $data)" editable-text="buyer[0].buyer_name" onbeforesave="validateEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ buyer[0].buyer_name | uppercase }}</a></span></td>
                                                 <td rowspan="2" width="25%"><img src="{{host}}uploaded_files/production/buyers/{{ buyer[0].image }}" width="100%" height="100%"></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Postal Address: </th>
-                                                <td><span class="col-sm-10 wordwrap"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('postal_address',buyer[0].id, $data)" editable-text="buyer[0].postal_address" onbeforesave="validateEditForm($data, 0, 40, 'This field must not exceed 40 characters.')">{{ buyer[0].postal_address | uppercase }}</a></span></td>
+                                                <td><span class="col-sm-10 wordwrap"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('postal_address',buyer[0].id, $data)" editable-text="buyer[0].postal_address" onbeforesave="validateEditForm($data, 0, 40, 'This field must not exceed 40 characters.', loginUser.emp_role)">{{ buyer[0].postal_address | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Contact Person: </th>
-                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('contact_person',buyer[0].id, $data)" editable-text="buyer[0].contact_person" onbeforesave="validateEditForm($data, 0, 40, 'This field must not exceed 40 characters.')">{{ buyer[0].contact_person | uppercase }}</a></span></td>
+                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('contact_person',buyer[0].id, $data)" editable-text="buyer[0].contact_person" onbeforesave="validateEditForm($data, 0, 40, 'This field must not exceed 40 characters.', loginUser.emp_role)">{{ buyer[0].contact_person | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Email Address: </th>
-                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('email_address',buyer[0].id, $data)" editable-text="buyer[0].email_address" onbeforesave="validateEditForm($data, 0, 55, 'This field must not exceed 55 characters.')">{{ buyer[0].email_address | uppercase }}</a></span></td>
+                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('email_address',buyer[0].id, $data)" editable-text="buyer[0].email_address" onbeforesave="validateEditForm($data, 0, 55, 'This field must not exceed 55 characters.', loginUser.emp_role)">{{ buyer[0].email_address | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Contact Number: </th>
-                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('contact_number',buyer[0].id, $data)" editable-text="buyer[0].contact_number" onbeforesave="validateEditForm($data, 0, 15, 'This field must not exceed 15 characters.')">{{ buyer[0].contact_number | uppercase }}</a></span></td>
+                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('contact_number',buyer[0].id, $data)" editable-text="buyer[0].contact_number" onbeforesave="validateEditForm($data, 0, 15, 'This field must not exceed 15 characters.', loginUser.emp_role)">{{ buyer[0].contact_number | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Website: </th>
-                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('website',buyer[0].id, $data)" editable-text="buyer[0].website" onbeforesave="validateEditForm($data, 0, 25, 'This field must not exceed 25 characters.')">{{ buyer[0].website | uppercase }}</a></span></td>
+                                                <td colspan="2"><span class="col-sm-10"><a style="cursor: pointer;" onaftersave="edit_buyer_confirmed('website',buyer[0].id, $data)" editable-text="buyer[0].website" onbeforesave="validateEditForm($data, 0, 25, 'This field must not exceed 25 characters.', loginUser.emp_role)">{{ buyer[0].website | uppercase }}</a></span></td>
                                             </tr>
                                             <tr>
                                                 <th width='25%'>Created By: </th>
@@ -88,54 +89,6 @@
                             <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
                             <button type="submit" name="commit" class="btn btn-success" ng-click="remove_buyer_confirmed(buyer_id, 'show_page', status)" buyer_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="removal-warning-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Remove Buyer</h3>
-                    </div>
-                    <div class="modal-body">
-                        Please Select at least one buyer.
-                        <div class="modal-footer">
-                            <a class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok-sign"></span> OK</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="edit-buyer-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Edit Buyer</h3>
-                    </div>
-                    <div class="modal-body">
-                        <form name="myForm" method="post" enctype="multipart/form-data" novalidate>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <code> {{ editable_item }} </code> <span style="color:red">*</span>
-                                        <div class="row">
-                                            &nbsp;&nbsp;
-                                        </div>
-                                        <input class="form-control" placeholder="{{ editable_item }}" name="this_field" type="{{ field_type }}" ng-required="{{ is_required }}" ng-minlength="{{ min_length }}" ng-maxlength="{{ max_length }}" ng-pattern="{{ pattern }}" ng-model="type"/>
-                                        <span class="help-block " ng-show="myForm.this_field.$dirty && myForm.this_field.$invalid">{{ error_text }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                                <button type="submit" name="commit" class="btn btn-success" ng-disabled="myForm.$invalid" ng-click="edit_buyer_confirmed(buyer_id)"><span class="glyphicon glyphicon-ok-sign"></span> Edit  </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

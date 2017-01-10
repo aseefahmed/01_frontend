@@ -43,6 +43,7 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     $scope.reloadData = function(){
         $route.reload();
     };
+    $scope.host = app.host;
     $scope.init_buyerlist = function () {
         $('#ajax_loading').css('display', 'block');
         $scope.page_title = 'Buyers List';
@@ -152,14 +153,13 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
     };
     $scope.init = function(id){
         $scope.page_title = 'Buyer Details';
-        $scope.host = app.host;
         $('#ajax_loading').css('display', 'block');
         $http.get(app.host + 'production/buyers/fetchBuyerDetails/'+id).then(function(response){
             $('#ajax_loading').css('display', 'none');
             $scope.buyer = response.data;
         })
     };
-    $scope.edit_buyer = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
+    /*$scope.edit_buyer = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
 
         user_id: $scope.loginUser.id,
         $scope.editable_item = edit_item;
@@ -173,19 +173,24 @@ angular.module('myApp').controller('BuyerController', function($scope, $http, $r
         $scope.error_text = error_text;
         $scope.type = null;
         $('#edit-buyer-modal').modal('toggle');
-    };
-    $scope.validateEditForm = function(data, minlength, maxlength, message) {
-        if(data.length  < minlength || data.length > maxlength)
-            return message;
+    };*/
+    $scope.validateEditForm = function(data, minlength, maxlength, message, role) {
+        if(role != 1)
+        {
+            return "You are not authorized to edit this information."
+        }
+        else
+        {
+            if(data.length  < minlength || data.length > maxlength)
+                return message;
+        }
+
     };
     $scope.edit_buyer_confirmed = function (field, id, value) {
         if(value.length == 0)
-            value=null;
+            value='-';
         console.log($scope.type)
-        if($scope.type == null)
-        {
-            $scope.type = '--';
-        }
+
         $http.get(app.host + 'production/buyer/update/'+$scope.loginUser.id+'/'+field+'/'+id+'/'+value).then(function(response){
             $('.top-right').notify({
                 type: 'success',
@@ -648,7 +653,7 @@ angular.module('myApp').controller('StyleController', function($scope, $http, $r
     };
 })
 
-angular.module('myApp').controller('OrderController', function($scope, $http, $routeParams, $route) {
+angular.module('myApp').controller('OrderController', function($scope, $http, $routeParams, $route, Upload) {
     $( ".calender" ).datepicker(
             {
                 dateFormat: 'yy-mm-dd',
@@ -702,6 +707,12 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         $http.post(app.host + 'production/order/addToRequisition', data, config).success(function (result, status) {
             console.log('rr')
             console.log(result)
+            $scope.yarn_amount = null;
+            $scope.accessories_amount = null;
+            $scope.button_amount = null;
+            $scope.zipper_amount = null;
+            $scope.print_amount = null;
+            $scope.security_tag_amount = null;
             $('#add-order-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -739,6 +750,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         $scope.order.total_cost =  Math.round(($scope.order.total_yarn_cost + $scope.order.total_accessories_cost + $scope.order.total_button_cost + $scope.order.total_zipper_cost + $scope.order.total_print_cost + $scope.order.total_security_tag_cost)*100)/100;
         $scope.order.order_balance_amount = Math.round(($scope.order.total_fob - $scope.order.total_cost)*100)/100;
         $scope.order.cost_of_making = Math.round(($scope.order.order_balance_amount/$scope.order.qty_per_dzn)*100)/100;
+
     };
     $scope.composition_refresh = function(){
         $scope.order.total_yarn_weight = 0;
@@ -768,6 +780,10 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
         row.insertCell(1).innerHTML = $scope.composition_percentage;
         row.insertCell(2).innerHTML = $scope.composition_yarn_rate;
         row.insertCell(3).innerHTML = $scope.composition_wastage;
+        $scope.composition_name = null;
+        $scope.composition_percentage = null;
+        $scope.composition_yarn_rate = null;
+        $scope.composition_wastage = null;
         //console.log($scope.total_yarn_weight+ " = "+ $scope.total_yarn_cost+" = "+$scope.composition_yarn_rate +" = "+$scope.composition_wastage)
     };
     $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
@@ -922,7 +938,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             {
                 $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
                     $scope.num_of_items = 10;
-                    $scope.orders = response.data;
+                    $scope.orders = response.data.orders;
                     $scope.reverse = false;
                 })
             }
@@ -940,6 +956,7 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
 
     $scope.init = function(id){
         $scope.page_title = 'Order Details';
+        $scope.host = app.host;
         $scope.yarn_type = '';
         $http.get(app.host + 'production/orders/fetchOrderDetails/'+id).then(function(response){
             console.log('777777777777')
@@ -1012,69 +1029,74 @@ angular.module('myApp').controller('OrderController', function($scope, $http, $r
             }).show();
         });
     };
-    $scope.add_order = function(form){
-        var data = $.param({
-            user_id: $scope.loginUser.id,
-            buyer_id: $scope.order.buyer_id,
-            style_id: $scope.order.style_id,
-            order_date: $scope.order.order_date,
-            delivery_date: $scope.order.delivery_date,
-            order_gg: $scope.order.order_gg,
-            order_qty: $scope.order.order_qty,
-            order_fob: $scope.order.order_fob,
-            weight_per_dzn: $scope.order.weight_per_dzn,
-            qty_per_dzn: $scope.order.qty_per_dzn,
-            total_yarn_weight: $scope.order.total_yarn_weight,
-            total_yarn_cost: $scope.order.total_yarn_cost,
-            accessories_rate: $scope.order.accessories_rate,
-            total_accessories_cost: $scope.order.total_accessories_cost,
-            button_rate: $scope.order.button_rate,
-            total_button_cost: $scope.order.total_button_cost,
-            zipper_rate: $scope.order.zipper_rate,
-            total_zipper_cost: $scope.order.total_zipper_cost,
-            print_rate: $scope.order.print_rate,
-            total_print_cost: $scope.order.total_print_cost,
-            security_tag_cost: $scope.order.security_tag,
-            total_security_tag_cost: $scope.order.total_security_tag_cost,
-            total_fob: $scope.order.total_fob,
-            total_cost: $scope.order.total_cost,
-            order_balance_amount: $scope.order.order_balance_amount,
-            cost_of_making: $scope.order.cost_of_making,
-            compositions: $scope.compositions
-        });
-        var config = {
-            headers : {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-            }
-        };
-        $http.post(app.host + 'production/orders', data, config).success(function (result, status) {
-            console.log(result)
+    $scope.add_order = function(form, myfile){
+        Upload.upload({
+            url: app.host + 'production/orders',
+            data: {
+                user_id: $scope.loginUser.id,
+                buyer_id: $scope.order.buyer_id,
+                style_id: $scope.order.style_id,
+                order_date: $scope.order.order_date,
+                delivery_date: $scope.order.delivery_date,
+                order_gg: $scope.order.order_gg,
+                order_qty: $scope.order.order_qty,
+                order_fob: $scope.order.order_fob,
+                weight_per_dzn: $scope.order.weight_per_dzn,
+                qty_per_dzn: $scope.order.qty_per_dzn,
+                total_yarn_weight: $scope.order.total_yarn_weight,
+                total_yarn_cost: $scope.order.total_yarn_cost,
+                accessories_rate: $scope.order.accessories_rate,
+                total_accessories_cost: $scope.order.total_accessories_cost,
+                button_rate: $scope.order.button_rate,
+                total_button_cost: $scope.order.total_button_cost,
+                zipper_rate: $scope.order.zipper_rate,
+                total_zipper_cost: $scope.order.total_zipper_cost,
+                print_rate: $scope.order.print_rate,
+                total_print_cost: $scope.order.total_print_cost,
+                security_tag_cost: $scope.order.security_tag,
+                total_security_tag_cost: $scope.order.total_security_tag_cost,
+                total_fob: $scope.order.total_fob,
+                total_cost: $scope.order.total_cost,
+                order_balance_amount: $scope.order.order_balance_amount,
+                cost_of_making: $scope.order.cost_of_making,
+                compositions: $scope.compositions,
+                file: myfile
+            },
+        }).then(function (response) {
             $('#add-order-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
-                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add a order.</strong>' },
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add an order.</strong>' },
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.order = {};
+            $scope.order.buyer_id = null;
             form.$setPristine();
             $scope.compositions = null;
+            $scope.myfile = "";
             document.getElementById('composition-div-group').innerHTML = '';
             $http.get(app.host + 'production/order/fetchOrdersList').then(function (response) {
-                $scope.num_of_items = 10;
-                $scope.orders = response.data;
                 $scope.reverse = false;
+                $scope.num_of_items = 10;
+                $scope.orders = response.data.orders;
+                $scope.order.total_yarn_weight = 0;
+                $scope.order.total_yarn_cost = 0;
+                $scope.order.total_yarn_percentage = 0;
+                $scope.order.total_yarn_percentage_left = 100;
+                compositions = new Array()
+                n=0;
             });
-        }).error(function (result, status) {
-            $('#add-order-modal').modal('toggle');
+        }, function (response) {console.log(data)
+            $('#add-buyer-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'danger',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-            $scope.order_name = null;
         });
+
     };
 })
 

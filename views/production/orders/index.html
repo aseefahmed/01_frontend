@@ -37,6 +37,14 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12"  style="overflow-x: auto;">
+                                <div class="row col-sm-12 text-center">
+                                    <span style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; Processing &nbsp;</span>&nbsp;
+                                    <span style="border:1px solid #000;background-color: darkred; color: white">&nbsp; Cancelled &nbsp;</span>&nbsp;
+                                    <span style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; Shipped &nbsp;</span>&nbsp;
+                                    <span style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; Hold &nbsp;</span>&nbsp;
+                                    <span style="border:1px solid #000;background-color: purple; color: white"> &nbsp;  Delivering Soon &nbsp; </span>&nbsp;
+                                    <span style="border:1px solid #000;background-color: black; color: white"> &nbsp; Inactive &nbsp; </span>&nbsp;
+                                </div>
                                 <div class="col-sm-12 text-center">
                                     <dir-pagination-controls
                                             direction-links="true" auto-hide="false"
@@ -58,20 +66,20 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-if="styles.length == 0 || filtered.length == 0">
+                                        <tr ng-if="orders.length == 0 || filtered.length == 0">
                                             <td colspan="9">No data found.</td>
                                         </tr>
                                         <tr ng-class-odd="'bg-color1'" dir-paginate="order in filtered = (orders| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
                                             <td><input class="select_row" type="checkbox"  value="{{ order.id }}"/></td>
-                                            <td ng-cloak><img src="" width="80px"/></td>
+                                            <td ng-cloak><img src="{{host}}uploaded_files/production/orders/{{ order.image }}" width="80px"/></td>
                                             <td ng-cloak>{{ order.buyer_name }}</td>
                                             <td ng-cloak>
-                                                <div ng-if="order.flag==1" style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; Processing &nbsp;</div>&nbsp;
-                                                <div ng-if="order.flag==9" style="border:1px solid #000;background-color: darkred; color: white">&nbsp; Cancelled &nbsp;</div>&nbsp;
-                                                <div ng-if="order.flag==8" style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; Shipped &nbsp;</div>&nbsp;
-                                                <div ng-if="order.flag==7" style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; Hold &nbsp;</div>&nbsp;
-                                                <div ng-if="order.delivery_date <= data_of_14_days_later" style="border:1px solid #000;background-color: purple; color: white">&nbsp; Delivering Soon &nbsp;</div>&nbsp;
-                                                <div ng-if="order.updated_at <= data_of_14_days_ago" style="border:1px solid #000;background-color: black; color: white">&nbsp; Inactive &nbsp;</div>&nbsp;
+                                                <div ng-if="order.flag==1" style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                                <div ng-if="order.flag==9" style="border:1px solid #000;background-color: darkred; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                                <div ng-if="order.flag==8" style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                                <div ng-if="order.flag==7" style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                                <div ng-if="order.delivery_date <= data_of_14_days_later" style="border:1px solid #000;background-color: purple; color: white">&nbsp;</div>&nbsp;
+                                                <div ng-if="order.updated_at <= data_of_14_days_ago" style="border:1px solid #000;background-color: black; color: white">&nbsp;</div>&nbsp;
                                             </td>
                                             <td ng-cloak>{{ order.order_date }}</td>
                                             <td ng-cloak>{{ order.qty }}</td>
@@ -120,12 +128,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Style </label>
-                                        <select class="inline-search" style="width: 85%;" ng-model="order.style_id" ng-pattern="/^\d+$/" ng-required="true">
-                                            <option value="">Select a style</option>
-                                            <option ng-repeat="style in styles" value="{{style.id}}">
-                                                {{ style.style_name }}
-                                            </option>
-                                        </select>
+                                        <input class="form-control" placeholder="Style" type="text" ng-model="order.style_id" ng-required="true"/>
 
                                     </div>
                                 </div>
@@ -138,7 +141,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Delivery Date </label>
-                                        <input class="form-control calender" placeholder="Delivery Date" type="text" ng-model="order.delivery_date" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" />
+                                        <input class="form-control calender" placeholder="Delivery Date" type="text" ng-model="order.delivery_date" ng-required="true" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" />
                                     </div>
                                 </div>
                             </div>
@@ -282,9 +285,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="formSep">
+                                <code>Image</code>
+                                <img ngf-thumbnail="myfile"><br><br>
+                                <div class="button" ngf-select ng-model="myfile" name="file" ngf-pattern="'image/*'"
+                                     ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+                                     ngf-resize="{width: 100, height: 100}"><button class="btn btn-success">Upload Image</button>
+                                </div>
+                                <i ng-show="myForm.file.$error.required">*required</i><br>
+                                <i ng-show="myForm.file.$error.maxSize">File too large
+                                    {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+                            </div>
                             <div class="modal-footer">
                                 <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                                <button type="submit" ng-disabled="myForm.$invalid" name="commit" class="btn btn-success" ng-click="add_order(myForm)"><span class="glyphicon glyphicon-ok-sign"></span> Add Order </button>
+                                <button type="submit" ng-disabled="myForm.$invalid" name="commit" class="btn btn-success" ng-click="add_order(myForm, myfile)"><span class="glyphicon glyphicon-ok-sign"></span> Add Order </button>
                             </div>
                         </form>
                     </div>

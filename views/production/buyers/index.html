@@ -18,7 +18,7 @@
                                 <li ng-if="loginUser.emp_role==1"><a data-toggle="modal" href="#add-buyer-modal" target="_self"><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
                                 <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;"  target="_self" ng-click="remove_buyer(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
                                 <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;" target="_self" ng-click="remove_buyer(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
-                                <li ng-if="loginUser.emp_role==1"><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
+                                <li><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
                             </ul>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                                     </tr>
                                     <tr ng-class-odd="'bg-color1'" dir-paginate="buyer in filtered = (buyers| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
                                         <td><input class="select_row" type="checkbox"  value="{{ buyer.id }}"/></td>
-                                        <td ng-cloak><img src="{{ asset('img/uploads/production/buyers') }}/{{ buyer.image }}" width="80px"/></td>
+                                        <td ng-cloak><img src="{{host}}uploaded_files/production/buyers/{{ buyer.image }}" width="80px"/></td>
                                         <td ng-cloak>{{ buyer.buyer_name }}</td>
                                         <td ng-cloak>{{ buyer.contact_person }}</td>
                                         <td ng-cloak>{{ buyer.email_address }}</td>

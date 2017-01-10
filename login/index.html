@@ -38,9 +38,10 @@
                                     <input type="text" ng-model="email" class="form-control input-block-level" />
                                     <label>Password<a href="#" class="pull-right"><i class="icon-question-sign"></i>&nbsp;Forgot Password</a> </label>
                                     <input type="password" ng-model="password" class="form-control input-block-level" />
-                                    <span class="text-danger" class="ng-cloak">{{ login_failed_alert }}</span>
+                                    <span class="text-danger" ng-show="login_failed_alert!=''" ng-cloak>{{ login_failed_alert }}</span>
                                     <br />
                                     <a class="btn btn-success" ng-click="doSignIn()">Sign In <i class="glyphicon glyphicon-log-in"></i></a>
+                                    <img id="loading_gif" src="../img/loading_box.gif" width="10%;" style="display:none;">
                                 </form>
 
                             </div>
@@ -110,6 +111,7 @@
                                         <div ng-if="registration_failed_alert==2" class="alert alert-success">Registrion has been successfully completed. Please check your inbox to verify you email address.</div>
                                         <div ng-if="pass!=repeat_pass" class="alert alert-danger">Password & repeat password must be same.</div>
                                         <button class="btn btn-success" ng-click="registerUser()" ng-disabled="registraion_form.$invalid || pass!=repeat_pass">Register</button>
+                                        <img id="loading_gif_register" src="../img/loading_box.gif" width="10%;" style="display:none;">
                                     </div>
                                 </form>
                             </div>

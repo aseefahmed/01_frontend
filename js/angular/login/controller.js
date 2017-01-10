@@ -1,5 +1,6 @@
 angular.module('loginApp').controller('LoginController', function($scope, $http, $window){
     $scope.loginFailed = false;
+    $scope.login_failed_alert = "";
     $scope.email = 'aseefahmed@gmail.com';
     $scope.password = 'aseefahmed';
     $scope.registration_failed_alert = 0;
@@ -12,6 +13,7 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
         $('#registerPanel').addClass('active');
     }
     $scope.registerUser = function () {
+        $('#loading_gif_register').css('display', 'inline');
         var data = $.param({
             first_name: $scope.first_name,
             last_name: $scope.last_name,
@@ -24,9 +26,8 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
             }
         };console.log(data)
         $scope.registration_failed_alert = 0;
-        $('#ajax_loading').css('display', 'block');
         $http.post(app.host + 'register', data, config).success(function (result, status) {
-            $('#ajax_loading').css('display', 'none');
+            $('#loading_gif_register').css('display', 'none');
             if(result == 1)
             {
                 $scope.registration_failed_alert = 1;
@@ -36,12 +37,12 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
                 $scope.registration_failed_alert = 2;
             }
         }).error(function (result, status) {
-            $('#ajax_loading').css('display', 'none');
+            $('#loading_gif_register').css('display', 'none');
             $scope.registration_failed_alert = -1;
         });
     }
     $scope.doSignIn = function () {
-
+        $('#loading_gif').css('display', 'inline');
         var data = $.param({
             email: $scope.email,
             password: $scope.password
@@ -49,12 +50,12 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
         var config = {
             headers : {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;',
-                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": "http://doddy.aseefahmed.net/",
                 "Access-Control-Allow-Headers": "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With"
             }
         };
         $http.post(app.host + 'process-login', data, config).success(function (result, status) {
-            console.log(result)
+            $('#loading_gif').css('display', 'none');
             if(result == -1)
             {
                 $scope.login_failed_alert = "Invalid username/password. Please try again."
@@ -66,6 +67,7 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
                 $window.location.href = '../#/dashboard';
             }
         }).error(function (result, status) {
+            $('#loading_gif').css('display', 'none');
             $scope.login_failed_alert = "Internal server error occurred. Please contact the administrator."
         });;
     }
