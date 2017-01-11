@@ -69,7 +69,12 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
         .when('/production/requisitions/sent', {
             templateUrl: 'views/production/requisitions/sent.html',
             controller: 'AllRequisitionController'
+        })
+        .when('/buying/orders', {
+            templateUrl: 'views/buying/orders/index.html',
+            controller: 'AllRequisitionController'
         });
+
 
 
 });

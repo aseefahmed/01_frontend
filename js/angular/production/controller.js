@@ -1,3 +1,10 @@
+angular.module('myApp').controller('SidebarController', function($scope, $http, $window){
+    $scope.module_name = 'Production';
+    $scope.switchToModule = function(module_name){
+        $scope.module_name = module_name;
+    }
+});
+
 angular.module('myApp').controller('DashboardController', function($scope, $http, $window){
 
     $scope.page_title = 'Dashboard';

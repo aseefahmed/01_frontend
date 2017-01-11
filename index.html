@@ -61,7 +61,7 @@
                             <a href="/production"><span class="glyphicon glyphicon-wrench"></span> Production</a>
                         </li>
                         <li class="dropdown">
-                            <a href="/production"><span class="glyphicon glyphicon-home"></span> Accounts</a>
+                            <a href="/production"><span class="glyphicon glyphicon-home"></span> Buying</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav user_menu pull-right">
@@ -213,14 +213,19 @@
 
 </div>
 
-<div class="sidebar">
+<div class="sidebar" ng-controller="SidebarController">
     <div class="sidebar_inner_scroll">
         <div class="sidebar_inner">
             <form action="http://gebo-admin-3.tzdthemes.com/search_page.html" class="input-group input-group-sm" method="post">
-                <input autocomplete="off" name="query" class="search_query form-control input-sm" size="16" placeholder="Search..." type="text">
-                <span class="input-group-btn"><button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button></span>
+               <select class="form-controll col-sm-12" width="100%" ng-model="module_name" ng-change="switchToModule(module_name)">
+                    <option value="">Switch To Module</option>
+                    <option value="HRM">HRM</option>
+                    <option value="CRM">CRM</option>
+                    <option value="Production">Production</option>
+                    <option value="Buying">Buying</option>
+                </select>
             </form>
-            <div id="side_accordion" class="panel-group">
+            <div id="side_accordion" class="panel-group" ng-show="module_name == 'Production'">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#" class="accordion-toggle bg bg-warning " ng-controller="DashboardController"  ng-click="goToDashboard()">
@@ -305,6 +310,109 @@
 
             </div>
 
+
+            <div id="hrm_side_accordion" class="panel-group" ng-show="module_name == 'HRM'">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#" class="accordion-toggle bg bg-warning " ng-controller="DashboardController"  ng-click="goToDashboard()">
+                            <i class="glyphicon glyphicon-dashboard"></i> AAA
+                        </a>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#aaa" data-parent="#hrm_side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-bell"></i> TT
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="aaa">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/orders">View Orders</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#sss" data-parent="#hrm_side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-globe"></i> XX
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="sss">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/suppliers">View Suppliers</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="buying_side_accordion" class="panel-group" ng-show="module_name == 'Buying'">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseOrderBuying" data-parent="#buying_side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-bell"></i> Orders
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseOrderBuying">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/buying/orders">View Orders</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseSupplierBuying" data-parent="#buying_side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-globe"></i> Suppliers
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseSupplierBuying">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/suppliers">View Suppliers</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseBuyerBuying" data-parent="#buying_side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-move"></i> Buyers
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse" id="collapseBuyerBuying">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#/production/buyers">View Buyers</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseReportBuying" data-parent="#buying_side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-signal"></i> Reports
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseReportBuying">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/production/reports/orders">Orders</a></li>
+                                <li class=""><a href="#/production/reports/saved">Saved Reports</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
             <div class="push"></div>
         </div>
     </div>
@@ -367,6 +475,17 @@
 
         $('.inline_date').datepicker();
 
+        var availableTags = [
+            "HRM",
+            "CRM",
+            "Textile",
+            "Buying",
+        ];
+
+        $( "#modules" ).autocomplete({
+            source: availableTags,
+            minLength:0,
+        }).bind('focus', function(){ $(this).autocomplete("search"); } );
     });
 
 </script>

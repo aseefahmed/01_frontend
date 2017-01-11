@@ -13,8 +13,16 @@
 		});*/
 		//* make active on accordion change
 		$('#side_accordion').on('hidden.bs.collapse shown.bs.collapse', function () {
-			gebo_sidebar.make_active();
+			gebo_sidebar.make_active('side_accordion');
             gebo_sidebar.scrollbar();
+		});
+		$('#hrm_side_accordion').on('hidden.bs.collapse shown.bs.collapse', function () {
+			gebo_sidebar.make_active('hrm_side_accordion');
+			gebo_sidebar.scrollbar();
+		});
+		$('#buying_side_accordion').on('hidden.bs.collapse shown.bs.collapse', function () {
+			gebo_sidebar.make_active('hrm_side_accordion');
+			gebo_sidebar.scrollbar();
 		});
 		//* resize elements on window resize
 		var lastWindowHeight = $(window).height();
@@ -129,8 +137,8 @@
 				'min-height'    : '100%'
 			});
         },*/
-		make_active: function() {
-			var thisAccordion = $('#side_accordion');
+		make_active: function(id) {
+			var thisAccordion = $('#'+id);
 			thisAccordion.find('.panel-heading').removeClass('sdb_h_active');
 			var thisHeading = thisAccordion.find('.panel-body.in').prev('.panel-heading');
 			if(thisHeading.length) {
