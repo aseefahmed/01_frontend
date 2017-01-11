@@ -3,7 +3,7 @@
 </div>
 <div class="row" ng-cloak>
     <div class="col-sm-12 col-md-12">
-        <div class="col-sm-12">
+        <div class="col-sm-8">
             <div class="w-box" id="w_sort01">
                 <div class="w-box-header">
                     <div class="pull-left">
@@ -164,6 +164,7 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-4" ng-include="'views/production/partials/orders_stats.html'"></div>
 
         <div class="modal fade" id="add-order-modal">
             <div class="modal-dialog">
@@ -178,54 +179,77 @@
                             <div class="formSep">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label>Buyer </label>
-                                        <select class="inline-search" style="width: 85%;" ng-model="order.buyer_id" ng-pattern="/^\d+$/" ng-required="true">
-                                            <option value="">Select a buyer</option>
+                                        <label>Style </label>
+                                        <input class="form-control" placeholder="Style" type="text" ng-model="order.style_id" ng-required="true"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Ref. </label>
+                                        <input class="form-control" placeholder="Reference" type="text" ng-model="order.ref" ng-required="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="formSep">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Dyeing order/P.I date</label>
+                                        <input class="form-control calender" placeholder="Dyeing order/P.I date" type="text" ng-model="order.pi_date" ng-required="true" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Handover Date </label>
+                                        <input class="form-control calender" type="text" placeholder="Handover Date" ng-model="order.hand_handover_date" ng-required="true" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="formSep">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label>Gauge</label>
+                                        <input class="form-control" placeholder="Gauge" type="text" ng-model="order.order_gg" ng-pattern="/^\d+$/" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label>Yarn(Ref. Details)</label>
+                                        <input class="form-control" placeholder="Yarn(Ref. Details)" type="text" ng-model="order.yarn_ref" ng-required="true" ng-pattern="/^\d+$/"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Customer</label>
+                                        <select class="inline-search" style="width: 85%;" ng-model="order.customer" ng-pattern="/^\d+$/" ng-required="true">
+                                            <option value="">Select a client</option>
                                             <option ng-repeat="buyer in buyers" value="{{buyer.id}}">
                                                 {{ buyer.buyer_name }}
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label>Style </label>
-                                        <input class="form-control" placeholder="Style" type="text" ng-model="order.style_id" ng-required="true"/>
-
-                                    </div>
                                 </div>
                             </div>
                             <div class="formSep">
                                 <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Order Date </label>
-                                        <input class="form-control calender" type="text" placeholder="Order Date" ng-model="order.order_date" ng-required="true" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>Delivery Date </label>
-                                        <input class="form-control calender" placeholder="Delivery Date" type="text" ng-model="order.delivery_date" ng-required="true" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" />
+                                    <div class="col-sm-12">
+                                        <label>Color</label>
+                                        <input class="form-control" placeholder="Color" type="text" ng-model="order.color" ng-pattern="/^\d+$/" />
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="formSep">
                                 <div class="row">
-                                    <div class="col-sm-3">
-                                        <label>GG</label>
-                                        <input class="form-control" placeholder="GG" type="text" ng-model="order.order_gg" ng-pattern="/^\d+$/" />
-                                    </div>
                                     <div class="col-sm-3">
                                         <label>Qty</label>
-                                        <input class="form-control" placeholder="Qty" type="text" ng-model="order.order_qty" ng-required="true" ng-pattern="/^\d+$/" ng-change="update_order_info()" />
+                                        <input class="form-control" placeholder="Qty" type="text" ng-model="order.order_qty" ng-required="true" ng-pattern="/^\d+$/"/>
                                     </div>
                                     <div class="col-sm-3">
-                                        <label>FOB</label>
-                                        <input class="form-control" placeholder="FOB" type="text" ng-model="order.order_fob" ng-required="true"  ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="update_order_info()"  />
+                                        <label>Sizing</label>
+                                        <input class="form-control" placeholder="Sizing" type="text" ng-model="order.sizing" ng-required="true"  ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
                                     </div>
                                     <div class="col-sm-3">
-                                        <label>Weight Per Dzn</label>
-                                        <input class="form-control" placeholder="Weight Per Dzn" type="text" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="order.weight_per_dzn" ng-change="update_order_info()"  />
+                                        <label>Main Label</label>
+                                        <input class="form-control" placeholder="Main Label" type="text" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="order.mail_label"  />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label>Gauge</label>
+                                        <input class="form-control" placeholder="Gauge" type="text" ng-model="order.order_gg" ng-pattern="/^\d+$/" />
                                     </div>
                                 </div>
                             </div>
-
                             <div class="formSep bg-warning">
                                 <div class="row">
                                     <div class="col-sm-12">
