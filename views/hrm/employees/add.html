@@ -1,0 +1,100 @@
+<style type="text/css">
+
+    [data-wizard-init] {
+        margin: 10px;
+        width: 100%;
+    }
+</style>
+<div class="row col-sm-12">
+    <h3 class="heading" ng-cloak>{{ page_title }}</h3>
+</div>
+<div class="row col-sm-8" ng-init="init_add_emp()">
+
+        <div data-wizard-init>
+            <ul class="steps">
+                <li data-step="1">Personal</li>
+                <li data-step="2">Job Details</li>
+                <li data-step="3">Role</li>
+                <li data-step="4">Bank Details</li>
+            </ul>
+            <form method="post" enctype="multipart/form-data" name="myForm" novalidate>
+                <div class="steps-content" style="background-color: red">
+                    <div data-step="1">
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <code>First Name</code><span style="color:red">*</span>
+                                    <input class="form-control" placeholder="First Name" name="first_name" type="text" ng-model="user.first_name" ng-required="true" ng-maxlength="50">
+                                    <span class="help-block " ng-show="myForm.first_name.$dirty && myForm.first_name.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <code>Last Name</code><span style="color:red">*</span>
+                                    <input class="form-control" placeholder="Last Name" name="last_name" type="text" ng-model="user.last_name" ng-required="true" ng-maxlength="50">
+                                    <span class="help-block " ng-show="myForm.last_name.$dirty && myForm.last_name.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <code>Email Address</code><span style="color:red">*</span>
+                                    <input class="form-control" placeholder="Email Address" name="email" type="text" ng-model="user.email" ng-required="true" ng-maxlength="50">
+                                    <span class="help-block " ng-show="myForm.email.$dirty && myForm.email.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <code>Mob/Tel</code>
+                                    <input class="form-control" placeholder="Mob/Tel" name="mob_tel" type="text" ng-model="user.mob_tel">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <code>Password</code>
+                                    <input class="form-control" placeholder="Password" name="password" type="text" ng-model="user.password" ng-required="true" ng-maxlength="50">
+                                    <span class="help-block " ng-show="myForm.password.$dirty && myForm.password.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <code>Re-type Password</code>
+                                    <input class="form-control" placeholder="Re-type Password" name="retype_password" type="text" ng-model="user.retype_password" ng-required="true" ng-maxlength="50">
+                                    <span class="help-block " ng-show="myForm.retype_password.$dirty && myForm.retype_password.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <code>Address</code>
+                                    <textarea class="form-control" placeholder="Address" name="address" type="text" ng-model="user.address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-step="2">
+                        <h4>Address</h4>
+                        <p>
+                            Sed eleifend lobortis dolor, vel hendrerit neque interdum eget. Proin ac hendrerit diam. Mauris tristique libero vel condimentum sodales. Ut sed augue euismod, tincidunt nunc at, rutrum risus. Cras consequat purus sit amet augue varius; vitae ornare erat commodo. In hac habitasse platea dictumst. Nunc lobortis auctor ligula dictum scelerisque. Integer sed justo rutrum, rutrum tortor nec, feugiat nulla?
+                        </p>
+                    </div>
+                    <div data-step="3">
+                        <h4>Template</h4>
+                        <p>
+                            Donec pharetra vel felis facilisis aliquam! Nunc consequat, lorem a scelerisque porttitor, orci neque mattis velit; at rhoncus quam felis a lorem. Cras dictum augue elit, non tempus leo pharetra nec! Nunc iaculis ex quis ante elementum varius. Curabitur a ultrices risus. Etiam elementum magna a eros maximus ornare. Aenean lectus dui, venenatis non tincidunt sed, dignissim at turpis? Vestibulum varius tempor turpis eget laoreet. Phasellus hendrerit purus vel arcu dapibus ullamcorper? Aliquam et nunc sagittis, semper orci eu, eleifend turpis! Integer eget aliquet libero. Vestibulum rutrum, ipsum nec bibendum sagittis, leo libero tristique erat, ut euismod lorem tortor quis lorem. Vivamus et tellus eu purus tempor posuere.
+                        </p>
+                    </div>
+                    <div data-step="4">
+                        <h4>Delivery</h4>
+                        <p>
+                            Nullam sit amet sollicitudin leo. Donec lobortis est a sagittis ornare. Mauris mattis dui sit amet tortor dapibus, sit amet scelerisque nisl fermentum. Praesent efficitur ac mauris sit amet placerat. Pellentesque ultricies, nibh eu elementum convallis, sapien dolor egestas nunc, vitae volutpat lorem orci sed libero. Nullam posuere, massa a tempor maximus, tortor enim ultricies urna, pretium viverra nisi urna id erat? Etiam nec dolor condimentum, consequat velit sagittis, luctus metus. Proin molestie neque justo, ut elementum arcu congue faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla orci est, elementum et venenatis congue, pharetra in lorem. Fusce a blandit arcu.
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+</div>
+<div class="col-sm-4" ng-include="'views/production/partials/orders_stats.html'"></div>

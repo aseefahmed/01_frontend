@@ -73,6 +73,14 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
         .when('/buying/orders', {
             templateUrl: 'views/buying/orders/index.html',
             controller: 'AllRequisitionController'
+        })
+        .when('/hrm/employees', {
+            templateUrl: 'views/hrm/employees/index.html',
+            controller: 'EmployeesController'
+        })
+        .when('/hrm/employees/add', {
+            templateUrl: 'views/hrm/employees/add.html',
+            controller: 'EmployeesController'
         });
 
 

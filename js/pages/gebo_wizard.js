@@ -26,7 +26,7 @@
 				titleClick	: true,
 				validate	: true
 			});
-			stepy_validation = $('#validate_wizard').validate({
+			/*stepy_validation = $('#validate_wizard').validate({
 				onfocusout: false,
 				errorPlacement: function(error, element) {
 					error.appendTo( element.closest("div.controls") );
@@ -62,7 +62,7 @@
 					'v_country'		: { required:  'Country field is requerid!' }
 				},
 				ignore				: ':hidden'
-			});
+			});*/
 		},
 		//* add numbers to step titles
 		steps_nb: function(){

@@ -65,142 +65,155 @@
                                             <button class="btn btn-primary" ng-disabled="myForm.$invalid" ng-click="save_report(report, orders)"><i class="glyphicon glyphicon-floppy-disk"></i> Save Report</button>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="w-box" id="w_sort01">
-                <div class="w-box-header">
-                    <div class="pull-left">
-                        Total Orders: {{filtered.length}}
-                    </div>
-                    <div class="pull-right">
-                        <div class="btn-group">
-                            <a class="btn dropdown-toggle btn-success btn-xs" data-toggle="dropdown" href="#" target="_self">
-                                <i class="glyphicon glyphicon-cog"></i> Action <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                               <li><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
-                            </ul>
-                        </div>
+        </div>
+        <div class="w-box" id="w_sort01">
+            <div class="w-box-header">
+                <div class="pull-left">
+                    Total Orders: {{filtered.length}}
+                </div>
+                <div class="pull-right">
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle btn-success btn-xs" data-toggle="dropdown" href="#" target="_self">
+                            <i class="glyphicon glyphicon-cog"></i> Action <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="w-box-content cnt_a">
-                    <div id="main-content">
-                        <div class="row">
-                            <div class="col-sm-4 text-left">
-                                <input type="text" class="form-control" placeholder="Search" ng-model="search_filter">
-                            </div>
-                            <div class="col-sm-8 text-right">
-                                <select  class="inline-search" style="width: 25%;" ng-model="num_of_items" name="num_of_items" ng-options="num.id as num.value for num in num_of_items_arr ">
-                                    <option value="">Show</option>
-                                </select>
-                            </div>
+            </div>
+            <div class="w-box-content cnt_a">
+                <div id="main-content">
+                    <div class="row">
+                        <div class="col-sm-4 text-left">
+                            <input type="text" class="form-control" placeholder="Search" ng-model="search_filter">
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12" style="overflow-x: auto;">
-                                <div class="row col-sm-12 text-center">
-                                    <span style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; Processing &nbsp;</span>&nbsp;
-                                    <span style="border:1px solid #000;background-color: darkred; color: white">&nbsp; Cancelled &nbsp;</span>&nbsp;
-                                    <span style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; Shipped &nbsp;</span>&nbsp;
-                                    <span style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; Hold &nbsp;</span>&nbsp;
-                                    <span style="border:1px solid #000;background-color: purple; color: white"> &nbsp;  Delivering Soon &nbsp; </span>&nbsp;
-                                    <span style="border:1px solid #000;background-color: black; color: white"> &nbsp; Inactive &nbsp; </span>&nbsp;
-                                </div>
-                                <div class="col-sm-12 text-center">
-                                    <dir-pagination-controls
-                                            direction-links="true" auto-hide="false"
-                                            boundary-links="true" >
-                                    </dir-pagination-controls>
-                                </div>
-                                <table class="table table-responsive table-bordered table">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Image</th>
-                                        <th class="th-pointer" ng-click="sort('buyer_id')">Buyer<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('buyer_id')">Status<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('status')">Status <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                        <div class="col-sm-8 text-right">
+                            <select  class="inline-search" style="width: 25%;" ng-model="num_of_items" name="num_of_items" ng-options="num.id as num.value for num in num_of_items_arr ">
+                                <option value="">Show</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12" style="overflow-x: auto;">
+                            <div class="row col-sm-12 text-center">
+                                <span style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; Processing &nbsp;</span>&nbsp;
+                                <span style="border:1px solid #000;background-color: darkred; color: white">&nbsp; Cancelled &nbsp;</span>&nbsp;
+                                <span style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; Shipped &nbsp;</span>&nbsp;
+                                <span style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; Hold &nbsp;</span>&nbsp;
+                                <span style="border:1px solid #000;background-color: purple; color: white"> &nbsp;  Delivering Soon &nbsp; </span>&nbsp;
+                                <span style="border:1px solid #000;background-color: black; color: white"> &nbsp; Inactive &nbsp; </span>&nbsp;
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <dir-pagination-controls
+                                        direction-links="true" auto-hide="false"
+                                        boundary-links="true" >
+                                </dir-pagination-controls>
+                            </div>
+                            <table class="table table-responsive table-bordered table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="th-pointer" ng-click="sort('buyer_id')">Buyer<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('style_id')">Style<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='style_id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
 
-                                        <th class="th-pointer" ng-click="sort('fob')">FOB <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='fob'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('weight_per_dzn')">Weight Per Dzn <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='weight_per_dzn'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('qty_per_dzn')">Qty Per Dzn <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='qty_per_dzn'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_yarn_weight')">Total Yarn Weight <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_yarn_weight'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_yarn_cost')">Total Yarn Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_yarn_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('acc_rate')">Acc. Rate <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='acc_rate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_acc_cost')">Total Acc. Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_acc_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('btn_cost')">Btn Rate<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='btn_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_btn_cost')">Total Btn. Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_btn_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('zipper_cost')">Zipper Rate <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='zipper_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_zipper_cost')">Total Zipper Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_zipper_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('print_cost')">Print Rate <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='print_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_print_cost')">Total Print Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_print_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('security_tag_cost')">Tag Rate <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='security_tag_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_security_tag_cost')">Total Tag Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_security_tag_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
 
-                                        <th class="th-pointer" ng-click="sort('order_date')">Order Date <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='order_date'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('gg')">GG <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='gg'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('qty')">Qty<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='qty'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_fob')">Total FOB<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_fob'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('total_yarn_cost')">Total Cost<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('balance_amount')">Balance Amount<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='balance_amount'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('cost_of_making')">COM<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='cost_of_making'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                        <th class="th-pointer" ng-click="sort('delivery_date')">Delivery Date<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='delivery_date'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-if="orders.length == 0 || filtered.length == 0">
-                                        <td colspan="12">No data found.</td>
-                                    </tr>
-                                    <tr ng-class-odd="'bg-color1'" dir-paginate="order in filtered = (orders| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
-                                        <td>{{ $index+1 }}</td>
-                                        <td ng-cloak><img src="{{host}}uploaded_files/production/orders/{{ order.image }}" width="80px"/></td>
-                                        <td ng-cloak>{{ order.buyer_name }}</td>
-                                        <td  ng-cloak>
-                                            <div ng-if="order.flag==1" style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
-                                            <div ng-if="order.flag==9" style="border:1px solid #000;background-color: darkred; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
-                                            <div ng-if="order.flag==8" style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
-                                            <div ng-if="order.flag==7" style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
-                                            <div ng-if="order.delivery_date <= data_of_14_days_later" style="border:1px solid #000;background-color: purple; color: white">&nbsp;</div>&nbsp;
-                                            <div ng-if="order.updated_at <= data_of_14_days_ago" style="border:1px solid #000;background-color: black; color: white">&nbsp;</div>&nbsp;
-                                        </td>
-                                        <td ng-cloak>{{ order.style }}</td>
-                                        <td ng-cloak>{{ order.fob }}</td>
-                                        <td ng-cloak>{{ order.weight_per_dzn }}</td>
-                                        <td ng-cloak>{{ order.qty_per_dzn }}</td>
-                                        <td ng-cloak>{{ order.total_yarn_weight }}</td>
-                                        <td ng-cloak>{{ order.total_yarn_cost }}</td>
-                                        <td ng-cloak>{{ order.acc_rate }}</td>
-                                        <td ng-cloak>{{ order.total_acc_cost }}</td>
-                                        <td ng-cloak>{{ order.btn_cost }}</td>
-                                        <td ng-cloak>{{ order.total_btn_cost }}</td>
-                                        <td ng-cloak>{{ order.zipper_cost }}</td>
-                                        <td ng-cloak>{{ order.total_zipper_cost }}</td>
-                                        <td ng-cloak>{{ order.print_cost }}</td>
-                                        <td ng-cloak>{{ order.total_print_cost }}</td>
-                                        <td ng-cloak>{{ order.security_tag_cost }}</td>
-                                        <td ng-cloak>{{ order.total_security_tag_cost }}</td>
+                                    <th>Image</th>
+                                    <th class="th-pointer" ng-click="sort('order_date')">Status <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='order_date'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
 
-                                        <td ng-cloak>{{ order.order_date }}</td>
-                                        <td ng-cloak>{{ order.gg }}</td>
-                                        <td ng-cloak>{{ order.qty | currency }}</td>
-                                        <td ng-cloak>{{ order.total_fob | currency }}</td>
-                                        <td ng-cloak>{{ order.total_cost | currency }}</td>
-                                        <td ng-cloak>{{ order.balance_amount | currency }}</td>
-                                        <td ng-cloak>{{ order.cost_of_making | currency }}</td>
-                                        <td ng-cloak>{{ order.delivery_date }}</td>
-                                    </tr>
+                                    <th class="th-pointer" ng-click="sort('order_date')">Order Date <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='order_date'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
 
-                                    </tbody>
-                                </table>
-                                <div class="col-sm-12 text-center">
-                                    <dir-pagination-controls
-                                            direction-links="true" auto-hide="false"
-                                            boundary-links="true" >
-                                    </dir-pagination-controls>
-                                </div>
+                                    <th class="th-pointer" ng-click="sort('order_date')">Shipped Date <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='order_date'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('gg')">GG <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='gg'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('qty')">Qty<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='qty'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>                                        <th class="th-pointer" ng-click="sort('qty')">Shipped Qty
+                                    <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='qty'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+
+                                    <th class="th-pointer" ng-click="sort('fob')">FOB <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='fob'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('weight_per_dzn')">Weight Per Dzn <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='weight_per_dzn'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('qty_per_dzn')">Qty Per Dzn <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='qty_per_dzn'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('total_yarn_weight')">Total Yarn Weight <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_yarn_weight'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('total_yarn_cost')">Total Yarn Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_yarn_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('acc_rate')">Acc. Rate <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='acc_rate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('total_acc_cost')">Total Acc. Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_acc_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('btn_cost')">Btn Rate<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='btn_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('total_btn_cost')">Total Btn. Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_btn_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('zipper_cost')">Zipper Rate <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='zipper_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('total_zipper_cost')">Total Zipper Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_zipper_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('print_cost')">Print Rate <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='print_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('total_print_cost')">Total Print Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_print_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('security_tag_cost')">Tag Rate <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='security_tag_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('total_security_tag_cost')">Total Tag Cost <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_security_tag_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+
+                                    <th class="th-pointer" ng-click="sort('total_fob')">Total FOB<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_fob'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('total_yarn_cost')">Total Cost<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='total_cost'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('balance_amount')">Balance Amount<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='balance_amount'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('cost_of_making')">CM<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='cost_of_making'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                    <th class="th-pointer" ng-click="sort('delivery_date')">Delivery Date<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='delivery_date'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-if="orders.length == 0 || filtered.length == 0">
+                                    <td colspan="12">No data found.</td>
+                                </tr>
+                                <tr ng-class-odd="'bg-color1'" dir-paginate="order in filtered = (orders| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
+                                    <td>{{ $index+1 }}</td>
+                                    <td ng-cloak>{{ order.buyer_name }}</td>
+                                    <td ng-cloak>{{ order.style_id }}</td>
+                                    <td ng-cloak><img src="{{host}}uploaded_files/production/orders/{{ order.image }}" width="80px"/></td>
+                                    <td  ng-cloak>
+                                        <div ng-if="order.flag==1" style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                        <div ng-if="order.flag==9" style="border:1px solid #000;background-color: darkred; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                        <div ng-if="order.flag==8" style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                        <div ng-if="order.flag==7" style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                        <div ng-if="order.delivery_date <= data_of_14_days_later" style="border:1px solid #000;background-color: purple; color: white">&nbsp;</div>&nbsp;
+                                        <div ng-if="order.updated_at <= data_of_14_days_ago" style="border:1px solid #000;background-color: black; color: white">&nbsp;</div>&nbsp;
+                                    </td>
+
+                                    <td ng-cloak>{{ order.order_date }}</td>
+
+                                    <td ng-cloak>{{ order.order_date}}</td>
+                                    <td ng-cloak>{{ order.gg }}</td>
+                                    <td ng-cloak>{{ order.qty | currency }}</td>
+
+
+
+                                    <td ng-cloak>{{ order.qty | currency }}</td>
+
+                                    <td ng-cloak>{{ order.fob }}</td>
+                                    <td ng-cloak>{{ order.weight_per_dzn }}</td>
+                                    <td ng-cloak>{{ order.qty_per_dzn }}</td>
+                                    <td ng-cloak>{{ order.total_yarn_weight }}</td>
+                                    <td ng-cloak>{{ order.total_yarn_cost }}</td>
+                                    <td ng-cloak>{{ order.acc_rate }}</td>
+                                    <td ng-cloak>{{ order.total_acc_cost }}</td>
+                                    <td ng-cloak>{{ order.btn_cost }}</td>
+                                    <td ng-cloak>{{ order.total_btn_cost }}</td>
+                                    <td ng-cloak>{{ order.zipper_cost }}</td>
+                                    <td ng-cloak>{{ order.total_zipper_cost }}</td>
+                                    <td ng-cloak>{{ order.print_cost }}</td>
+                                    <td ng-cloak>{{ order.total_print_cost }}</td>
+                                    <td ng-cloak>{{ order.security_tag_cost }}</td>
+                                    <td ng-cloak>{{ order.total_security_tag_cost }}</td>
+
+                                    <td ng-cloak>{{ order.total_fob | currency }}</td>
+                                    <td ng-cloak>{{ order.total_cost | currency }}</td>
+                                    <td ng-cloak>{{ order.balance_amount | currency }}</td>
+                                    <td ng-cloak>{{ order.cost_of_making | currency }}</td>
+                                    <td ng-cloak>{{ order.delivery_date }}</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="col-sm-12 text-center">
+                                <dir-pagination-controls
+                                        direction-links="true" auto-hide="false"
+                                        boundary-links="true" >
+                                </dir-pagination-controls>
                             </div>
                         </div>
                     </div>
@@ -208,6 +221,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script type="text/javascript" src="js/custom-select2.js"></script>

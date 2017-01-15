@@ -15,9 +15,9 @@
                                 <i class="glyphicon glyphicon-cog"></i> Action <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li ng-if="loginUser.emp_role==1"><a data-toggle="modal" href="#add-order-modal" target="_self"><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
-                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;"  target="_self" ng-click="remove_order(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
-                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;" target="_self" ng-click="remove_order(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
+                                <li><a data-toggle="modal" href="#add-order-modal" target="_self"><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
+                                <li><a style="cursor:pointer;"  target="_self" ng-click="remove_order(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
+                                <li><a style="cursor:pointer;" target="_self" ng-click="remove_order(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
                                 <li><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
                             </ul>
                         </div>
@@ -66,30 +66,30 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-if="orders.length == 0 || filtered.length == 0">
-                                            <td colspan="9">No data found.</td>
-                                        </tr>
-                                        <tr ng-class-odd="'bg-color1'" dir-paginate="order in filtered = (orders| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
-                                            <td><input class="select_row" type="checkbox"  value="{{ order.id }}"/></td>
-                                            <td ng-cloak><img src="{{host}}uploaded_files/production/orders/{{ order.image }}" width="80px"/></td>
-                                            <td ng-cloak>{{ order.buyer_name }}</td>
-                                            <td ng-cloak>
-                                                <div ng-if="order.flag==1" style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
-                                                <div ng-if="order.flag==9" style="border:1px solid #000;background-color: darkred; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
-                                                <div ng-if="order.flag==8" style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
-                                                <div ng-if="order.flag==7" style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
-                                                <div ng-if="order.delivery_date <= data_of_14_days_later" style="border:1px solid #000;background-color: purple; color: white">&nbsp;</div>&nbsp;
-                                                <div ng-if="order.updated_at <= data_of_14_days_ago" style="border:1px solid #000;background-color: black; color: white">&nbsp;</div>&nbsp;
-                                            </td>
-                                            <td ng-cloak>{{ order.order_date }}</td>
-                                            <td ng-cloak>{{ order.qty }}</td>
-                                            <td ng-cloak>{{ order.total_fob }}</td>
-                                            <td ng-cloak>{{ order.total_cost }}</td>
-                                            <td  ng-cloak align="center">
-                                                <a class="btn btn-primary" href="#/production/order/{{ order.id }}"><i class="glyphicon glyphicon-eye-open" class="view_style_btn"></i></a>&nbsp;
-                                                <a ng-if="loginUser.emp_role==1" class="btn btn-danger" ng-click="remove_order(order.id, order.id, 'single_delete')" style_name="{{ order.name }}" style_id="{{ order.id }}"><i class="glyphicon glyphicon-trash"></i></a>
-                                            </td>
-                                        </tr>
+                                    <tr ng-if="orders.length == 0 || filtered.length == 0">
+                                        <td colspan="9">No data found.</td>
+                                    </tr>
+                                    <tr ng-class-odd="'bg-color1'" dir-paginate="order in filtered = (orders| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
+                                        <td><input class="select_row" type="checkbox"  value="{{ order.id }}"/></td>
+                                        <td ng-cloak><img src="{{host}}uploaded_files/production/orders/{{ order.image }}" width="80px"/></td>
+                                        <td ng-cloak>{{ order.buyer_name }}</td>
+                                        <td ng-cloak>
+                                            <div ng-if="order.flag==1" style="border:1px solid #000;background-color: #00557F; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                            <div ng-if="order.flag==9" style="border:1px solid #000;background-color: darkred; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                            <div ng-if="order.flag==8" style="border:1px solid #000;background-color: darkgreen; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                            <div ng-if="order.flag==7" style="border:1px solid #000;background-color: #f89406; color: white">&nbsp; &nbsp; &nbsp;</div>&nbsp;
+                                            <div ng-if="order.delivery_date <= data_of_14_days_later" style="border:1px solid #000;background-color: purple; color: white">&nbsp;</div>&nbsp;
+                                            <div ng-if="order.updated_at <= data_of_14_days_ago" style="border:1px solid #000;background-color: black; color: white">&nbsp;</div>&nbsp;
+                                        </td>
+                                        <td ng-cloak>{{ order.order_date }}</td>
+                                        <td ng-cloak>{{ order.qty }}</td>
+                                        <td ng-cloak>{{ order.total_fob }}</td>
+                                        <td ng-cloak>{{ order.total_cost }}</td>
+                                        <td  ng-cloak align="center">
+                                            <a class="btn btn-primary" href="#/production/order/{{ order.id }}"><i class="glyphicon glyphicon-eye-open" class="view_style_btn"></i></a>&nbsp;
+                                            <a ng-if="loginUser.emp_role==1" class="btn btn-danger" ng-click="remove_order(order.id, order.id, 'single_delete')" style_name="{{ order.name }}" style_id="{{ order.id }}"><i class="glyphicon glyphicon-trash"></i></a>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                                 <div class="col-sm-12 text-center">

@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
     <!-- Jquery UI framework -->
     <link rel="stylesheet" href="lib/jquery-ui/jquery-ui.min.css" />
-    <!-- JQuery UI framework -->
     <!-- main styles -->
     <link rel="stylesheet" href="css/style.css" />
     <!-- theme color-->
@@ -322,13 +321,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#aaa" data-parent="#hrm_side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-bell"></i> TT
+                            <i class="glyphicon glyphicon-bell"></i> Employees
                         </a>
                     </div>
                     <div class="accordion-body collapse " id="aaa">
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
-                                <li class=""><a href="#/production/orders">View Orders</a></li>
+                                <li class=""><a href="#/hrm/employees">Employees List</a></li>
                             </ul>
                         </div>
                     </div>
@@ -441,6 +440,8 @@
 <script src="js/main.js"></script>
 <!-- angular js controllers -->
 <script src="js/angular/production/controller.js"></script>
+<!-- angular js controllers -->
+<script src="js/angular/hrm/controller.js"></script>
 <!-- angular js services -->
 <script src="js/angular/production/service.js"></script>
 <!-- angular js filters -->
@@ -459,10 +460,11 @@
 <script src="js/ng-file-upload.min.js"></script>
 <!-- dashboard functions -->
 <script src="js/pages/gebo_dashboard.js"></script>
-
 <script type="text/javascript">
     $(document).ready(function(){
         $('select').select2();
+
+
 
         $('.file-uplosad').fileinput({
             showUpload: false,
