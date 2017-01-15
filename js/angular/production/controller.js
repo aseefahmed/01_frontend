@@ -1,5 +1,5 @@
 angular.module('myApp').controller('SidebarController', function($scope, $http, $window){
-    $scope.module_name = 'Production';
+    $scope.module_name = 'Buying';
     $scope.switchToModule = function(module_name){
         $scope.module_name = module_name;
     }

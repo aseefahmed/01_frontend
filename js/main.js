@@ -72,7 +72,7 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
         })
         .when('/buying/orders', {
             templateUrl: 'views/buying/orders/index.html',
-            controller: 'AllRequisitionController'
+            controller: 'BuyingOrderController'
         })
         .when('/hrm/employees', {
             templateUrl: 'views/hrm/employees/index.html',
