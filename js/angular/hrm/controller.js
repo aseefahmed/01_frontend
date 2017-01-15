@@ -1,6 +1,13 @@
-angular.module('myApp').controller('EmployeesController', function($scope, $http, $window){
-    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
 
+angular.module('myApp').controller('EmployeeController', function($scope, $http, $route, $routeParams, Upload) {
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    if($routeParams.employee_id){
+        $scope.employee_id = $routeParams.employee_id;
+    }
+    $scope.reloadData = function(){
+        $route.reload();
+    };
+    $scope.host = app.host;
     $scope.init_employeelist = function () {
         $scope.page_title = 'Employees List';
         $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
@@ -18,10 +25,191 @@ angular.module('myApp').controller('EmployeesController', function($scope, $http
             $scope.reverse = !$scope.reverse;
         };
     }
+    $scope.remove_employee = function(id, name, action){
+        if(action == 'single_delete')
+        {
+            $scope.employee_name = name;
+            $scope.employee_id = id;
+            $scope.status = 'single_delete';
+            $scope.modal_msg = "Do you really want to delete the employee "+$scope.employee_name+".";
+            $('#remove-employee-modal').modal('toggle');
+        }
+        else if(action == 'all')
+        {
+            if($scope.employees.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.employee_id = 0;
+                $scope.status = 'all';
+                var arr = [];
+                $('.select_row').each(function() {
+                    arr.push(this.value);
+                });
+                $scope.employee_id = arr;
+                $scope.modal_msg = "Do you really want to delete all employees";
+                $('#remove-employee-modal').modal('toggle');
+            }
+        }
+        else if(action == 'selected')
+        {
+            var arr = [];
+            $scope.status = 'selected';
+            $('.select_row:checked').each(function() {
+                arr.push(this.value);
+            });
+            $scope.modal_msg = "Do you really want to delete selected employees";
+            if(arr.length == 0)
+            {
+                $('#removal-warning-modal').modal('toggle');
+            }
+            else
+            {
+                $scope.employee_id = arr;
+                $('#remove-employee-modal').modal('toggle');
+            }
+        }
+    };
+    $scope.remove_employee_confirmed = function(id, page, action){
+        $scope.employee_name = null;
+        var data = $.param({
+            user_id: $scope.loginUser.id,
+            id: id,
+            action: action
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'production/employee/delete', data, config).success(function (result, status) {
+            $('#remove-employee-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            if(page == 'show_page')
+            {
+                window.location.href = '#/production/employees';
+            }
+            else
+            {
+                $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
+                    $scope.num_of_items = 10;
+                    $scope.employees = response.data;
+                    $scope.reverse = false;
+                })
+            }
+        }).error(function (result, status) {
+            $('#remove-employee-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was unsuccessful. </strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
 
-    $scope.init_add_emp = function () {
-        $scope.page_title = 'Add Employee';
+    };
+    $scope.init = function(id){
+        $scope.page_title = 'Employee Details';
+        $('#ajax_loading').css('display', 'block');
+        $http.get(app.host + 'hrm/employees/fetchEmployeesList/'+id).then(function(response){
+            $('#ajax_loading').css('display', 'none');
+            $scope.employee = response.data;
+        })
+    };
+    /*$scope.edit_employee = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
 
+        user_id: $scope.loginUser.id,
+        $scope.editable_item = edit_item;
+        $scope.employee_id = id;
+        $scope.field = field;
+        $scope.field_type = field_type;
+        $scope.is_required = is_required;
+        $scope.min_length = min_length;
+        $scope.max_length = max_length;
+        $scope.pattern = pattern;
+        $scope.error_text = error_text;
+        $scope.type = null;
+        $('#edit-employee-modal').modal('toggle');
+    };*/
+    $scope.validateEditForm = function(data, minlength, maxlength, message, role) {
+        if(role != 1)
+        {
+            return "You are not authorized to edit this information."
+        }
+        else
+        {
+            if(data.length  < minlength || data.length > maxlength)
+                return message;
+        }
+
+    };
+    $scope.edit_employee_confirmed = function (field, id, value) {
+        if(value.length == 0)
+            value='-';
+        console.log($scope.type)
+
+        $http.get(app.host + 'production/employee/update/'+$scope.loginUser.id+'/'+field+'/'+id+'/'+value).then(function(response){
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.employee = response.data;
+            $http.get(app.host + 'hrm/employees/fetchEmployeesList'+id).then(function(response){
+                $scope.employee = response.data;
+            })
+        }, function(response){
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        })
     }
-
-});
+    $scope.add_employee = function(form){
+        Upload.upload({
+            url: app.host + 'hrm/employees/store',
+            data: {
+                user_id: $scope.loginUser.id,
+                first_name: $scope.employee.first_name,
+                last_name: $scope.employee.last_name,
+                emp_role: $scope.employee.emp_role,
+                email: $scope.employee.email,
+                password: $scope.employee.password
+            },
+        }).then(function (response) {
+            $('#add-employee-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add a employee.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.employee = {};
+            form.$setPristine();
+            $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
+                $scope.num_of_items = 10;
+                $scope.users = response.data;
+                $scope.reverse = false;
+            })
+        }, function (response) {
+            $('#add-employee-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.employee_name = null;
+        });
+    };
+})

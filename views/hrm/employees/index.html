@@ -7,7 +7,7 @@
             <div class="w-box" id="w_sort01">
                 <div class="w-box-header">
                     <div class="pull-left">
-                        Total Buyers: <span class="act act-warning">{{filtered.length}}</span>
+                        Total Employees: <span class="act act-warning">{{filtered.length}}</span>
                     </div>
                     <div class="pull-right">
                         <div class="btn-group">
@@ -15,9 +15,9 @@
                                 <i class="glyphicon glyphicon-cog"></i> Action <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li ng-if="loginUser.emp_role==1"><a data-toggle="modal" href="#add-emp-modal" target="_self"><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
-                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;"  target="_self" ng-click="remove_buyer(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
-                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;" target="_self" ng-click="remove_buyer(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
+                                <li ng-if="loginUser.emp_role==1"><a data-toggle="modal" href="#add-employee-modal" target="_self"><span class="glyphicon glyphicon-plus-sign"></span> Add</a></li>
+                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;"  target="_self" ng-click="remove_employee(0, 'index_page', 'selected')"><span class="glyphicon glyphicon-trash"></span> Delete Seleted</a></li>
+                                <li ng-if="loginUser.emp_role==1"><a style="cursor:pointer;" target="_self" ng-click="remove_employee(0, 'index_page', 'all')"><span class="glyphicon glyphicon-repeat"></span> Delete All</a></li>
                                 <li><a style="cursor: pointer;" target="_self" ng-click="reloadData()"><span class="glyphicon glyphicon-refresh"></span> Refresh </a></li>
                             </ul>
                         </div>
@@ -48,25 +48,29 @@
                                     <tr>
                                         <th></th>
                                         <th>Image </th>
-                                        <th class="th-pointer" ng-click="sort('buyer_name')">Name <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='buyer_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                                        <th class="th-pointer" ng-click="sort('employee_name')">Name <span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='employee_name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('contact_person')">Role<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='contact_person'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th class="th-pointer" ng-click="sort('email_address')">Email Address<span class="glyphicon glyphicon-sort-icon"  ng-show="sortKey=='email_address'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-if="buyers.length == 0 || filtered.length == 0">
+                                    <tr ng-if="employees.length == 0 || filtered.length == 0">
                                         <td colspan="6">No data found.</td>
                                     </tr>
                                     <tr ng-class-odd="'bg-color1'" dir-paginate="user in filtered = (users| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
                                         <td><input class="select_row" type="checkbox"  value="{{ user.id }}"/></td>
-                                        <td ng-cloak><img src="{{host}}uploaded_files/production/buyers/{{ user.image }}" width="80px"/></td>
-                                        <td ng-cloak>{{ user.first_name }}</td>
-                                        <td ng-cloak>{{ user.emp_role }}</td>
+                                        <td ng-cloak><img src="{{host}}uploaded_files/production/employees/{{ user.image }}" width="80px"/></td>
+                                        <td ng-cloak>{{ user.first_name }} {{ user.last_name }} </td>
+                                        <td ng-cloak ng-if="user.emp_role == 1">Admin</td>
+                                        <td ng-cloak ng-if="user.emp_role == 2">Director</td>
+                                        <td ng-cloak ng-if="user.emp_role == 3">HR Manager</td>
+                                        <td ng-cloak ng-if="user.emp_role == 9">Merchandiser</td>
+                                        <td ng-cloak ng-if="user.emp_role == 0"> - </td>
                                         <td ng-cloak>{{ user.email }}</td>
                                         <td  ng-cloak align="center">
-                                            <a class="btn btn-primary" href="#/production/buyer/{{ user.id }}"><i class="glyphicon glyphicon-eye-open" class="view_buyer_btn"></i></a>&nbsp;
-                                            <a ng-if="loginUser.emp_role==1" class="btn btn-danger" ng-click="remove_buyer(buyer.id, buyer.buyer_name, 'single_delete')" buyer_name="{{ buyer.name }}" buyer_id="{{ user.id }}"><i class="glyphicon glyphicon-trash"></i></a>
+                                            <a class="btn btn-primary" href="#/production/employee/{{ user.id }}"><i class="glyphicon glyphicon-eye-open" class="view_employee_btn"></i></a>&nbsp;
+                                            <a ng-if="loginUser.emp_role==1" class="btn btn-danger" ng-click="remove_employee(employee.id, employee.employee_name, 'single_delete')" employee_name="{{ employee.name }}" employee_id="{{ user.id }}"><i class="glyphicon glyphicon-trash"></i></a>
                                         </td>
                                     </tr>
 
@@ -85,7 +89,7 @@
             </div>
         </div>
         <div class="col-sm-4" ng-include="'views/production/partials/orders_stats.html'"></div>
-        <div class="modal fade" id="add-emp-modal">
+        <div class="modal fade" id="add-employee-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -101,7 +105,7 @@
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
-                                        <input class="form-control" placeholder="First Name" name="first_name" type="text" ng-model="user.first_name" ng-required="true" ng-maxlength="50">
+                                        <input class="form-control" placeholder="First Name" name="first_name" type="text" ng-model="employee.first_name" ng-required="true" ng-maxlength="50">
                                         <span class="help-block " ng-show="myForm.first_name.$dirty && myForm.first_name.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
                                     </div>
                                     <div class="col-sm-6">
@@ -109,7 +113,7 @@
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
-                                        <input class="form-control" placeholder="Last Name" name="last_name" type="text" ng-model="user.last_name" ng-required="true" ng-maxlength="50">
+                                        <input class="form-control" placeholder="Last Name" name="last_name" type="text" ng-model="employee.last_name" ng-required="true" ng-maxlength="50">
                                         <span class="help-block " ng-show="myForm.last_name.$dirty && myForm.last_name.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
                                     </div>
                                 </div>
@@ -117,15 +121,16 @@
                             <div class="formSep">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <code>Role</code>
+                                        <code>Designation</code>
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
-                                        <select class="form-control" style="width:100%">
-                                            <option>Admin</option>
-                                            <option>Director</option>
-                                            <option>HR Manager</option>
-                                            <option>Merchendiser</option>
+                                        <select class="form-control" style="width:100%" ng-model="employee.emp_role" ng-required="true">
+                                            <option value="">Select Designation</option>
+                                            <option value="1">Admin</option>
+                                            <option value="2">Director</option>
+                                            <option value="3">HR Manager</option>
+                                            <option value="9">Merchendiser</option>
                                         </select>
                                     </div>
                                 </div>
@@ -137,7 +142,7 @@
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
-                                        <input class="form-control" placeholder="Email Address" name="email" type="text" ng-model="ueser.email"/>
+                                        <input class="form-control" placeholder="Email Address" name="email" type="text" ng-model="employee.email"/>
                                     </div>
                                 </div>
                             </div>
@@ -148,20 +153,20 @@
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
-                                        <input class="form-control" placeholder="Password" name="password" type="text" ng-model="ueser.password"/>
+                                        <input class="form-control" placeholder="Password" name="password" type="text" ng-model="employee.password"/>
                                     </div>
                                     <div class="col-sm-6">
                                         <code>Retype Password</code>
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
-                                        <input class="form-control" placeholder="Retype Password" name="retype_password" type="text" ng-model="ueser.retype_password"/>
+                                        <input class="form-control" placeholder="Retype Password" name="retype_password" type="text" ng-model="employee.retype_password"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                                <button type="submit" ng-disabled="myForm.$invalid" name="commit" class="btn btn-success" ng-click="add_buyer(myForm, myfile)"><span class="glyphicon glyphicon-ok-sign"></span> Add Buyer </button>
+                                <button type="submit" ng-disabled="myForm.$invalid" name="commit" class="btn btn-success" ng-click="add_employee(myForm)"><span class="glyphicon glyphicon-ok-sign"></span> Add Employee</button>
                             </div>
                         </form>
                     </div>
@@ -169,18 +174,18 @@
             </div>
         </div>
 
-        <div class="modal fade" id="remove-buyer-modal">
+        <div class="modal fade" id="remove-employee-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Remove Buyer</h3>
+                        <h3 class="modal-title">Remove Employee</h3>
                     </div>
                     <div class="modal-body">
                         {{ modal_msg }}
                         <div class="modal-footer">
                             <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
-                            <button type="submit" name="commit" class="btn btn-success" ng-click="remove_buyer_confirmed(buyer_id, 'index_page', status)" buyer_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
+                            <button type="submit" name="commit" class="btn btn-success" ng-click="remove_employee_confirmed(employee_id, 'index_page', status)" employee_id=""><span class="glyphicon glyphicon-ok-sign"></span> Yes </button>
                         </div>
                     </div>
                 </div>
@@ -192,10 +197,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title">Remove Buyer</h3>
+                        <h3 class="modal-title">Remove Employee</h3>
                     </div>
                     <div class="modal-body">
-                        Please Select at least one buyer.
+                        Please Select at least one employee.
                         <div class="modal-footer">
                             <a class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok-sign"></span> OK</a>
                         </div>

@@ -80,23 +80,23 @@
                                     <h4><i class="icon-user"></i>&nbsp;&nbsp; Register Here</h4>
                                     <div class="col-sm-6">
                                         <label>First Name <span style="color: red">*</span> </label>
-                                        <input type="text" class="input-block-level form-control" ng-model="first_name" ng-required="true"/>
+                                        <input type="text" class="input-block-level form-control" ng-model="employee.first_name" ng-required="true"/>
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Last Name <span style="color: red">*</span></label>
-                                        <input type="text" class="input-block-level form-control" ng-model="last_name" ng-required="true" />
+                                        <input type="text" class="input-block-level form-control" ng-model="employee.last_name" ng-required="true" />
                                     </div>
                                     <div class="col-sm-12">
                                         <label>Email Address <span style="color: red">*</span></label>
-                                        <input type="text" class="input-block-level form-control" ng-model="email_address" ng-required="true" />
+                                        <input type="text" class="input-block-level form-control" ng-model="employee.email_address" ng-required="true" />
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Password <span style="color: red">*</span> </label>
-                                        <input type="password" class="input-block-level form-control" ng-model="pass" ng-required="true"  />
+                                        <input type="password" class="input-block-level form-control" ng-model="employee.pass" ng-required="true"  />
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Repeat Password <span style="color: red">*</span></label>
-                                        <input type="password" class="input-block-level form-control" ng-model="repeat_pass" ng-required="true"   />
+                                        <input type="password" class="input-block-level form-control" ng-model="employee.repeat_pass" ng-required="true"   />
                                     </div>
                                     <div class="col-sm-12">
                                         <label>
@@ -108,8 +108,8 @@
                                         <img id="ajax_loading" src="http://www.middleclass2016.com/wp-content/themes/cuna/assets/images/loader.gif" style="display: none" width="80px"><br>
                                         <div ng-if="registration_failed_alert==-1" class="alert alert-danger">Internal server error occurred. Please contact the administrator.</div>
                                         <div ng-if="registration_failed_alert==1" class="alert alert-danger">Email address already exists.</div>
-                                        <div ng-if="registration_failed_alert==2" class="alert alert-success">Registrion has been successfully completed. Please check your inbox to verify you email address.</div>
-                                        <div ng-if="pass!=repeat_pass" class="alert alert-danger">Password & repeat password must be same.</div>
+                                        <div ng-if="registration_failed_alert==2" class="alert alert-success">Registrion has been successfully completed. Please contact your administrator to activate you account.</div>
+                                        <div ng-if="employee.pass!=employee.repeat_pass" class="alert alert-danger">Password & repeat password must be same.</div>
                                         <button class="btn btn-success" ng-click="registerUser()" ng-disabled="registraion_form.$invalid || pass!=repeat_pass">Register</button>
                                         <img id="loading_gif_register" src="../img/loading_box.gif" width="10%;" style="display:none;">
                                     </div>

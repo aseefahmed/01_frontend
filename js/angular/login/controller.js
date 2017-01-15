@@ -1,8 +1,6 @@
 angular.module('loginApp').controller('LoginController', function($scope, $http, $window){
     $scope.loginFailed = false;
     $scope.login_failed_alert = "";
-    $scope.email = 'aseefahmed@gmail.com';
-    $scope.password = 'aseefahmed';
     $scope.registration_failed_alert = 0;
     $scope.switchToLoginPanel = function() {
         $('#loginPanel').addClass('active');
@@ -15,10 +13,10 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
     $scope.registerUser = function () {
         $('#loading_gif_register').css('display', 'inline');
         var data = $.param({
-            first_name: $scope.first_name,
-            last_name: $scope.last_name,
-            email_address: $scope.email_address,
-            pass: $scope.pass
+            first_name: $scope.employee.first_name,
+            last_name: $scope.employee.last_name,
+            email_address: $scope.employee.email_address,
+            pass: $scope.employee.pass
         });
         var config = {
             headers : {
@@ -34,6 +32,7 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
             }
             else if(result == 2)
             {
+                $scope.employee = {};
                 $scope.registration_failed_alert = 2;
             }
         }).error(function (result, status) {
