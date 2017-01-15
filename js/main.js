@@ -1,4 +1,4 @@
-myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload', 'ngIdle', 'xeditable']);
+myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload', 'ngIdle', 'xeditable', 'ngSanitize']);
 console.log('----')
 
 myApp.run(function(editableOptions) {
@@ -36,6 +36,10 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
         })
         .when('/production/order/:order_id', {
             templateUrl: 'views/production/orders/show.html',
+            controller: 'OrderController'
+        })
+        .when('/buying/orders/:order_id', {
+            templateUrl: 'views/buying/orders/show.html',
             controller: 'OrderController'
         })
         .when('/production/style/:style_id', {
