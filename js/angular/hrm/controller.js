@@ -8,6 +8,16 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         $route.reload();
     };
     $scope.host = app.host;
+    $scope.changeUserFlag = function(user_id, flag){
+        $http.get(app.host + 'hrm/employees/changeUserFlag/'+flag+"/"+user_id).then(function (response) {
+            $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
+            $scope.num_of_items = 10;
+            $scope.users = response.data;
+            $scope.data_found = $scope.users.length;
+            $scope.reverse = false;
+        });
+        });
+    };
     $scope.init_employeelist = function () {
         $scope.page_title = 'Employees List';
         $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
@@ -115,10 +125,10 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         });
 
     };
-    $scope.init = function(id){
+    $scope.init = function(employee_id){
         $scope.page_title = 'Employee Details';
         $('#ajax_loading').css('display', 'block');
-        $http.get(app.host + 'hrm/employees/fetchEmployeesList/'+id).then(function(response){
+        $http.get(app.host + 'hrm/employees/fetchEmployeesList/'+$scope.employee_id).then(function(response){
             $('#ajax_loading').css('display', 'none');
             $scope.employee = response.data;
         })

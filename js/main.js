@@ -78,6 +78,10 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
             templateUrl: 'views/hrm/employees/index.html',
             controller: 'EmployeeController'
         })
+        .when('/hrm/employee/:employee_id', {
+            templateUrl: 'views/hrm/employees/show.html',
+            controller: 'EmployeeController'
+        })
         .when('/hrm/employees/add', {
             templateUrl: 'views/hrm/employees/add.html',
             controller: 'EmployeeController'

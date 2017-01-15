@@ -59,6 +59,10 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
             {
                 $scope.login_failed_alert = "Invalid username/password. Please try again."
             }
+            else if(result == -2)
+            {
+                $scope.login_failed_alert = "Your account has not been activated yet. Please contact your administrator to activate your account."
+            }
             else
             {
                 sessionStorage.setItem('loginUser', JSON.stringify(result));
