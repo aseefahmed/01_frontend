@@ -40,7 +40,7 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
         })
         .when('/buying/orders/:order_id', {
             templateUrl: 'views/buying/orders/show.html',
-            controller: 'OrderController'
+            controller: 'BuyingOrderController'
         })
         .when('/production/style/:style_id', {
             templateUrl: 'views/production/styles/show.html',
