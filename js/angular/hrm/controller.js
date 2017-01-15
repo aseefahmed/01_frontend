@@ -7,6 +7,8 @@ angular.module('myApp').controller('EmployeesController', function($scope, $http
         $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
             $scope.num_of_items = 10;
             $scope.users = response.data;
+            console.log('dddd')
+            console.log($scope.users)
             $scope.data_found = $scope.users.length;
             $scope.reverse = false;
         });
