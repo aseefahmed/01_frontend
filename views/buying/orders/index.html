@@ -88,7 +88,7 @@
                                         <th>Confirm price</th>
                                         <th>Inspection date</th>
                                         <th>Inspection status</th>
-                                        <th>Handover date</th>
+                                        <th>Handedover date</th>
                                         <th>Handover quantity</th>
                                         <th>Short/Excess</th>
                                         <th>Value</th>
@@ -113,36 +113,60 @@
                                         <th>Yarn status</th>
                                         <th>{{ order.contract_weight }}</th>
                                         <th>{{ order.buyer_name }}</th>
-                                        <th>P.O.</th>
-                                        <th>P.O received date</th>
+                                        <th ng-if="order.po == '' || order.po == 'No'"">-</th>
+                                        <th ng-if="order.po == 'Yes'">{{ order.po }}</th>
+                                        <th ng-if="order.po == '' || order.po == 'No'">-</th>
+                                        <th ng-if="order.po == 'Yes'">{{ order.po_recieved_date | filterDate }}</th>
                                         <th>{{ order.qty }}</th>
                                         <th>{{ order.sizing }}</th>
                                         <th>{{ order.main_label }}</th>
                                         <th>{{ order.hang_tag }}</th>
-                                        <th>Accys status</th>
-                                        <th>Trims & status</th>
-                                        <th>{{ order.handover_date | filterDate }}e</th>
-                                        <th>Fit sample Sent</th>
-                                        <th>Courier No.</th>
-                                        <th>Fit sample Comments</th>
-                                        <th>FG</th>
-                                        <th>Production status details</th>
-                                        <th>Production condition</th>
+                                        <th>{{ order.fit_sample_comments }}</th>
+                                        <th>{{ order.accys_status }}</th>
+                                        <th>{{ order.handover_date | filterDate }}</th>
+                                        <th ng-if="order.fit_sample_sent == '' || order.fit_sample_sent == 'No'">-</th>
+                                        <th ng-if="order.fit_sample_sent == 'Yes'">{{ order.fit_sample_sent }}</th>
+                                        <th ng-if="order.fit_sample_sent == '' || order.fit_sample_sent == 'No'">-</th>
+                                        <th ng-if="order.fit_sample_sent == 'Yes'">{{ order.courier_no }}</th>
+                                        <th>{{ order.fit_sample_comments }}</th>
+                                        <th ng-if="order.fg == ''">-</th>
+                                        <th ng-if="order.fg != ''">{{ order.fg }}</th>
+                                        
+                                        <th ng-if="order.production_status_details == ''">-</th>
+                                        <th ng-if="order.production_status_details != ''">{{ order.production_status_details }}</th>
+                                        <th ng-if="order.production_condition == ''">-</th>
+                                        <th ng-if="order.production_condition != ''">{{ order.production_condition }}</th>
+                                        
                                         <th>Photo/specl Sample</th>
-                                        <th>Shipping Sample required</th>
-                                        <th>Shipping Sample sent</th>
-                                        <th>Courier No.</th>
-                                        <th>Shipping sample comments</th>
+                                        <th ng-if="order.shipping_sample_required == ''">-</th>
+                                        <th ng-if="order.shipping_sample_required != ''">{{ order.shipping_sample_required }}</th>
+                                        
+                                        <th ng-if="order.shipping_sample_sent == ''">-</th>
+                                        <th ng-if="order.shipping_sample_sent != ''">{{ order.shipping_sample_sent }}</th>
+                                        <th ng-if="order.shipping_sent_courier_no == ''">-</th>
+                                        <th ng-if="order.shipping_sent_courier_no != ''">{{ order.shipping_sent_courier_no }}</th>
+                                        
+                                        <th ng-if="order.shipping_sample_comments == ''">-</th>
+                                        <th ng-if="order.shipping_sample_comments != ''">{{ order.shipping_sample_comments }}</th>
+                                        
                                         <th>Actual production weight</th>
-                                        <th>Confirm price</th>
-                                        <th>Inspection date</th>
-                                        <th>Inspection status</th>
-                                        <th>Handover date</th>
-                                        <th>Handover quantity</th>
-                                        <th>Short/Excess</th>
-                                        <th>Value</th>
-                                        <th>Docs sent Courier No.</th>
-                                        <th>Remarks</th>
+                                        <th>{{ order.confirmed_price }}</th>
+                                        <th ng-if="order.inspection_date != '0000-00-00'">{{ order.inspection_date | filterDate }}</th>
+                                        <th ng-if="order.inspection_date == '0000-00-00'">-  </th>
+                                        <th ng-if="order.inspection_status == ''">-</th>
+                                        <th ng-if="order.inspection_status != ''">{{ order.inspection_status }}</th>
+                                        
+                                        <th ng-if="order.handedover_date != '0000-00-00'">{{ order.handedover_date | filterDate }}</th>
+                                        <th ng-if="order.handedover_date == '0000-00-00'">-  </th>
+                                        <th>{{ order.handedover_qty }}</th>
+                                        
+                                        <th>{{ order.handedover_qty }}</th>
+                                        <th>{{ order.handedover_qty - order.qty  }}</th>
+                                        <th>{{ order.confirmed_price * order.handedover_qty }}</th>
+                                        <th ng-if="order.doc_sent_courier_no == ''">-</th>
+                                        <th ng-if="order.doc_sent_courier_no != ''">{{ order.doc_sent_courier_no }}</th>
+                                        <th ng-if="order.fit_sample_sent == ''">-</th>
+                                        <th ng-if="order.fit_sample_sent != ''">{{ order.remarks }}</th>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -275,8 +299,8 @@
                                             <code>Image</code>
                                             <img ngf-thumbnail="myfile"><br><br>
                                             <div class="button" ngf-select ng-model="myfile" name="file" ngf-pattern="'image/*'"
-                                                 ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
-                                                 ngf-resize="{width: 100, height: 100}"><button class="btn btn-success">Upload Image</button>
+                                                 ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100">
+                                                 <button class="btn btn-success">Upload Image</button>
                                             </div>
                                             <i ng-show="myForm.file.$error.required">*required</i><br>
                                             <i ng-show="myForm.file.$error.maxSize">File too large

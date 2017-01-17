@@ -1,4 +1,4 @@
-myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload', 'ngIdle', 'xeditable', 'ngSanitize']);
+myApp = angular.module('myApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'ngFileUpload', 'ngIdle', 'xeditable', 'ngSanitize', 'ui.bootstrap']);
 console.log('----')
 
 myApp.run(function(editableOptions) {

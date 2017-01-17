@@ -1,7 +1,7 @@
 <div class="row col-sm-12">
     <h3 class="heading">{{ page_title }}</h3>
 </div>
-<div class="row" ng-init="init(order_id)" ng-cloak>
+<div class="row" ng-init="init()" ng-cloak>
     <div class="col-sm-12 col-md-12">
         <div class="col-sm-8">
             <div class="w-box" id="w_sort01">
@@ -27,123 +27,420 @@
                             <div class="col-sm-12">
                                 <table class="table table-responsive table-bordered table-striped">
                                     <thead>
-                                    <tr>
-                                        <th width='25%'>Buyer: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].buyer.buyer_name }}</span></td>
-                                        <th width='25%'>Style: </th>
-                                        <td><span class="col-sm-10 wordwrap">{{ order_details[0].style.style_name }} </span></td>
-                                    </tr>
+                                        <tr>
+                                            <th width='25%'>Sketch: </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a target="_blank" href="{{host}}uploaded_files/buying/orders/{{ order_details.orders[0].sketch }}"><img src="{{host}}uploaded_files/buying/orders/{{ order_details.orders[0].sketch }}" width="100%" height="100%"></a>
+                                                    </div> 
+                                                </span>
+                                            </td>       
+                                            <th width='25%'>Photo Sample </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a target="_blank" href="{{host}}uploaded_files/buying/orders/{{ order_details.orders[0].sketch }}"><img src="{{host}}uploaded_files/buying/orders/{{ order_details.orders[0].sketch }}" width="100%" height="100%"></a>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Gauge </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('Gauge',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].Gauge" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].Gauge }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Style: </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('style',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].style" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].style }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>       
+                                            <th width='25%'>Ref </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('ref',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].ref" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].ref }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Gauge </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('Gauge',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].Gauge" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].Gauge }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Yarn(Ref Details)</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('yarn_ref_details',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].yarn_ref_details" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].yarn_ref_details }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Confirmed Price </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('confirmed_price',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].confirmed_price" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].confirmed_price }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Value </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;">{{ order_details.orders[0].confirmed_price * order_details.orders[0].handedover_qty }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Qty</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('qty',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].qty" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].qty }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Handed Over </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('handedover_qty',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].handedover_qty" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].handedover_qty }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Short/Excess </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" >{{ order_details.orders[0].handedover_qty - order_details.orders[0].qty }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Contract Weight</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('contract_weight',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].contract_weight" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].contract_weight }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                            <th width='25%'>PO Recieved</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].po == ''" href="#" editable-select="order_details.orders[0].po" onaftersave="edit_buying_order_confirmed('po',order_details.orders[0].id, $data)" e-ng-options="g.id as g.val for g in options">-</a>
+                                                        <a ng-if="order_details.orders[0].po != ''" href="#" editable-select="order_details.orders[0].po" onaftersave="edit_buying_order_confirmed('po',order_details.orders[0].id, $data)" e-ng-options="g.id as g.val for g in options">{{ order_details.orders[0].po}}</a>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Received Date </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a ng-if="order_details.orders[0].po_recieved_date == '0000-00-00'" onaftersave="edit_buying_order_confirmed('po_recieved_date',order_details.orders[0].id, $data, 'date_data')"  href="#" editable-bsdate="order_details.orders[0].handover_date" 
+                                                                      e-readonly="true"
+                                                                      e-is-open="opened.$data"
+                                                                      e-ng-click="open($event,'$data')"  
+                                                                      e-datepicker-popup="yyyy-MM-dd">
+                                                            {{ (order_details.orders[0].handover_date | date:"dd/MMM/yyyy") }}
+                                                        </a>
+                                                        <a ng-if="order_details.orders[0].po_recieved_date != '0000-00-00'" onaftersave="edit_buying_order_confirmed('po_recieved_date',order_details.orders[0].id, $data, 'date_data')"  href="#" editable-bsdate="order_details.orders[0].po_recieved_date" 
+                                                                      e-readonly="true"
+                                                                      e-is-open="opened.$data"
+                                                                      e-ng-click="open($event,'$data')"  
+                                                                      e-datepicker-popup="yyyy-MM-dd">
+                                                            {{ (order_details.orders[0].po_recieved_date | date:"dd/MMM/yyyy") }}
+                                                        </a>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>P.I. Date</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">  
+                                                        <a onaftersave="edit_buying_order_confirmed('pi_date',order_details.orders[0].id, $data, 'date_data')"  href="#" editable-bsdate="order_details.orders[0].pi_date" 
+                                                                      e-readonly="true"
+                                                                      e-is-open="opened.$data"
+                                                                      e-ng-click="open($event,'$data')"  
+                                                                      e-datepicker-popup="yyyy-MM-dd">
+                                                            {{ (order_details.orders[0].pi_date | date:"dd/MMM/yyyy") }}
+                                                        </a>
+                                                    </div>   
+                                                </span> 
+                                            </td>
+                                            <th width='25%'>Hand Over Date </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">  
+                                                        <a onaftersave="edit_buying_order_confirmed('handover_date',order_details.orders[0].id, $data, 'date_data')"  href="#" editable-bsdate="order_details.orders[0].handover_date" 
+                                                                      e-readonly="true"
+                                                                      e-is-open="opened.$data"
+                                                                      e-ng-click="open($event,'$data')"  
+                                                                      e-datepicker-popup="yyyy-MM-dd">
+                                                            {{ (order_details.orders[0].handover_date | date:"dd/MMM/yyyy") }}
+                                                        </a>
+                                                    </div>   
+                                                </span> 
+                                            </td>
+                                            <th width='25%'>Handed Over Date </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">  
+                                                        <a ng-if="order_details.orders[0].handedover_date == '0000-00-00'" onaftersave="edit_buying_order_confirmed('handedover_date',order_details.orders[0].id, $data, 'date_data')"  href="#" editable-bsdate="order_details.orders[0].handover_date" 
+                                                                      e-readonly="true"
+                                                                      e-is-open="opened.$data"
+                                                                      e-ng-click="open($event,'$data')"  
+                                                                      e-datepicker-popup="yyyy-MM-dd">
+                                                            {{ (order_details.orders[0].handover_date | date:"dd/MMM/yyyy") }}
+                                                        </a>
+                                                        <a ng-if="order_details.orders[0].handedover_date != '0000-00-00'" onaftersave="edit_buying_order_confirmed('handedover_date',order_details.orders[0].id, $data, 'date_data')"  href="#" editable-bsdate="order_details.orders[0].handedover_date" 
+                                                                      e-readonly="true"
+                                                                      e-is-open="opened.$data"
+                                                                      e-ng-click="open($event,'$data')"  
+                                                                      e-datepicker-popup="yyyy-MM-dd">
+                                                            {{ (order_details.orders[0].handedover_date | date:"dd/MMM/yyyy") }}
+                                                        </a>
+                                                    </div>   
+                                                </span> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Sizing</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('sizing',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].sizing" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].sizing }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Main Label </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('main_label',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].main_label" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].main_label }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Hang Tag </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('hang_tag',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].hang_tag" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].hang_tag }}</a></span></td>
+                                                    </div> 
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Fit sample Sent</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].fit_sample_sent == '' || order_details.orders[0].po == 'No'" href="#" editable-select="order_details.orders[0].fit_sample_sent" onaftersave="edit_buying_order_confirmed('fit_sample_sent',order_details.orders[0].id, $data)" e-ng-options="g.id as g.val for g in options">-</a>
+                                                        <a ng-if="order_details.orders[0].fit_sample_sent != ''" href="#" editable-select="order_details.orders[0].fit_sample_sent" onaftersave="edit_buying_order_confirmed('fit_sample_sent',order_details.orders[0].id, $data)" e-ng-options="g.id as g.val for g in options">{{ order_details.orders[0].fit_sample_sent}}</a>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Courier No: </th>
+                                            <td >
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].courier_no == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('courier_no',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].courier_no" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].courier_no != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('courier_no',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].courier_no" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].courier_no }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Customer </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a href="#" editable-select="order_details.orders[0].buyer_name" onshow="buyersList()" onaftersave="edit_buying_order_confirmed('customer',order_details.orders[0].id, $data)" e-ng-options="g.id as g.buyer_name for g in buyers">{{ order_details.orders[0].buyer_name}}</a>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Fit sample Comment</th>
+                                            <td colspan="5">
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].fit_sample_comments == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('fit_sample_comments',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].fit_sample_comments" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].fit_sample_comments != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('fit_sample_comments',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].fit_sample_comments" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].fit_sample_comments }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </tr>
 
-                                    <tr>
-                                        <th width='25%'>Order Date: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].order_date | uppercase }} </span></td>
-                                        <th width='25%'>GG: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].gg }} </span></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th width='25%'>Qty: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].qty }} </span></td>
-                                        <th width='25%'>FOB: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].fob }} </span></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th width='25%'>Weight Per Dzn: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].weight_per_dzn }} </span></td>
-                                        <th width='25%'>Qty Per Dzn: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].qty_per_dzn }} </span></td>
-                                    </tr>
-                                    <tr>
-
-                                    </tr>
-                                    <tr>
-                                        <th width='25%'>Total Yarn Weight: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].total_yarn_weight }} </span></td>
-                                        <th width='25%'>Total Yarn Cost: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].total_yarn_cost }} </span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width='25%'>Compositions: </th>
-                                        <td colspan="3"><span>
+                                        <tr>
+                                            <th width='25%'>Shipping Sample Required</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].shipping_sample_required == ''" href="#" editable-select="order_details.orders[0].shipping_sample_required" onaftersave="edit_buying_order_confirmed('shipping_sample_required',order_details.orders[0].id, $data)" e-ng-options="g.id as g.val for g in options">-</a>
+                                                        <a ng-if="order_details.orders[0].shipping_sample_required != ''" href="#" editable-select="order_details.orders[0].shipping_sample_required" onaftersave="edit_buying_order_confirmed('shipping_sample_required',order_details.orders[0].id, $data)" e-ng-options="g.id as g.val for g in options">{{ order_details.orders[0].shipping_sample_required}}</a>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Shipping Sample Sent </th>
+                                            <td >
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].shipping_sample_sent == ''" href="#" editable-select="order_details.orders[0].shipping_sample_sent" onaftersave="edit_buying_order_confirmed('shipping_sample_sent',order_details.orders[0].id, $data)" e-ng-options="g.id as g.val for g in options">-</a>
+                                                        <a ng-if="order_details.orders[0].shipping_sample_sent != ''" href="#" editable-select="order_details.orders[0].shipping_sample_sent" onaftersave="edit_buying_order_confirmed('shipping_sample_sent',order_details.orders[0].id, $data)" e-ng-options="g.id as g.val for g in options">{{ order_details.orders[0].shipping_sample_sent}}</a>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <th width='25%'>Courier No: </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].shipping_sent_courier_no == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('shipping_sent_courier_no',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].shipping_sent_courier_no" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].shipping_sent_courier_no != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('shipping_sent_courier_no',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].shipping_sent_courier_no" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].shipping_sent_courier_no }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Sipping Sample Comments</th>
+                                            <td colspan="5">
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].shipping_sample_comments == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('shipping_sample_comments',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].shipping_sample_comments" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].shipping_sample_comments != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('shipping_sample_comments',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].shipping_sample_comments" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].shipping_sample_comments }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Colors </th>
+                                            <td colspan="5">
                                                 <table class="table table-responsive">
                                                     <tr>
-                                                        <td class="bg bg-primary">Yarn</td>
-                                                        <td class="bg bg-primary">Percentage</td>
-                                                        <td class="bg bg-primary">Yarn Rate</th>
-                                                        <td class="bg bg-primary">Wastage(%)</td>
-                                                        <td class="bg bg-primary">Cost</td>
+                                                        <td class="bg bg-primary">Color</td>
+                                                        <td class="bg bg-primary">Status</td>
                                                     </tr>
-                                                    <tr ng-repeat="item in order_details['composition']">
-                                                        <td>{{ item[0] }}</td>
-                                                        <td>{{ item[1] }}</td>
-                                                        <td>{{ item[2] }}</td>
-                                                        <td>{{ item[3] }}</td>
-                                                        <td>{{ order_details[0].qty_per_dzn * order_details[0].weight_per_dzn * item[1]/100 * item[2] * (1+item[3]/100) | currency }}</td>
-                                                    </tr>
+                                                    <tr>
+                                                        <td ng-bind-html="order_details.orders[0].colors"></td>
+                                                        <td></td>
+                                                     </tr>
                                                 </table>
-                                            </span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width='25%'>Items: </th>
-                                        <td colspan="3"><span>
-                                                <table class="table table-responsive">
-                                                    <tr>
-                                                        <td class="bg bg-primary">&nbsp;</td>
-                                                        <td class="bg bg-primary">Accessories</td>
-                                                        <td class="bg bg-primary">Button</td>
-                                                        <td class="bg bg-primary">Zipper</td>
-                                                        <td class="bg bg-primary">Print</td>
-                                                        <td class="bg bg-primary">Security Tag</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bg bg-primary">Rate</td>
-                                                        <td>{{ order_details[0].acc_rate }}</td>
-                                                        <td>{{ order_details[0].btn_cost }}</td>
-                                                        <td>{{ order_details[0].zipper_cost }}</td>
-                                                        <td>{{ order_details[0].print_cost }} </td>
-                                                        <td>{{ order_details[0].security_tag_cost }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bg bg-primary">Total Cost</td>
-                                                        <td>{{ order_details[0].total_acc_cost  }} </td>
-                                                        <td>{{ order_details[0].total_btn_cost }}</td>
-                                                        <td>{{ order_details[0].total_zipper_cost }}</td>
-                                                        <td>{{ order_details[0].total_print_cost }}</td>
-                                                        <td>{{ order_details[0].total_security_tag_cost }}</td>
-                                                    </tr>
-                                                </table>
-                                            </span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width='25%'>Total FOB: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].total_fob }} </span></td>
-                                        <th width='25%'>Total Cost: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].total_cost  }} </span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width='25%'>Balance Amount: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].balance_amount  }} </span></td>
-                                        <th width='25%'>Cost of Making: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0]. cost_of_making  }} </span></td>
-                                    </tr>
-                                    <tr >
-                                        <th width='25%'>L/C Confirmed?: </th>
-                                        <td ng-if="order_details[0].lc_confirmed == 0"><span class="col-sm-10">Not Yet </span></td>
-                                        <td ng-if="order_details[0].lc_confirmed > 0"><span class="col-sm-10">Yes </span></td>
-                                        <th width='25%'>Created By: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].user.first_name | uppercase }} {{ order_details[0].user.last_name | uppercase }} </span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width='25%'>Created At: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].created_at | filterDate }} </span></td>
-                                        <th width='25%'>Updated At: </th>
-                                        <td><span class="col-sm-10">{{ order_details[0].updated_at | filterDate }} </span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width='25%'>Image: </th>
-                                        <td colspan="3"><img src="{{host}}uploaded_files/production/orders/{{order_details[0].image }}" width="150px"></td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Inspection Date </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">    
+                                                        <a ng-if="order_details.orders[0].inspection_date == '0000-00-00'" onaftersave="edit_buying_order_confirmed('inspection_date',order_details.orders[0].id, $data, 'date_data')"  href="#" editable-bsdate="order_details.orders[0].handover_date" 
+                                                                      e-readonly="true"
+                                                                      e-is-open="opened.$data"
+                                                                      e-ng-click="open($event,'$data')"  
+                                                                      e-datepicker-popup="yyyy-MM-dd">
+                                                            {{ (order_details.orders[0].handover_date | date:"dd/MMM/yyyy") }}
+                                                        </a>
+                                                        <a ng-if="order_details.orders[0].inspection_date != '0000-00-00'" onaftersave="edit_buying_order_confirmed('inspection_date',order_details.orders[0].id, $data, 'date_data')"  href="#" editable-bsdate="order_details.orders[0].inspection_date" 
+                                                                      e-readonly="true"
+                                                                      e-is-open="opened.$data"
+                                                                      e-ng-click="open($event,'$data')"  
+                                                                      e-datepicker-popup="yyyy-MM-dd">
+                                                            {{ (order_details.orders[0].inspection_date | date:"dd/MMM/yyyy") }}
+                                                        </a>
+                                                    </div> 
+                                                </span>
+                                            </td>
+
+                                            <th width='25%'>Inspection Status</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].inspection_status == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('inspection_status',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].inspection_status" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].inspection_status != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('inspection_status',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].inspection_status" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].inspection_status }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th width='25%'>FG </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].fg == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('fg',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].fg" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].fg != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('fg',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].fg" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].fg }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+
+                                            <th width='25%'>Production Status</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].production_status_details == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('production_status_details',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].production_status_details" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].production_status_details != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('production_status_details',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].production_status_details" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].production_status_details }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            
+                                            <th width='25%'>Production Cond.</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].production_condition == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('production_condition',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].production_condition" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].production_condition != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('production_condition',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].production_condition" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].production_condition }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Accys status </th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].accys_status == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('accys_status',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].accys_status" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].accys_status != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('accys_status',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].accys_status" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].accys_status }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+
+                                            <th width='25%'>Trims & status</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].trims_status == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('trims_status',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].trims_status" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].trims_status != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('trims_status',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].trims_status" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].trims_status }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th width='25%'>Remarks</th>
+                                            <td colspan="5">
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].remarks == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('remarks',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].remarks" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].remarks != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('remarks',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].remarks" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].remarks }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                        </tr>
                                     </thead>
                                 </table>
                             </div>
