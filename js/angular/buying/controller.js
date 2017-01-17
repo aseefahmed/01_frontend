@@ -1,5 +1,8 @@
-angular.module('myApp').controller('BuyingOrderController', function($scope, $http, $route, Upload){
+angular.module('myApp').controller('BuyingOrderController', function($scope, $http, $routeParams, $route, Upload){
 		$scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+        if($routeParams.order_id){
+            $scope.order_id = $routeParams.order_id;
+        }
 		$scope.host = app.host;
 		$scope.buying_orders = function () {
 	        $scope.page_title = 'Orders List';
@@ -17,30 +20,10 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
         });
 
 	    }
-		$scope.init = function(id){
+		$scope.init = function(id){alert(id)
 	        $scope.page_title = 'Order Details';
 	        $scope.host = app.host;
-	        $scope.yarn_type = '';
-	        $http.get(app.host + 'production/orders/fetchOrderDetails/'+id).then(function(response){
-	            console.log('777777777777')
-	            console.log(response)
-	            $scope.delivery_date = new Date(response.data[0].delivery_date);
-	            $scope.today = new Date();
-	            $scope.days_left_to_delivery = ($scope.delivery_date - $scope.today)/1000/60/60/24;
-	            $scope.order_id = id;
-	            console.log(response.data)
-	            $scope.order_details = response.data;
-	            $scope.due_yarn_amount = $scope.order_details[0].total_yarn_cost - $scope.order_details[0].approved_yarn_amount;
-	            $scope.due_acc_amount = $scope.order_details[0].total_acc_cost - $scope.order_details[0].approved_acc_amount;
-	            $scope.due_btn_amount = $scope.order_details[0].total_btn_cost - $scope.order_details[0].approved_btn_amount;
-	            $scope.due_zipper_amount = $scope.order_details[0].total_zipper_cost - $scope.order_details[0].approved_zipper_amount;
-	            $scope.due_print_amount = $scope.order_details[0].total_print_cost - $scope.order_details[0].approved_print_amount;
-	            $scope.due_security_tag_amount = $scope.order_details[0].total_security_tag_cost - $scope.order_details[0].approved_security_tag_cost;
-	            console.log($scope.yarn_amount)
-	            $scope.approved_amount_of_requisition = Number(response.data[0].approved_yarn_amount) +Number(response.data[0].approved_acc_amount) +Number(response.data[0].approved_btn_amount) +Number(response.data[0].approved_zipper_amount) +Number(response.data[0].approved_print_amount) +Number(response.data[0].approved_security_tag_cost)
 
-
-	        })
 	    };
 		$scope.add_buying_order = function(form, myfile){
         Upload.upload({
