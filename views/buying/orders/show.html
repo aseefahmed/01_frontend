@@ -375,6 +375,16 @@
                                                     </div>
                                                 </span>
                                             </td>
+
+                                            <th width='25%'>Production Weight</th>
+                                            <td>
+                                                <span class="col-sm-10">
+                                                    <div class="popover-wrapper">
+                                                        <a ng-if="order_details.orders[0].actual_production_weight == ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('actual_production_weight',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].actual_production_weight" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">-</a>
+                                                        <a ng-if="order_details.orders[0].actual_production_weight != ''" style="cursor: pointer;" onaftersave="edit_buying_order_confirmed('actual_production_weight',order_details.orders[0].id, $data)" editable-text="order_details.orders[0].actual_production_weight" onbeforesave="validateBuyingOrderEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ order_details.orders[0].actual_production_weight }}</a></span></td>
+                                                    </div>
+                                                </span>
+                                            </td>
                                         </tr>
 
                                         <tr>
