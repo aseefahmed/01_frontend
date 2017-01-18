@@ -113,7 +113,7 @@
                                         <th>Yarn status</th>
                                         <th>{{ order.contract_weight }}</th>
                                         <th>{{ order.buyer_name }}</th>
-                                        <th ng-if="order.po == '' || order.po == 'No'"">-</th>
+                                        <th ng-if="order.po == '' || order.po == 'No'">-</th>
                                         <th ng-if="order.po == 'Yes'">{{ order.po }}</th>
                                         <th ng-if="order.po == '' || order.po == 'No'">-</th>
                                         <th ng-if="order.po == 'Yes'">{{ order.po_recieved_date | filterDate }}</th>
@@ -121,13 +121,13 @@
                                         <th>{{ order.sizing }}</th>
                                         <th>{{ order.main_label }}</th>
                                         <th>{{ order.hang_tag }}</th>
-                                        <th>{{ order.fit_sample_comments }}</th>
                                         <th>{{ order.accys_status }}</th>
+                                        <th>{{ order.trims_status }}</th>
                                         <th>{{ order.handover_date | filterDate }}</th>
                                         <th ng-if="order.fit_sample_sent == '' || order.fit_sample_sent == 'No'">-</th>
                                         <th ng-if="order.fit_sample_sent == 'Yes'">{{ order.fit_sample_sent }}</th>
-                                        <th ng-if="order.fit_sample_sent == '' || order.fit_sample_sent == 'No'">-</th>
-                                        <th ng-if="order.fit_sample_sent == 'Yes'">{{ order.courier_no }}</th>
+                                        <th ng-if="order.courier_no == ''">-</th>
+                                        <th ng-if="order.courier_no != ''">{{ order.courier_no }}</th>
                                         <th>{{ order.fit_sample_comments }}</th>
                                         <th ng-if="order.fg == ''">-</th>
                                         <th ng-if="order.fg != ''">{{ order.fg }}</th>
@@ -136,8 +136,8 @@
                                         <th ng-if="order.production_status_details != ''">{{ order.production_status_details }}</th>
                                         <th ng-if="order.production_condition == ''">-</th>
                                         <th ng-if="order.production_condition != ''">{{ order.production_condition }}</th>
-                                        
-                                        <th>Photo/specl Sample</th>
+
+                                        <th><img src="{{host}}uploaded_files/buying/orders/{{ order.photo_sample }}" width="80px"/></th>
                                         <th ng-if="order.shipping_sample_required == ''">-</th>
                                         <th ng-if="order.shipping_sample_required != ''">{{ order.shipping_sample_required }}</th>
                                         
@@ -149,7 +149,7 @@
                                         <th ng-if="order.shipping_sample_comments == ''">-</th>
                                         <th ng-if="order.shipping_sample_comments != ''">{{ order.shipping_sample_comments }}</th>
                                         
-                                        <th>Actual production weight</th>
+                                        <th>{{ order.actual_production_weight }}</th>
                                         <th>{{ order.confirmed_price }}</th>
                                         <th ng-if="order.inspection_date != '0000-00-00'">{{ order.inspection_date | filterDate }}</th>
                                         <th ng-if="order.inspection_date == '0000-00-00'">-  </th>
@@ -159,14 +159,12 @@
                                         <th ng-if="order.handedover_date != '0000-00-00'">{{ order.handedover_date | filterDate }}</th>
                                         <th ng-if="order.handedover_date == '0000-00-00'">-  </th>
                                         <th>{{ order.handedover_qty }}</th>
-                                        
-                                        <th>{{ order.handedover_qty }}</th>
                                         <th>{{ order.handedover_qty - order.qty  }}</th>
                                         <th>{{ order.confirmed_price * order.handedover_qty }}</th>
                                         <th ng-if="order.doc_sent_courier_no == ''">-</th>
                                         <th ng-if="order.doc_sent_courier_no != ''">{{ order.doc_sent_courier_no }}</th>
-                                        <th ng-if="order.fit_sample_sent == ''">-</th>
-                                        <th ng-if="order.fit_sample_sent != ''">{{ order.remarks }}</th>
+                                        <th ng-if="order.remarks == ''">-</th>
+                                        <th ng-if="order.remarks != ''">{{ order.remarks }}</th>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -294,20 +292,38 @@
                                 </div>
                             </div>
                             <div class="formSep">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <code>Image</code>
-                                            <img ngf-thumbnail="myfile"><br><br>
-                                            <div class="button" ngf-select ng-model="myfile" name="file" ngf-pattern="'image/*'"
-                                                 ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100">
-                                                 <button class="btn btn-success">Upload Image</button>
-                                            </div>
-                                            <i ng-show="myForm.file.$error.required">*required</i><br>
-                                            <i ng-show="myForm.file.$error.maxSize">File too large
-                                                {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <code>Sketch</code>
+                                        <img ngf-thumbnail="myfile.image"><br><br>
+                                        <div class="button" ngf-select ng-model="myfile.image" name="file" ngf-pattern="'image/*'"
+                                             ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+                                             ngf-resize="{width: 300, height: 300}">
+                                            <button class="btn btn-success">Upload Sketch</button>
                                         </div>
-                                        
+                                        <i ng-show="myForm.file.$error.required">*required</i><br>
+                                        <i ng-show="myForm.file.$error.maxSize">File too large
+                                            {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
                                     </div>
+
+                                </div>
+                            </div>
+                            <div class="formSep">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <code>Photo/Sample</code>
+                                        <img ngf-thumbnail="myfile.sample"><br><br>
+                                        <div class="button" ngf-select ng-model="myfile.sample" name="file" ngf-pattern="'image/*'"
+                                             ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+                                             ngf-resize="{width: 300, height: 300}">
+                                            <button class="btn btn-success">Upload Photo/Sample</button>
+                                        </div>
+                                        <i ng-show="myForm.file.$error.required">*required</i><br>
+                                        <i ng-show="myForm.file.$error.maxSize">File too large
+                                            {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+                                    </div>
+
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
