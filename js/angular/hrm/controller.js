@@ -125,12 +125,106 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         });
 
     };
+    $scope.roles = [
+        {
+            id: '1',
+            val: 'Admin'
+        },
+        {
+            id: '9',
+            val: 'Merchandiser'
+        },
+        {
+            id: '10',
+            val: 'Visitor'
+        },
+    ];
+    $scope.validateBuyingOrderEditForm = function(data, minlength, maxlength, message, role) {
+        if(role != 1)
+        {
+            return "You are not authorized to edit this information."
+        }
+        else
+        {
+            if(data.length  < minlength || data.length > maxlength)
+                return message;
+        }
+
+    };
+    $scope.changePass = function(user_id, pass, myform){
+        $scope.employee.password = null;
+        $scope.employee.retype_password = null;
+        myform.$setPristine();
+        var data = $.param({
+            password: pass,
+            user_id: user_id
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'hrm/employees/changePass', data, config).success(function (result, status) {console.log(result)
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        }).error(function (result, status) {
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was unsuccessful. </strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
+    };
+    $scope.edit_employees_info_confirmed = function(field, id, value, data_type = null, table_name = null) {
+
+        if(data_type == "date_data")
+        {
+            var d = new Date(value);
+            d = $.datepicker.formatDate('yy-mm-dd', d);
+            value = d;
+        }
+
+        if(value.length == 0)
+            value='-';
+
+        $http.get(app.host + 'hrm/employees/updateEmployeesInfo/'+field+'/'+id+'/'+value+'/'+table_name).then(function(response){
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $http.get(app.host + 'hrm/employees/fetchEmployeeDetails/'+id).then(function(response){
+            console.log(response)
+            $scope.employee = response.data.users;
+        })
+        }, function(response){
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        })
+    }
+    $scope.opened = {};
+    $scope.open = function($event, elementOpened) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened[elementOpened] = !$scope.opened[elementOpened];
+    };
     $scope.init = function(employee_id){
         $scope.page_title = 'Employee Details';
         $('#ajax_loading').css('display', 'block');
-        $http.get(app.host + 'hrm/employees/fetchEmployeesList/'+$scope.employee_id).then(function(response){
-            $('#ajax_loading').css('display', 'none');
-            $scope.employee = response.data;
+        $http.get(app.host + 'hrm/employees/fetchEmployeeDetails/'+$scope.employee_id).then(function(response){
+            console.log(response)
+            $scope.employee = response.data.users;
         })
     };
     /*$scope.edit_employee = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {

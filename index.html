@@ -28,11 +28,13 @@
     <link rel="stylesheet" href="lib/fullcalendar/fullcalendar_gebo.css" />
     <!-- xEditable CSS -->
     <link rel="stylesheet" href="lib/xeditable/css/xeditable.css" />
-    <link rel="stylesheet" href="lib/chosen/chosen.css" />
-
-
     <!-- Bootstrap Notification -->
     <link rel="stylesheet" href="lib/bootstrap-notify/css/bootstrap-notify.css" />
+    <link rel="stylesheet" href="css/gsi-step-indicator.min.css" />
+    <link rel="stylesheet" href="css/tsf-step-form-wizard.min.css" />
+    <link rel="stylesheet" href="css/demo.min.css" />
+    <link rel="stylesheet" href="lib/chosen/chosen.css" />
+    <link rel="stylesheet" href="lib/parsley/css/parsley.css" />
     <!-- File Input -->
     <!-- jQuery UI theme -->
     <!-- tooltips-->
@@ -366,6 +368,20 @@
 
 
             <div id="buying_side_accordion" class="panel-group" ng-show="module_name == 'Buying'">
+            <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseEmployeeBuying" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-bell"></i> Employees 
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse " id="collapseEmployeeBuying">
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class=""><a href="#/hrm/employees">View Employees</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseOrderBuying" data-parent="#buying_side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -481,6 +497,9 @@
 <!-- dashboard functions -->
 <script src="js/pages/gebo_dashboard.js"></script>
 <script src="lib/chosen/chosen.jquery.js"></script>
+<script src="js/demo.js"></script>
+<script src="lib/parsley/js/parsley.min.js"></script>
+<script src="js/tsf-wizard-plugin.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         $('select').select2();
@@ -509,6 +528,8 @@
             source: availableTags,
             minLength:0,
         }).bind('focus', function(){ $(this).autocomplete("search"); } );
+
+        
     });
 
 </script>

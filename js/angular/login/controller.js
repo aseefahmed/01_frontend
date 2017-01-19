@@ -67,7 +67,7 @@ angular.module('loginApp').controller('LoginController', function($scope, $http,
             {
                 sessionStorage.setItem('loginUser', JSON.stringify(result));
                 console.log(result)
-                $window.location.href = '../#/dashboard';
+                $window.location.href = '../#/buying/orders';
             }
         }).error(function (result, status) {
             $('#loading_gif').css('display', 'none');
