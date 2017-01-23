@@ -227,41 +227,8 @@
                                         <label>Yarn(Ref. Details)</label>
                                         <input class="form-control" placeholder="Yarn(Ref. Details)" type="text" ng-model="order.yarn_ref" ng-required="true" ng-pattern="/^\d+$/"/>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label>Customer</label>
-                                        <select style="width: 85%;" class="select2js" ng-model="order.customer" ng-pattern="/^\d+$/" ng-required="true">
-                                            <option value="">Select a client</option>
-                                            <option ng-repeat="buyer in buyers" value="{{buyer.id}}">
-                                                {{ buyer.buyer_name }}
-                                            </option>
-                                        </select>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <label>Color</label>
-                                        <select name="services" ng-model="order.colors" data-placeholder="Color List" style="width:550px;" class="chzn-select form-control" multiple>
-                                            <option value="Red (Twisted)">Red (Twisted)</option>
-                                            <option value="Red (Solid)">Red (Solid)</option>
-                                            <option value="Blue (Twisted)">Blue (Twisted)</option>
-                                            <option value="Blue (Solid)">Blue (Solid)</option>
-                                            <option value="Green (Twisted)">Green (Twisted)</option>
-                                            <option value="Green (Solid)">Green ()</option>
-                                            <option value="Black (Twisted)">Black (Twisted)</option>
-                                            <option value="Black (Solid)">Black (Solid)</option>
-                                            <option value="Pink (Twisted)">Pink (Twisted)</option>
-                                            <option value="Pink (Solid)">Pink (Solid)</option>
-                                            <option value="Purple (Twisted)">Purple (Twisted)</option>
-                                            <option value="Purple (Solid)">Purple (Solid)</option>
-                                            <option value="White (Twisted)">White (Twisted)</option>
-                                            <option value="White (Solid)">White (Solid)</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            
                             <div class="formSep">
                                 <div class="row">
                                     <div class="col-sm-3">
@@ -300,23 +267,6 @@
                                              ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
                                              ngf-resize="{width: 300, height: 300}">
                                             <button class="btn btn-success">Upload Sketch</button>
-                                        </div>
-                                        <i ng-show="myForm.file.$error.required">*required</i><br>
-                                        <i ng-show="myForm.file.$error.maxSize">File too large
-                                            {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="formSep">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <code>Photo/Sample</code>
-                                        <img ngf-thumbnail="myfile.sample"><br><br>
-                                        <div class="button" ngf-select ng-model="myfile.sample" name="file" ngf-pattern="'image/*'"
-                                             ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
-                                             ngf-resize="{width: 300, height: 300}">
-                                            <button class="btn btn-success">Upload Photo/Sample</button>
                                         </div>
                                         <i ng-show="myForm.file.$error.required">*required</i><br>
                                         <i ng-show="myForm.file.$error.maxSize">File too large

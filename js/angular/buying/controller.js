@@ -111,15 +111,11 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
                 Gauge: $scope.order.order_gg,
                 yarn_ref_details: $scope.order.yarn_ref,
                 customer: $scope.order.customer,
-                colors: $scope.order.color,
                 qty: $scope.order.order_qty,
                 sizing: $scope.order.sizing,
                 main_label: $scope.order.main_label,
                 hang_tag: $scope.order.hang_tag,
-                colors: $scope.order.colors,
-                customer: $scope.order.customer,
                 contract_weight: $scope.order.contract_weight,
-                sample: myfile.sample,
                 sketch: myfile.image
             },
         }).then(function (response) {
