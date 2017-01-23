@@ -189,6 +189,15 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
             value = d;
         }
 
+        if(table_name)
+        {
+            table_name = table_name;
+        }
+        else
+        {
+            table_name = 'users';
+        }
+
         if(value.length == 0)
             value='-';
 
