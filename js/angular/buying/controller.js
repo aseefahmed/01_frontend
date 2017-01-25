@@ -92,14 +92,50 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
         $scope.host = app.host;
         $http.get(app.host + 'buying/order/fetchOrderDetails/'+$routeParams.order_id).then(function (response) {
             $scope.order_details = response.data;
-            console.log($scope.order_details);
+            console.log('ass');
+            console.log(response);
 
         });
 
     };
-
-    $scope.add_buying_order = function(form, myfile){
-        console.log($scope.order.color)
+    $scope.add_buying_order_color = function(color, type, order_id){
+        var data = $.param({
+            color_name: color,
+            type: type,
+            order_id: order_id
+        });
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        };
+        $http.post(app.host + 'buying/order/addColor/', data, config).success(function (result, status) {console.log(result)
+            $('#add-color-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        }).error(function (result, status) {
+            $('#add-color-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was unsuccessful. </strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
+    };
+    $scope.add_buying_order = function(form, myfile=null){   console.log(myfile)
+        if(!myfile)
+        {
+            image = '';
+        }
+        else
+        {
+            image = myfile.image;
+        }
         Upload.upload({
             url: app.host + 'buying/orders/store',
             data: {
@@ -111,12 +147,15 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
                 Gauge: $scope.order.order_gg,
                 yarn_ref_details: $scope.order.yarn_ref,
                 customer: $scope.order.customer,
+                colors: $scope.order.color,
                 qty: $scope.order.order_qty,
                 sizing: $scope.order.sizing,
                 main_label: $scope.order.main_label,
                 hang_tag: $scope.order.hang_tag,
+                colors: $scope.order.colors,
+                customer: $scope.order.customer,
                 contract_weight: $scope.order.contract_weight,
-                sketch: myfile.image
+                sketch: image
             },
         }).then(function (response) {
             $('#add-order-modal').modal('toggle');
@@ -124,6 +163,8 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
                 $scope.num_of_items = 10;
                 $scope.orders = response.data.orders;
                 $scope.reverse = false;
+                $scope.order = {};
+                form.$setPristine();
             });
             $('.top-right').notify({
                 type: 'success',
