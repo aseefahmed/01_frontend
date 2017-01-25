@@ -111,6 +111,10 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
         };
         $http.post(app.host + 'buying/order/addColor/', data, config).success(function (result, status) {console.log(result)
             $('#add-color-modal').modal('toggle');
+            $http.get(app.host + 'buying/order/fetchOrderDetails/'+$routeParams.order_id).then(function (response) {
+                $scope.order_details = response.data;
+
+            });
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
