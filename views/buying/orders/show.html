@@ -317,15 +317,21 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th width='25%'>Colors {{order_details.colors[0]}} </th>
+                                            <th width='25%'>Colors </th>
                                             <td colspan="5">
                                                 <table class="table table-responsive">
                                                     <tr>
                                                         <td class="bg bg-primary">Color</td>
+                                                        <td class="bg bg-primary">Type</td>
                                                         <td class="bg bg-primary">Status</td>
                                                     </tr>
-                                                    <tr ng-repea t="color in order_details.orders">
-                                                        {{ color }}    
+                                                    <tr ng-repeat="color in order_details.colors">
+                                                        <td>{{ color.color_name }} </td>   
+                                                        <td ng-if="color.color_type==1">Solid</td>
+                                                        <td ng-if="color.color_type==2">Twisted</td>   
+                                                        <td ng-if="color.status==0">Pending</td>
+                                                        <td ng-if="color.status==1">Partially completed</td>
+                                                        <td ng-if="color.status==2">Completed</td>   
                                                     </tr>
                                                 </table>
                                                 <a data-toggle="modal" class="btn btn-success" href="#add-color-modal" target="_self">Add Color</a>
