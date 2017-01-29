@@ -8,8 +8,8 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         $route.reload();
     };
     $scope.host = app.host;
-    $scope.changeUserFlag = function(user_id, flag){
-        $http.get(app.host + 'hrm/employees/changeUserFlag/'+flag+"/"+user_id).then(function (response) {
+    $scope.changeUserFlag = function(user_id, flag, loginUser){
+        $http.get(app.host + 'hrm/employees/changeUserFlag/'+flag+"/"+user_id+"/"+loginUser).then(function (response) {
             $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
             $scope.num_of_items = 10;
             $scope.users = response.data;
@@ -18,6 +18,40 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         });
         });
     };
+    $scope.attach_files = function(field, id, myfile, table_name)
+    {
+        Upload.upload({
+            url: app.host + 'hrm/employee/uploadFiles',
+            data: {
+                id: id,
+                field: field,
+                table_name: table_name,
+                file: myfile.image
+            },
+        }).then(function (response) {console.log(response)
+            $('#attach-files-modal').modal('toggle');
+            $http.get(app.host + 'hrm/employees/fetchEmployeeDetails/'+id).then(function(response){
+                console.log(response)
+                $scope.employee = response.data.users;
+            })
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add an order.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.order = {};
+
+        }, function (response) {console.log(response)
+            $('#add-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
+    }
     $scope.init_employeelist = function () {
         $scope.page_title = 'Employees List';
         $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
@@ -46,7 +80,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         }
         else if(action == 'all')
         {
-            if($scope.employees.length == 0)
+            if($scope.users.length == 0)
             {
                 $('#removal-warning-modal').modal('toggle');
             }
@@ -94,7 +128,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         };
-        $http.post(app.host + 'production/employee/delete', data, config).success(function (result, status) {
+        $http.post(app.host + 'hrm/employee/delete', data, config).success(function (result, status) {
             $('#remove-employee-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -104,13 +138,13 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
             }).show();
             if(page == 'show_page')
             {
-                window.location.href = '#/production/employees';
+                window.location.href = '#/hrm/employees';
             }
             else
             {
                 $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
                     $scope.num_of_items = 10;
-                    $scope.employees = response.data;
+                    $scope.users = response.data;
                     $scope.reverse = false;
                 })
             }
@@ -131,6 +165,14 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
             val: 'Admin'
         },
         {
+            id: '2',
+            val: 'Director'
+        },
+        {
+            id: '3',
+            val: 'HR'
+        },
+        {
             id: '9',
             val: 'Merchandiser'
         },
@@ -139,15 +181,16 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
             val: 'Visitor'
         },
     ];
-    $scope.validateBuyingOrderEditForm = function(data, minlength, maxlength, message, role) {
-        if(role != 1)
-        {
-            return "You are not authorized to edit this information."
-        }
-        else
+    $scope.validateEmpoyeeEditForm = function(data, minlength, maxlength, message, role, authorized_peron) {
+       if(role == 1 || role == 2 || role == 3 || ($scope.loginUser.id == authorized_peron))
         {
             if(data.length  < minlength || data.length > maxlength)
                 return message;
+
+        }
+        else
+        {
+            return "You are not authorized to edit this information."
         }
 
     };
@@ -157,7 +200,8 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         myform.$setPristine();
         var data = $.param({
             password: pass,
-            user_id: user_id
+            user_id: user_id,
+            logged_user_id: $scope.loginUser.id,
         });
         var config = {
             headers : {
@@ -201,7 +245,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         if(value.length == 0)
             value='-';
 
-        $http.get(app.host + 'hrm/employees/updateEmployeesInfo/'+field+'/'+id+'/'+value+'/'+table_name).then(function(response){
+        $http.get(app.host + 'hrm/employees/updateEmployeesInfo/'+field+'/'+id+'/'+value+'/'+table_name+'/'+$scope.loginUser.id).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },
@@ -228,13 +272,22 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
 
         $scope.opened[elementOpened] = !$scope.opened[elementOpened];
     };
-    $scope.init = function(employee_id){
+    $scope.init = function(){
         $scope.page_title = 'Employee Details';
-        $('#ajax_loading').css('display', 'block');
-        $http.get(app.host + 'hrm/employees/fetchEmployeeDetails/'+$scope.employee_id).then(function(response){
-            console.log(response)
-            $scope.employee = response.data.users;
-        })
+        
+        if($scope.loginUser.id == $scope.employee_id || $scope.loginUser.emp_role == 1)
+        {
+            $('#ajax_loading').css('display', 'block');
+            $http.get(app.host + 'hrm/employees/fetchEmployeeDetails/'+$scope.employee_id).then(function(response){
+                console.log(response)
+                $scope.employee = response.data.users;
+            })
+        }
+        else
+        {
+            window.location.href = '#/error/unauthorized';
+        }
+        
     };
     /*$scope.edit_employee = function (id, edit_item, field, field_type, is_required, min_length, max_length, pattern, error_text) {
 

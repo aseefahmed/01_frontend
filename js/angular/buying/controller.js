@@ -27,28 +27,98 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
             id: 'No',
             val: 'No'
         }
-    ]
+    ];
+    $scope.color_status = [
+        {
+            id: '0',
+            val: 'Pending'
+        },
+        {
+            id: '1',
+            val: 'Partially Completed'
+        },
+        {
+            id: '2',
+            val: 'Completed'
+        }
+    ];
 
+    $scope.color_types = [
+        {
+            id: '1',
+            val: 'Solid'
+        },
+        {
+            id: '2',
+            val: 'Twisted'
+        }
+    ];
+    $scope.attach_files = function(field, id, myfile, table_name)
+    {
+        Upload.upload({
+            url: app.host + 'buying/orders/uploadFiles',
+            data: {
+                id: id,
+                field: field,
+                table_name: table_name,
+                file: myfile.image
+            },
+        }).then(function (response) {console.log(response)
+            $('#attach-files-modal').modal('toggle');
+            $http.get(app.host + 'buying/order/fetchOrderDetails/'+id).then(function (response) {
+            $scope.order_details = response.data;
+
+        });
+            $('.top-right').notify({
+                type: 'success',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>You have successfully add an order.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+            $scope.order = {};
+
+        }, function (response) {console.log(response)
+            $('#add-order-modal').modal('toggle');
+            $('.top-right').notify({
+                type: 'danger',
+                message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was unsuccessful.</strong>' },
+                closable: false,
+                fadeOut: { enabled: true, delay: 2000 }
+            }).show();
+        });
+    }
+    $scope.fetchOrdersStats = function(){
+        $http.get(app.host + 'buying/orders/fetchOrdersStats').then(function (response) {
+            $scope.no_of_orders_handedover = response.data.no_of_orders_handedover;
+            $scope.no_of_po_recieved = response.data.no_of_po_recieved;
+            $scope.no_of_orders_inspected = response.data.no_of_orders_inspected;
+            $scope.new_orders = response.data.new_orders;
+            $scope.handedover_this_month = response.data.handedover_this_month;
+            $scope.no_of_po_recieved_this_month = response.data.no_of_po_recieved_this_month;
+            console.log(response)
+        });
+    }
     $scope.buyersList = function()
     {
         $http.get(app.host + '/production/buyer/fetchBuyersList').then(function (response) {
             $scope.buyers = response.data;console.log($scope.buyers)
         });
     }
-    $scope.validateBuyingOrderEditForm = function(data, minlength, maxlength, message, role) {
-        if(role != 1)
+    $scope.validateBuyingOrderEditForm = function(data, minlength, maxlength, message, role, authorized_person) {
+        if(role == 1 || role == 2 || ($scope.loginUser.id == authorized_person))
         {
-            return "You are not authorized to edit this information."
+            
+            if(data.length  < minlength || data.length > maxlength)
+                return message;
         }
         else
         {
-            if(data.length  < minlength || data.length > maxlength)
-                return message;
+            return "You are not authorized to edit this information."
         }
 
     };
 
-    $scope.edit_buying_order_confirmed = function(field, id, value, data_type = null) {
+    $scope.edit_buying_order_confirmed = function(field, id, value, data_type = null, table_name = null) {
 
         if(data_type == "date_data")
         {
@@ -57,10 +127,15 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
             value = d;
         }
 
+        if(!table_name)
+        {
+            table_name = 'buying_orders';    
+        }
+
         if(value.length == 0)
             value='-';
 
-        $http.get(app.host + 'buying/order/update/'+$scope.loginUser.id+'/'+field+'/'+id+'/'+value).then(function(response){
+        $http.get(app.host + 'buying/order/update/'+$scope.loginUser.id+'/'+field+'/'+id+'/'+value+'/'+table_name).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },

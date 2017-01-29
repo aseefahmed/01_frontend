@@ -1,5 +1,7 @@
 angular.module('myApp').controller('SidebarController', function($scope, $http, $window){
     $scope.module_name = 'Buying';
+    $scope.loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
+    console.log($scope.loginUser.emp_role)
     $scope.switchToModule = function(module_name){
         $scope.module_name = module_name;
     }

@@ -86,8 +86,7 @@
                         <li class="dropdown" ng-controller="DashboardController" ng-cloak>
                             <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ loginUser.first_name | uppercase }} {{ loginUser.last_name | uppercase }}  <b class="caret"></b></a>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a href="user_profile.html">My Profile</a></li>
-                                <li><a href="javascrip:void(0)">Another action</a></li>
+                                <li><a href="#/hrm/employee/{{loginUser.id}}" target="_self">My Profile</a></li>
                                 <li class="divider"></li>
                                 <li><a href='' ng-controller="LogoutController" ng-click="doLogout()" target="_self">Log Out</a></li>
                             </ul>
@@ -326,52 +325,13 @@
             </div>
 
 
-            <div id="hrm_side_accordion" class="panel-group" ng-show="module_name == 'HRM'">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a href="#" class="accordion-toggle bg bg-warning " ng-controller="DashboardController"  ng-click="goToDashboard()">
-                            <i class="glyphicon glyphicon-dashboard"></i> AAA
-                        </a>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a href="#aaa" data-parent="#hrm_side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-bell"></i> Employees
-                        </a>
-                    </div>
-                    <div class="accordion-body collapse " id="aaa">
-                        <div class="panel-body">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li class=""><a href="#/hrm/employees">Employees List</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a href="#sss" data-parent="#hrm_side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-globe"></i> XX
-                        </a>
-                    </div>
-                    <div class="accordion-body collapse " id="sss">
-                        <div class="panel-body">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li class=""><a href="#/production/suppliers">View Suppliers</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
             <div id="buying_side_accordion" class="panel-group" ng-show="module_name == 'Buying'">
-            <div class="panel panel-default">
+                <div class="panel panel-default" ng-if="loginUser.emp_role == 1 || loginUser.emp_role == 2">
                     <div class="panel-heading">
                         <a href="#collapseEmployeeBuying" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-bell"></i> Employees 
+                            <i class="glyphicon glyphicon-bell"></i> Employees
                         </a>
-                    </div>
+                    </div>  
                     <div class="accordion-body collapse " id="collapseEmployeeBuying">
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
@@ -423,21 +383,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a href="#collapseReportBuying" data-parent="#buying_side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-signal"></i> Reports
-                        </a>
-                    </div>
-                    <div class="accordion-body collapse " id="collapseReportBuying">
-                        <div class="panel-body">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li class=""><a href="#/production/reports/orders">Orders</a></li>
-                                <li class=""><a href="#/production/reports/saved">Saved Reports</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
 
 
@@ -467,8 +412,8 @@
 <!-- Angular Route JS -->
 <script src="js/angular/angular-route.js"></script>
 <!-- Angular Sanitize -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.1/ui-bootstrap-tpls.min.js"></script>
+<script src="js/angular/angular-sanitize.js"></script>
+<script src="js/angular/ui-bootstrap-tpls.min.js"></script>
 <!-- angular js main app js -->
 <script src="js/main.js"></script>
 <!-- angular js controllers -->

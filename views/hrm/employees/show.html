@@ -2,7 +2,7 @@
 <div class="row col-sm-12">
     <h3 class="heading" ng-cloak>{{ page_title }}</h3>
 </div>
-<div class="row" ng-init="init(buyer_id)" ng-cloak>
+<div class="row" ng-init="init()" ng-cloak>
     <div class="col-sm-12 col-md-12">
         <div class="col-sm-12">
             <div class="w-box" id="w_sort01">
@@ -48,6 +48,15 @@
                                 </span>
                             </a>
                         </li>
+                        <li data-target="step-5" style="cursor: pointer;">
+                            <a target="_self">
+                                <span class="number">5</span>
+                                <span class="desc">
+                                    <label>Photo</label>
+                                    <span>Upload Photo</span>
+                                </span>
+                            </a>
+                        </li>
 
                     </ul>
                     <!-- END STEP INDICATOR--->
@@ -72,13 +81,13 @@
                                                 <div class="col-sm-6">
                                                     <code>First Name</code><span style="color:red">*</span>
                                                     <div class="popover-wrapper"> 
-                                                        <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('first_name',employee[0].id, $data)" editable-text="employee[0].first_name" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ employee[0].first_name }}</a></span></td>
+                                                        <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('first_name',employee[0].id, $data)" editable-text="employee[0].first_name" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].first_name }}</a></span></td>
                                                     </div>    
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <code>Last Name</code><span style="color:red">*</span>
                                                     <div class="popover-wrapper"> 
-                                                        <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('last_name',employee[0].id, $data)" editable-text="employee[0].last_name" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role)">{{ employee[0].last_name }}</a></span></td>
+                                                        <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('last_name',employee[0].id, $data)" editable-text="employee[0].last_name" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].last_name }}</a></span></td>
                                                     </div> 
                                                 </div>
                                             </div>
@@ -87,10 +96,20 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <code>Role</code>
-                                                    <div class="popover-wrapper">
+                                                    <div class="popover-wrapper" ng-if="loginUser.emp_role==1 || loginUser.emp_role==2 || loginUser.emp_role==3">
                                                        <a ng-if="employee[0].emp_role == 1" href="#" editable-select="employee[0].emp_role" onaftersave="edit_employees_info_confirmed('emp_role',employee[0].id, $data)" e-ng-options="g.id as g.val for g in roles">Admin</a>
+                                                       <a ng-if="employee[0].emp_role == 2" href="#" editable-select="employee[0].emp_role" onaftersave="edit_employees_info_confirmed('emp_role',employee[0].id, $data)" e-ng-options="g.id as g.val for g in roles">Director</a>
+                                                       <a ng-if="employee[0].emp_role == 3" href="#" editable-select="employee[0].emp_role" onaftersave="edit_employees_info_confirmed('emp_role',employee[0].id, $data)" e-ng-options="g.id as g.val for g in roles">HR</a>
                                                        <a ng-if="employee[0].emp_role == 9" href="#" editable-select="employee[0].emp_role" onaftersave="edit_employees_info_confirmed('emp_role',employee[0].id, $data)" e-ng-options="g.id as g.val for g in roles">Merchandiser</a>
                                                        <a ng-if="employee[0].emp_role == 10" href="#" editable-select="employee[0].emp_role" onaftersave="edit_employees_info_confirmed('emp_role',employee[0].id, $data)" e-ng-options="g.id as g.val for g in roles">Visitor</a>
+                                                    </div>
+
+                                                    <div class="popover-wrapper" ng-if="loginUser.emp_role!=1 && loginUser.emp_role!=2 && loginUser.emp_role!=3">
+                                                       <a style="text-decoration=none;" ng-if="employee[0].emp_role == 1">Admin</a>
+                                                       <a ng-if="employee[0].emp_role == 2">Director</a>
+                                                       <a ng-if="employee[0].emp_role == 3">HR</a>
+                                                       <a style="text-decoration=none;" ng-if="employee[0].emp_role == 9">Merchandiser</a>
+                                                       <a ng-if="employee[0].emp_role == 10">Visitor</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -100,7 +119,7 @@
                                                 <div class="col-sm-12">
                                                     <code>Email Address</code>
                                                     <div class="popover-wrapper"> 
-                                                        <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('email',employee[0].id, $data)" editable-text="employee[0].email" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ employee[0].email }}</a></span></td>
+                                                        <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('email',employee[0].id, $data)" editable-text="employee[0].email" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].email }}</a></span></td>
                                                     </div> 
                                                 </div>
                                             </div>
@@ -132,7 +151,7 @@
                                                         <code>Address</code>
                                                         <div class="popover-wrapper"> 
                                                             <div class="popover-wrapper"> 
-                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('address_line_1',employee[0].id, $data, null, 'employees')" editable-text="employee[0].address_line_1" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ employee[0].address_line_1 }}</a></span></td>
+                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('address_line_1',employee[0].id, $data, null, 'employees')" editable-text="employee[0].address_line_1" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].address_line_1 || 'empty' }}</a></span></td>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -143,24 +162,26 @@
                                                     <div class="col-sm-6">
                                                         <code>Joining Date</code>
                                                         <div class="popover-wrapper"> 
-                                                            <a onaftersave="edit_employees_info_confirmed('join_date',employee[0].id, $data, 'date_data')"  href="#" editable-bsdate="employee[0].join_date" 
+                                                            <a onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)"
+                                                                onaftersave="edit_employees_info_confirmed('join_date',employee[0].id, $data, 'date_data', 'employees')"  href="#" editable-bsdate="employee[0].join_date" 
                                                                           e-readonly="true"
                                                                           e-is-open="opened.$data"
                                                                           e-ng-click="open($event,'$data')"  
                                                                           e-datepicker-popup="yyyy-MM-dd">
-                                                                {{ (employee[0].join_date | date:"dd/MMM/yyyy") }}
+                                                                {{ (employee[0].join_date | date:"dd/MMM/yyyy") || 'empty' }}
                                                             </a>
                                                         </div> 
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <code>Date of Birth</code>
                                                         <div class="popover-wrapper"> 
-                                                            <a onaftersave="edit_employees_info_confirmed('dob',employee[0].id, $data, 'date_data', 'employees')"  href="#" editable-bsdate="employee[0].dob" 
+                                                            <a onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)"
+                                                                onaftersave="edit_employees_info_confirmed('dob',employee[0].id, $data, 'date_data', 'employees')"  href="#" editable-bsdate="employee[0].dob" 
                                                                           e-readonly="true"
                                                                           e-is-open="opened.$data"
                                                                           e-ng-click="open($event,'$data')"  
                                                                           e-datepicker-popup="yyyy-MM-dd">
-                                                                {{ (employee[0].dob | date:"dd/MMM/yyyy") }}
+                                                                {{ (employee[0].dob | date:"dd/MMM/yyyy") || 'empty'}}
                                                             </a>
                                                         </div> 
                                                     </div>
@@ -172,7 +193,7 @@
                                                         <code>Salary</code>
                                                         <div class="popover-wrapper"> 
                                                            <div class="popover-wrapper"> 
-                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('salary',employee[0].id, $data, null, 'employees')" editable-text="employee[0].salary" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ employee[0].salary }}</a></span></td>
+                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('salary',employee[0].id, $data, null, 'employees')" editable-text="employee[0].salary" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].salary || 'empty'}}</a></span></td>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -201,7 +222,7 @@
                                                         <code>Account Holder</code>
                                                         <div class="popover-wrapper"> 
                                                             <div class="popover-wrapper"> 
-                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('acc_holder',employee[0].id, $data, null, 'employees')" editable-text="employee[0].acc_holder" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ employee[0].acc_holder }}</a></span></td>
+                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('acc_holder',employee[0].id, $data, null, 'employees')" editable-text="employee[0].acc_holder" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].acc_holder || 'empty'}}</a></span></td>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -209,7 +230,7 @@
                                                         <code>Account Name</code>
                                                         <div class="popover-wrapper"> 
                                                             <div class="popover-wrapper"> 
-                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('acc_no',employee[0].id, $data, null, 'employees')" editable-text="employee[0].acc_no" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ employee[0].acc_no }}</a></span></td>
+                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('acc_no',employee[0].id, $data, null, 'employees')" editable-text="employee[0].acc_no" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].acc_no || 'empty'}}</a></span></td>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -221,7 +242,7 @@
                                                         <code>Branch</code>
                                                         <div class="popover-wrapper"> 
                                                             <div class="popover-wrapper"> 
-                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('branch',employee[0].id, $data, null, 'employees')" editable-text="employee[0].branch" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ employee[0].branch }}</a></span></td>
+                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('branch',employee[0].id, $data, null, 'employees')" editable-text="employee[0].branch" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].branch || 'empty'}}</a></span></td>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -233,7 +254,7 @@
                                                         <code>IFSC Code</code>
                                                         <div class="popover-wrapper"> 
                                                            <div class="popover-wrapper"> 
-                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('ifsc_code',employee[0].id, $data, null, 'employees')" editable-text="employee[0].ifsc_code" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.')">{{ employee[0].ifsc_code }}</a></span></td>
+                                                                <a style="cursor: pointer;" onaftersave="edit_employees_info_confirmed('ifsc_code',employee[0].id, $data, null, 'employees')" editable-text="employee[0].ifsc_code" onbeforesave="validateEmpoyeeEditForm($data, 1, 20, 'This field is mendatory and must not exceed 20 characters.', loginUser.emp_role, employee[0].id)">{{ employee[0].ifsc_code || 'empty'}}</a></span></td>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -295,6 +316,43 @@
                         </div>
                         <!-- END STEP 4-->
                         <!-- END STEP 14-->
+                        <!-- END STEP 5-->
+                        <!-- BEGIN STEP 4-->
+                        <div class=" tsf-step step-5 ">
+                            <fieldset>
+                                <legend>Upload Photo</legend>
+                                <!-- BEGIN STEP CONTENT-->
+                                <div class="row">
+
+                                    <div class="row col-sm-2">
+                                    &nbsp;
+                                    </div>
+                                    <div class="row col-sm-8">
+                                       <form name="changePasswordForm">
+                                            <div class="formSep">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="row">
+                                                            <img src="{{host}}uploaded_files/hrm/employees/{{ employee[0].photo }}">
+                                                        </div>
+                                                        <div class="row">
+                                                            <a target="_self" class="btn dropdown-toggle btn-success" data-toggle="modal" href="#attach-files-modal">
+                                                                <i class="glyphicon glyphicon-home"></i> Upload
+                                                            </a>
+                                                        </div>
+                                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                       </form>
+                                            
+                                        </div>
+                                </div>
+                                <!-- END STEP CONTENT-->
+                            </fieldset>
+                        </div>
+                        <!-- END STEP 4-->
+                        <!-- END STEP 14-->
 
                     </div>
                     <!-- END CONTENT-->
@@ -328,7 +386,43 @@
             </div>
         </div>
 
+        <div class="modal fade" id="attach-files-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3 class="modal-title">Upload Photo</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" enctype="multipart/form-data" name="myForm" novalidate>
+                                
+                                <div class="formSep">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <code>Attachment</code>
+                                            <img ngf-thumbnail="myfile.image"><br><br>
+                                            <div class="button" ngf-select ng-required="true" ng-model="myfile.image" name="file" ngf-pattern="'image/*'"
+                                                 ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+                                                 ngf-resize="{width: 300, height: 300}">
+                                                <button class="btn btn-success">Attachment</button>
+                                            </div>
+                                            <i ng-show="myForm.file.$error.required">*required</i><br>
+                                            <i ng-show="myForm.file.$error.maxSize">File too large
+                                                {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+                                        </div>
 
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</a>
+                                    <button type="submit" ng-disabled="myForm.$invalid" name="commit" class="btn btn-success" ng-click="attach_files('photo', employee[0].id, myfile, 'employees')"><span class="glyphicon glyphicon-ok-sign"></span> Upload </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>     
         <div class="modal fade" id="remove-buyer-modal">
             <div class="modal-dialog">
                 <div class="modal-content">

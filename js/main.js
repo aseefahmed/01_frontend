@@ -54,6 +54,9 @@ myApp.config(function($routeProvider, $locationProvider, KeepaliveProvider, Idle
             templateUrl: 'views/production/requisitions/generate.html',
             controller: 'RequisitionController'
         })
+        .when('/error/unauthorized', {
+            templateUrl: 'views/errors/index.html'
+        })
         .when('/production/requisitions/id/:requisition_id', {
             templateUrl: 'views/production/requisitions/details.html',
             controller: 'AllRequisitionController'

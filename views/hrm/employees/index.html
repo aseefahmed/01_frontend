@@ -69,13 +69,14 @@
                                         <td ng-cloak ng-if="user.emp_role == 2">Director</td>
                                         <td ng-cloak ng-if="user.emp_role == 3">HR Manager</td>
                                         <td ng-cloak ng-if="user.emp_role == 9">Merchandiser</td>
+                                        <td ng-cloak ng-if="user.emp_role == 10">Visitor</td>
                                         <td ng-cloak ng-if="user.emp_role == 0"> - </td>
                                         <td ng-cloak>{{ user.email }}</td>
-                                        <td ng-if="user.flag == 1"><img src="img/check.png" width="30px" ng-click="changeUserFlag(user.id, 0)" style="cursor: pointer;"></td>
+                                        <td ng-if="user.flag == 1"><img src="img/check.png" width="30px" ng-click="changeUserFlag(user.id, 0, loginUser.id)" style="cursor: pointer;"></td>
                                         <td ng-if="user.flag == 0"><img src="img/cross.png" width="30px" ng-click="changeUserFlag(user.id, 1)" style="cursor: pointer;"></td>
                                         <td  ng-cloak align="center">
                                             <a class="btn btn-primary" href="#/hrm/employee/{{ user.id }}"><i class="glyphicon glyphicon-eye-open" class="view_employee_btn"></i></a>&nbsp;
-                                            <a ng-if="loginUser.emp_role==1" class="btn btn-danger" ng-click="remove_employee(employee.id, employee.employee_name, 'single_delete')" employee_name="{{ employee.name }}" employee_id="{{ user.id }}"><i class="glyphicon glyphicon-trash"></i></a>
+                                            <a ng-if="loginUser.emp_role==1" class="btn btn-danger" ng-click="remove_employee(user.id, user.first_name, 'single_delete')" employee_name="{{ employee.name }}" employee_id="{{ user.id }}"><i class="glyphicon glyphicon-trash"></i></a>
                                         </td>
                                     </tr>
 
@@ -93,7 +94,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4" ng-include="'views/production/partials/orders_stats.html'"></div>
+        <div class="col-sm-4" ng-include="'views/buying/partials/orders_stats.html'"></div>
         <div class="modal fade" id="add-employee-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -159,7 +160,7 @@
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
-                                        <input class="form-control" placeholder="Password" name="password" type="password" ng-model="employee.password"/>
+                                        <input class="form-control" placeholder="Password" name="password" type="password" ng-required="true" ng-model="employee.password"/>
                                     </div>
                                     <div class="col-sm-6">
                                         <code>Retype Password</code>

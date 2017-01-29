@@ -1,1 +1,57 @@
-fddffdsfsadfdafasfadsfdsafdsaffddffdsfsadfdafasfadsfdsafdsaffddffdsfsadfdafasfadsfdsafdsaffddffdsfsadfdafasfadsfdsafdsaf
+<div class="w-box" id="w_sort01">
+    <div class="w-box-header">
+        <div class="pull-left">
+            <div class="btn-group">
+                Order Summery
+            </div>
+        </div>
+    </div>
+    <div class="w-box-content cnt_a">
+        <div id="main-content" ng-controller="BuyingOrderController" ng-init="fetchOrdersStats()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="sidebar_info" style="width:100%">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <span class="act act-danger" ng-cloak>{{ no_of_orders_handedover }}</span>
+                                                <strong>No of orders handed over</strong>
+                                            </li>
+                                            <li>
+                                                <span class="act act-danger" ng-cloak>{{ no_of_po_recieved }}</span>
+                                                <strong>No of PO recieved</strong>
+                                            </li>
+                                            <li>
+                                                <span class="act act-danger" ng-cloak>{{ no_of_orders_inspected }}</span>
+                                                <strong>Orders Inspected</strong>
+                                            </li>
+                                            <li>
+                                            	<table class="table table-responsive">
+                                                    <thead>
+                                                    <tr>
+	                                                        <th class="text-center" colspan="2">This Month</th>
+	                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+	                                                    <tr>
+	                                                        <th class="bg bg-primary">New Orders</th>
+	                                                        <th class="text-right">{{ new_orders }} </th>
+	                                                    </tr>
+	                                                    <tr>
+	                                                        <th class="bg bg-primary">Handed Over</th>
+	                                                        <th class="text-right">{{ handedover_this_month }}</th>
+	                                                    </tr>
+	                                                    <tr>
+	                                                        <th class="bg bg-primary">PO Recieved</th>
+	                                                        <th class="text-right">{{  no_of_po_recieved_this_month }}</th>
+	                                                    </tr>
+                                                    </tbody>
+                                                </table>	
+                                            </li>
+                                        </ul>
+                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/custom-select2.js"></script>
