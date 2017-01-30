@@ -225,7 +225,7 @@
                     <option value="Buying">Buying</option>
                 </select>
             </form>
-            <div id="side_accordion" class="panel-group" ng-show="module_name == 'Production'">
+            <!-- <div id="side_accordion" class="panel-group" ng-show="module_name == 'Production'">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#" class="accordion-toggle bg bg-warning " ng-controller="DashboardController"  ng-click="goToDashboard()">
@@ -322,17 +322,17 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
 
 
             <div id="buying_side_accordion" class="panel-group" ng-show="module_name == 'Buying'">
                 <div class="panel panel-default" ng-if="loginUser.emp_role == 1 || loginUser.emp_role == 2">
                     <div class="panel-heading">
-                        <a href="#collapseEmployeeBuying" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                        <a href="#collapseEmployeeBuying1" data-parent="#buying_side_accordion" data-toggle="collapse" class="accordion-toggle">
                             <i class="glyphicon glyphicon-bell"></i> Employees
                         </a>
                     </div>  
-                    <div class="accordion-body collapse " id="collapseEmployeeBuying">
+                    <div class="accordion-body collapse " id="collapseEmployeeBuying1">
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
                                 <li class=""><a href="#/hrm/employees">View Employees</a></li>
@@ -384,7 +384,45 @@
                     </div>
                 </div>
             </div>
-
+            <div class="sidebar_info" style="width:100%"ng-controller="BuyingOrderController" ng-init="fetchOrdersStats()">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span class="act act-danger" ng-cloak>{{ no_of_orders_handedover }}</span>
+                                    <strong>No of orders handed over</strong>
+                                </li>
+                                <li>
+                                    <span class="act act-danger" ng-cloak>{{ no_of_po_recieved }}</span>
+                                    <strong>No of PO recieved</strong>
+                                </li>
+                                <li>
+                                    <span class="act act-danger" ng-cloak>{{ no_of_orders_inspected }}</span>
+                                    <strong>Orders Inspected</strong>
+                                </li>
+                                <li>
+                                    <table class="table table-responsive">
+                                        <thead>
+                                        <tr>
+                                                <th class="text-center" colspan="2">This Month</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th class="bg bg-primary">New Orders</th>
+                                                <th class="text-right">{{ new_orders }} </th>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg bg-primary">Handed Over</th>
+                                                <th class="text-right">{{ handedover_this_month }}</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg bg-primary">PO Recieved</th>
+                                                <th class="text-right">{{  no_of_po_recieved_this_month }}</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>    
+                                </li>
+                            </ul>
+                    </div>
 
 
             <div class="push"></div>

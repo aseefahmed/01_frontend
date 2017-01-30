@@ -1,5 +1,21 @@
     body {color: #222;padding: 0;overflow-x:hidden;font-size: 13px}
 
+    .custom_rule1 {
+    	background-color:rgb(128, 20, 28);color:white;font-weight: bold;
+    	border-bottom: 2px solid #ddd;
+    	padding: 8px;
+		line-height: 1.42857143;
+		vertical-align: top;
+		border-top: 1px solid #ddd;
+    }
+    .custom_rule2 {
+    	background-color:rgb(20, 128, 28);color:white;font-weight: 
+    	bold;border-bottom: 2px solid #ddd;
+    	padding: 8px;
+		line-height: 1.42857143;
+		vertical-align: top;
+		border-top: 1px solid #ddd;
+    }
 	html,body {height:100%}
 
     /* fix for inputs inline shadow */

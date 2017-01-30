@@ -9,8 +9,8 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
     };
     $scope.host = app.host;
     $scope.changeUserFlag = function(user_id, flag, loginUser){
-        $http.get(app.host + 'hrm/employees/changeUserFlag/'+flag+"/"+user_id+"/"+loginUser).then(function (response) {
-            $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
+        $http.get(app.host + 'employees/changeUserFlag/'+flag+"/"+user_id+"/"+loginUser).then(function (response) {
+            $http.get(app.host + 'employees/fetchEmployeesList').then(function (response) {
             $scope.num_of_items = 10;
             $scope.users = response.data;
             $scope.data_found = $scope.users.length;
@@ -21,7 +21,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
     $scope.attach_files = function(field, id, myfile, table_name)
     {
         Upload.upload({
-            url: app.host + 'hrm/employee/uploadFiles',
+            url: app.host + 'employee/uploadFiles',
             data: {
                 id: id,
                 field: field,
@@ -30,7 +30,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
             },
         }).then(function (response) {console.log(response)
             $('#attach-files-modal').modal('toggle');
-            $http.get(app.host + 'hrm/employees/fetchEmployeeDetails/'+id).then(function(response){
+            $http.get(app.host + 'employees/fetchEmployeeDetails/'+id).then(function(response){
                 console.log(response)
                 $scope.employee = response.data.users;
             })
@@ -55,7 +55,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
     $scope.init_employeelist = function () {
         $scope.page_title = 'Employees List';
         $scope.num_of_items_arr = [{id: 5, value: 5},{id: 10, value: 10},{id: 20, value: 20},{id: 50, value: 50},{id: 100, value: 100}];
-        $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
+        $http.get(app.host + 'employees/fetchEmployeesList').then(function (response) {
             $scope.num_of_items = 10;
             $scope.users = response.data;
             console.log('dddd')
@@ -128,7 +128,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         };
-        $http.post(app.host + 'hrm/employee/delete', data, config).success(function (result, status) {
+        $http.post(app.host + 'employee/delete', data, config).success(function (result, status) {
             $('#remove-employee-modal').modal('toggle');
             $('.top-right').notify({
                 type: 'success',
@@ -142,7 +142,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
             }
             else
             {
-                $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
+                $http.get(app.host + 'employees/fetchEmployeesList').then(function (response) {
                     $scope.num_of_items = 10;
                     $scope.users = response.data;
                     $scope.reverse = false;
@@ -208,7 +208,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         };
-        $http.post(app.host + 'hrm/employees/changePass', data, config).success(function (result, status) {console.log(result)
+        $http.post(app.host + 'employees/changePass', data, config).success(function (result, status) {console.log(result)
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>Operation was successful.</strong>' },
@@ -245,14 +245,14 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         if(value.length == 0)
             value='-';
 
-        $http.get(app.host + 'hrm/employees/updateEmployeesInfo/'+field+'/'+id+'/'+value+'/'+table_name+'/'+$scope.loginUser.id).then(function(response){
+        $http.get(app.host + 'employees/updateEmployeesInfo/'+field+'/'+id+'/'+value+'/'+table_name+'/'+$scope.loginUser.id).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },
                 closable: false,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
-            $http.get(app.host + 'hrm/employees/fetchEmployeeDetails/'+id).then(function(response){
+            $http.get(app.host + 'employees/fetchEmployeeDetails/'+id).then(function(response){
             console.log(response)
             $scope.employee = response.data.users;
         })
@@ -278,7 +278,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
         if($scope.loginUser.id == $scope.employee_id || $scope.loginUser.emp_role == 1)
         {
             $('#ajax_loading').css('display', 'block');
-            $http.get(app.host + 'hrm/employees/fetchEmployeeDetails/'+$scope.employee_id).then(function(response){
+            $http.get(app.host + 'employees/fetchEmployeeDetails/'+$scope.employee_id).then(function(response){
                 console.log(response)
                 $scope.employee = response.data.users;
             })
@@ -329,7 +329,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
                 fadeOut: { enabled: true, delay: 2000 }
             }).show();
             $scope.employee = response.data;
-            $http.get(app.host + 'hrm/employees/fetchEmployeesList'+id).then(function(response){
+            $http.get(app.host + 'employees/fetchEmployeesList'+id).then(function(response){
                 $scope.employee = response.data;
             })
         }, function(response){
@@ -343,7 +343,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
     }
     $scope.add_employee = function(form){
         Upload.upload({
-            url: app.host + 'hrm/employees/store',
+            url: app.host + 'employees/store',
             data: {
                 user_id: $scope.loginUser.id,
                 first_name: $scope.employee.first_name,
@@ -362,7 +362,7 @@ angular.module('myApp').controller('EmployeeController', function($scope, $http,
             }).show();
             $scope.employee = {};
             form.$setPristine();
-            $http.get(app.host + 'hrm/employees/fetchEmployeesList').then(function (response) {
+            $http.get(app.host + 'employees/fetchEmployeesList').then(function (response) {
                 $scope.num_of_items = 10;
                 $scope.users = response.data;
                 $scope.reverse = false;

@@ -184,7 +184,7 @@ angular.module('myApp').controller('BuyingOrderController', function($scope, $ht
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         };
-        $http.post(app.host + 'buying/order/addColor/', data, config).success(function (result, status) {console.log(result)
+        $http.get(app.host + 'buying/order/addColor/'+color+'/'+type+'/'+order_id).success(function (result, status) {console.log(result)
             $('#add-color-modal').modal('toggle');
             $http.get(app.host + 'buying/order/fetchOrderDetails/'+$routeParams.order_id).then(function (response) {
                 $scope.order_details = response.data;

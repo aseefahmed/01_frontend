@@ -96,13 +96,23 @@
                         <form method="post" enctype="multipart/form-data" name="myForm" novalidate>
                             <div class="formSep">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <code>Supplier</code><span style="color:red">*</span>
                                         <div class="row">
                                             &nbsp;&nbsp;
                                         </div>
                                         <input class="form-control" placeholder="Supplier" name="supplier_name" type="text" ng-model="supplier.supplier_name" ng-required="true" ng-maxlength="50">
                                         <span class="help-block " ng-show="myForm.supplier_name.$dirty && myForm.supplier_name.$invalid">This is a mendatory field (Maximum: 50 Characters).</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <code>Merchandirser</code> 
+                                        <div class="row">
+                                            &nbsp;&nbsp;
+                                        </div>
+                                        <select style="width:100%" class="inline-search form-control" ng-model="supplier.merchandiser_id">
+                                            <option ng-repeat="user in users" value="{{user.id}}">{{user.first_name}} {{user.last_name}} </option>
+                                        </select>
+                                        
                                     </div>
                                 </div>
                             </div>

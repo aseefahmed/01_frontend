@@ -280,6 +280,12 @@ angular.module('myApp').controller('SupplierController', function($scope, $http,
             $scope.data_found = $scope.suppliers.length;
             $scope.reverse = false;
         });
+        $http.get(app.host + 'user/getUsersList').then(function (response) {
+            console.log('done'+response.data)
+            $scope.users = response.data.users;
+            console.log('ffff');
+            console.log(response.data.users)
+        });
         $scope.sortKey = 'supplier_name';
         $scope.sort = function (header) {
             $scope.sortKey = header;
@@ -376,6 +382,12 @@ angular.module('myApp').controller('SupplierController', function($scope, $http,
         });
 
     };
+    $scope.getUsersList = function()
+    {
+        $http.get(app.host + 'user/getUsersList').then(function (response) {
+            $scope.users = response.data.users;console.log($scope.users)
+        });
+    }
     $scope.init = function(id){
         $scope.page_title = 'Supplier Details';
         $scope.host = app.host;
@@ -400,13 +412,18 @@ angular.module('myApp').controller('SupplierController', function($scope, $http,
         $scope.type = null;
         $('#edit-supplier-modal').modal('toggle');
     }
-    $scope.edit_supplier_confirmed = function (id) {
-        $('#edit-supplier-modal').modal('toggle');
+    $scope.UsersList = function()
+    {
+        $http.get(app.host + 'user/getUsersList').then(function (response) {
+            $scope.users = response.data;console.log($scope.buyers)
+        });
+    }
+    $scope.edit_supplier_confirmed = function (field, id, value, data_type = null, table_name = null) {
         if($scope.type == null)
         {
             $scope.type = '--';
         }
-        $http.get(app.host + 'production/supplier/update/'+$scope.loginUser.id+'/'+$scope.field+'/'+id+'/'+$scope.type).then(function(response){
+        $http.get(app.host + 'employees/updateEmployeesInfo/'+field+'/'+id+'/'+value+'/'+table_name+'/'+$scope.loginUser.id).then(function(response){
             $('.top-right').notify({
                 type: 'success',
                 message: { html: '<span class="glyphicon glyphicon-info-sign"></span> <strong>The operation was successful.</strong>' },
@@ -435,6 +452,7 @@ angular.module('myApp').controller('SupplierController', function($scope, $http,
             data: {
                 user_id: $scope.loginUser.id,
                 supplier_name: $scope.supplier.supplier_name,
+                merchandiser_id: $scope.supplier.merchandiser_id,
                 postal_address: $scope.supplier.postal_address,
                 contact_person: $scope.supplier.contact_person,
                 email_address: $scope.supplier.email_address,

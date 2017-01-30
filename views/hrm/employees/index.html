@@ -59,7 +59,7 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-if="employees.length == 0 || filtered.length == 0">
-                                        <td colspan="6">No data found.</td>
+                                        <td colspan="7">No data found.</td>
                                     </tr>
                                     <tr ng-class-odd="'bg-color1'" dir-paginate="user in filtered = (users| orderBy : sortKey : reverse | filter : search_filter  | itemsPerPage : num_of_items) " ng-cloak>
                                         <td><input class="select_row" type="checkbox"  value="{{ user.id }}"/></td>
